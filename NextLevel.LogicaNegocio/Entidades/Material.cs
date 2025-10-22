@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Material;
 using NextLevel.LogicaNegocio.InterfacesEntidades;
 
 namespace NextLevel.LogicaNegocio.Entidades
@@ -13,14 +15,17 @@ namespace NextLevel.LogicaNegocio.Entidades
         public string Nombre { get; set; }
         public DateTime FechaAgregado {  get; set; }
         public TipoMaterial TipoMaterial { get; set; }
-
+        public IFormFile Archivo {  get; set; }
+        public string Texto { get; set; }
         public Material() { }
 
-        public Material(string nombre, TipoMaterial tipoMaterial)
+        public Material(string nombre, TipoMaterial tipoMaterial, IFormFile archivo, string texto)
         {
             Nombre = nombre;
             FechaAgregado = DateTime.Now;
             TipoMaterial = tipoMaterial;
+            Archivo = archivo;
+            Texto = texto;
         }
 
         #region Validaciones
@@ -31,7 +36,12 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         private void validarNombre()
         {
-            if (string.IsNullOrEmpty(Nombre)) throw new Exception("El nombre del archivo no puede ser vacio");
+            if (string.IsNullOrEmpty(Nombre)) throw new MaterialNombreException("El nombre del archivo no puede ser vacio");
+        }
+
+        private void validarArchivoYTexto()
+        {
+            if (Archivo == null && string.IsNullOrEmpty(Texto)) throw new MaterialArchivoTextoException("Debe subir un archivo o un texto");
         }
         #endregion
     }

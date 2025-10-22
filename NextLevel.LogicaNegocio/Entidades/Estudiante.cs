@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
 using NextLevel.LogicaNegocio.InterfacesEntidades;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -14,7 +15,7 @@ namespace NextLevel.LogicaNegocio.Entidades
         public string Cedula {  get; set; }
         public List<Curso> Cursos {  get; set; }
         [AllowNull]
-        public string CambioRol { get; set; } = null;
+        public CambioRol CambioRol { get; set; } = null;
 
         public Estudiante() { }
         public Estudiante(string email, string password, string nombreCompleto, string telefono, string cedula) : base(email, password, nombreCompleto,telefono)
@@ -32,8 +33,8 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         private void validarCedula()
         {
-            if (string.IsNullOrEmpty(Cedula)) throw new Exception("La cedula no puede ser vacia");
-            if (!validacionDeCedula()) throw new Exception("La cedula no tiene un formato correcto");
+            if (string.IsNullOrEmpty(Cedula)) throw new EstudianteCedulaException("La cedula no puede ser vacia");
+            if (!validacionDeCedula()) throw new EstudianteCedulaException("La cedula no tiene un formato correcto");
         }
 
         public bool validacionDeCedula()

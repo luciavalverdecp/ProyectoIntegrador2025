@@ -58,8 +58,7 @@ namespace NextLevel.LogicaNegocio.Entidades
                 Semanas.Add(new Semana
                 {
                     Numero = numeroNueva,
-                    FechaInicio = fechaInicioNueva,
-                    Curso = this
+                    FechaInicio = fechaInicioNueva
                 });
             }
         }

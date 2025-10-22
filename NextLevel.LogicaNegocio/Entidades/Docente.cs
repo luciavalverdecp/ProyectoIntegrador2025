@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Docente;
 using NextLevel.LogicaNegocio.InterfacesEntidades;
 using NextLevel.LogicaNegocio.ValueObject.Docente;
 
@@ -10,6 +12,7 @@ namespace NextLevel.LogicaNegocio.Entidades
 {
     public class Docente : Usuario, IEntity, IComparable<Docente>
     {
+        [Column("NroDocente_NroDeDocente")]
         public NroDocente NroDocente {  get; set; }
         public List<Curso> Cursos {  get; set; }
 
@@ -28,8 +31,8 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         private void validarNroDocente()
         {
-            if (NroDocente == null) throw new Exception("El numero de docente no puede ser nulo");
-            if (int.IsNegative(NroDocente.NroDeDocente)) throw new Exception("El numero de docente no puede ser negativo");
+            if (NroDocente == null) throw new DocenteNroDocenteException("El numero de docente no puede ser nulo");
+            if (int.IsNegative(NroDocente.NroDeDocente)) throw new DocenteNroDocenteException("El numero de docente no puede ser negativo");
         }
         #endregion
 

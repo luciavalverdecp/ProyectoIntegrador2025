@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 using NextLevel.LogicaNegocio.InterfacesEntidades;
 
 namespace NextLevel.LogicaNegocio.Entidades
@@ -41,26 +42,26 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         private void validarEmail()
         {
-            if (string.IsNullOrEmpty(Email)) throw new Exception("El email no puede ser vacio.");
-            if (!Email.Contains("@") || !Email.Contains(".")) throw new Exception("Email invalido. Este debe contener un @ y un punto.");
+            if (string.IsNullOrEmpty(Email)) throw new UsuarioEmailException("El email no puede ser vacio.");
+            if (!Email.Contains("@") || !Email.Contains(".")) throw new UsuarioEmailException("Email invalido. Este debe contener un @ y un punto.");
         }
 
         private void validarPassword()
         {
-            if (string.IsNullOrEmpty(Password)) throw new Exception("La contraseña no puede ser vacia.");
-            if (!Password.Contains(@"^(?=.[a-z])(?=.[A-Z])(?=.*\d).+$")) throw new Exception("La contraseña debe contener al menos una mayusucla, minuscula y un numero");
-            if (Password.Length < 8) throw new Exception("La contraseña debe tener al menos 8 caracteres.");
+            if (string.IsNullOrEmpty(Password)) throw new UsuarioPasswordException("La contraseña no puede ser vacia.");
+            if (!Password.Contains(@"^(?=.[a-z])(?=.[A-Z])(?=.*\d).+$")) throw new UsuarioPasswordException("La contraseña debe contener al menos una mayusucla, minuscula y un numero");
+            if (Password.Length < 8) throw new UsuarioPasswordException("La contraseña debe tener al menos 8 caracteres.");
         }
 
         private void validarNombreCompleto()
         {
-            if (string.IsNullOrEmpty(NombreCompleto)) throw new Exception("El nombre completo no puede ser vacio.");
-            if (!NombreCompleto.Trim().Contains(" ")) throw new Exception("El nombre debe estar separado con un espacio del apellido.");
+            if (string.IsNullOrEmpty(NombreCompleto)) throw new UsuarioNombreCompletoException("El nombre completo no puede ser vacio.");
+            if (!NombreCompleto.Trim().Contains(" ")) throw new UsuarioNombreCompletoException("El nombre debe estar separado con un espacio del apellido.");
         }
         private void validarTelefono()
         {
-            if (string.IsNullOrEmpty(Telefono)) throw new Exception("El telefono no puede ser vacio.");
-            if (!Telefono.StartsWith("0") || Telefono.Length < 9) throw new Exception("Formato de telefono invalido.");
+            if (string.IsNullOrEmpty(Telefono)) throw new UsuarioTelefonoException("El telefono no puede ser vacio.");
+            if (!Telefono.StartsWith("0") || Telefono.Length < 9) throw new UsuarioTelefonoException("Formato de telefono invalido.");
         }
         #endregion
 
