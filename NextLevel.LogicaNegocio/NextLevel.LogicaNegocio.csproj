@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="ExcepcionesEntidades\" />
     <Folder Include="InterfacesRepositorios\" />
-    <Folder Include="ValueObject\" />
   </ItemGroup>
 
 </Project>

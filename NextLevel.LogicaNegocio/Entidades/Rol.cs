@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace NextLevel.LogicaNegocio.Entidades
 {
-    internal class Rol
+    public enum Rol
     {
+        Administrador = 1,
+        Docente = 2,
+        Estudiante = 3
     }
 }

@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NextLevel.LogicaNegocio.InterfacesEntidades;
 
 namespace NextLevel.LogicaNegocio.Entidades
 {
-    internal class Foro
+    public class Foro 
     {
+        public List<Mensaje> Mensajes { get; set; }
+
+        public Foro() 
+        {
+            Mensajes = new List<Mensaje>();
+        }
+
     }
 }

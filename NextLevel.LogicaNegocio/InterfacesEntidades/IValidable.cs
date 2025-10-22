@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace NextLevel.LogicaNegocio.InterfacesEntidades
 {
-    internal interface IValidable
+    public interface IValidable
     {
+        void Validar();
     }
 }

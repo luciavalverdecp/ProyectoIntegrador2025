@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace NextLevel.LogicaNegocio.Entidades
 {
-    internal class Mensaje
+    public class Mensaje
     {
+        public Usuario Usuario {  get; set; }
+        public string mensaje {  get; set; }
+        public Mensaje() { }
+        public Mensaje(Usuario usuario, string mensaje)
+        {
+            Usuario = usuario;
+            this.mensaje = mensaje;
+        }
     }
 }

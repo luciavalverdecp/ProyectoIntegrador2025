@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace NextLevel.LogicaNegocio.InterfacesEntidades
 {
-    internal interface IEntity
+    public interface IEntity
     {
+        int Id { get; set; }
     }
 }
