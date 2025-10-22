@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NextLevel.LogicaNegocio\NextLevel.LogicaNegocio.csproj" />
+    <Folder Include="ExcepcionesEntidades\" />
+    <Folder Include="InterfacesRepositorios\" />
+    <Folder Include="ValueObject\" />
   </ItemGroup>
 
 </Project>
