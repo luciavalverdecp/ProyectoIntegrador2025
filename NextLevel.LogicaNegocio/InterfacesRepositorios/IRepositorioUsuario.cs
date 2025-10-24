@@ -10,5 +10,6 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
 {
     public interface IRepositorioUsuario : IRepositorio<Usuario>
     {
+        Usuario FindByEmail(string email);
     }
 }

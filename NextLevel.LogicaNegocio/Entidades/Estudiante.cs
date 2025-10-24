@@ -21,6 +21,7 @@ namespace NextLevel.LogicaNegocio.Entidades
         public Estudiante(string email, string password, string nombreCompleto, string telefono, string cedula) : base(email, password, nombreCompleto,telefono)
         {
             Cedula = cedula;
+            Cursos = new List<Curso>();
             this.Validar();
         }
         #region Validaciones

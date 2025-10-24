@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ImplementacionesCU\" />
-    <Folder Include="InterfacesCU\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\NextLevel.AccesoDatos\NextLevel.AccesoDatos.csproj" />
     <ProjectReference Include="..\NextLevel.Compartidos\NextLevel.Compartidos.csproj" />
   </ItemGroup>

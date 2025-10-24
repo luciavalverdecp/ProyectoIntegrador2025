@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NextLevel.LogicaNegocio.Entidades;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
 
 namespace NextLevel.AccesoDatos.EF
@@ -17,7 +18,15 @@ namespace NextLevel.AccesoDatos.EF
         }
         public void Add(Estudiante obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _db.Estudiantes.Add(obj);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new UsuarioException("No se pudo registrar el usuario.");
+            }
         }
 
         public IEnumerable<Estudiante> FindAll()

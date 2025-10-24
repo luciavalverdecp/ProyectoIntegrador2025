@@ -9,6 +9,7 @@ namespace NextLevel.LogicaNegocio.Entidades
 {
     public class Foro 
     {
+        public int Id { get; set; }
         public List<Mensaje> Mensajes { get; set; }
 
         public Foro() 
