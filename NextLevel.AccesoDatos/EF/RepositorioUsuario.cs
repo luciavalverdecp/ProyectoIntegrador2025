@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NextLevel.LogicaNegocio.Entidades;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
 
 namespace NextLevel.AccesoDatos.EF
@@ -38,6 +39,11 @@ namespace NextLevel.AccesoDatos.EF
         public void Update(Usuario obj)
         {
             throw new NotImplementedException();
+        }
+
+        public Usuario FindByEmail(string email)
+        {
+            return _db.Usuarios.Where(u => u.Email == email).FirstOrDefault();
         }
     }
 }

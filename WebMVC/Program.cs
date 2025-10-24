@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NextLevel.AccesoDatos.EF;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Usuarios;
+using NextLevel.LogicaAplicacion.InterfacesCU.Usuarios;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
 
 namespace WebMVC
@@ -39,6 +41,7 @@ namespace WebMVC
 
             //CASOS DE USO
 
+            builder.Services.AddScoped<ILoginUsuario, LoginUsuario>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

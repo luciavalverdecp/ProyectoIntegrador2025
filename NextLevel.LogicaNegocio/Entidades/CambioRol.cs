@@ -2,6 +2,7 @@
 using NextLevel.LogicaNegocio.InterfacesEntidades;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +11,13 @@ namespace NextLevel.LogicaNegocio.Entidades
 {
     public class CambioRol : IValidable
     {
+        public int Id { get; set; }
+        public int EstudianteId { get; set; }
         public Estudiante Estudiante {  get; set; }
-        public List<IFormFile> Archivos { get; set; }//???
+        [NotMapped]
+        public List<IFormFile> Archivos { get; set; }
+        public List<string> NombresArchivos { get; set; } = new List<string>();
+
         public CambioRol() { }
         public CambioRol(Estudiante estudiante, List<IFormFile> archivos)
         {
