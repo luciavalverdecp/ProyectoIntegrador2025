@@ -30,6 +30,8 @@ namespace NextLevel.LogicaNegocio.Entidades
             Telefono = telefono;
             Rol = Rol.Estudiante;
             Telefono = telefono;
+            TokenVencimiento = DateTime.UtcNow.AddHours(24);
+            EstaVerificado = false;
         }
 
         #region Validaciones
@@ -43,14 +45,20 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         private void validarEmail()
         {
-            if (string.IsNullOrEmpty(Email)) throw new UsuarioEmailException("El email no puede ser vacio.");
-            if (!Email.Contains("@") || !Email.Contains(".")) throw new UsuarioEmailException("Email invalido. Este debe contener un @ y un punto.");
+            if (string.IsNullOrWhiteSpace(Email))
+                throw new UsuarioEmailException("El email no puede estar vacío.");
+
+            var patronEmail = @"^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$";
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(Email, patronEmail))
+                throw new UsuarioEmailException("El email ingresado no es válido.");
         }
+
 
         private void validarPassword()
         {
             if (string.IsNullOrEmpty(Password)) throw new UsuarioPasswordException("La contraseña no puede ser vacia.");
-            if (!Password.Contains(@"^(?=.[a-z])(?=.[A-Z])(?=.*\d).+$")) throw new UsuarioPasswordException("La contraseña debe contener al menos una mayusucla, minuscula y un numero");
+            if (!System.Text.RegularExpressions.Regex.IsMatch(Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$")) throw new UsuarioPasswordException("La contraseña debe tener al menos una minúscula, una mayúscula y un número.");
             if (Password.Length < 8) throw new UsuarioPasswordException("La contraseña debe tener al menos 8 caracteres.");
         }
 
@@ -62,7 +70,7 @@ namespace NextLevel.LogicaNegocio.Entidades
         private void validarTelefono()
         {
             if (string.IsNullOrEmpty(Telefono)) throw new UsuarioTelefonoException("El telefono no puede ser vacio.");
-            if (!Telefono.StartsWith("0") || Telefono.Length < 9) throw new UsuarioTelefonoException("Formato de telefono invalido.");
+            if (!Telefono.StartsWith("09") || Telefono.Length != 9) throw new UsuarioTelefonoException("Formato de telefono invalido.");
         }
         #endregion
 

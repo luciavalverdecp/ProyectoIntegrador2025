@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NextLevel.AccesoDatos.EF;
 
@@ -11,9 +12,11 @@ using NextLevel.AccesoDatos.EF;
 namespace NextLevel.AccesoDatos.Migrations
 {
     [DbContext(typeof(NextLevelContext))]
-    partial class NextLevelContextModelSnapshot : ModelSnapshot
+    [Migration("20251027185446_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

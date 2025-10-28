@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using NextLevel.AccesoDatos.EF;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Usuarios;
 using NextLevel.LogicaAplicacion.InterfacesCU.Usuarios;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes;
+using NextLevel.LogicaAplicacion.InterfacesCU.Estudiante;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
 
 namespace WebMVC
@@ -24,7 +26,7 @@ namespace WebMVC
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<NextLevelContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("ConexionNextLevel"))); builder.Services.AddControllersWithViews();
+            options.UseSqlServer(builder.Configuration.GetConnectionString("ConexionNextLevel")));
 
             //REPOSITORIOS
             builder.Services.AddScoped<IRepositorioAdministrador, RepositorioAdministrador>();
@@ -40,6 +42,7 @@ namespace WebMVC
             builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
 
             //CASOS DE USO
+            builder.Services.AddScoped<IRegistroEstudiante, RegistroEstudiante>();
 
             builder.Services.AddScoped<ILoginUsuario, LoginUsuario>();
             var app = builder.Build();

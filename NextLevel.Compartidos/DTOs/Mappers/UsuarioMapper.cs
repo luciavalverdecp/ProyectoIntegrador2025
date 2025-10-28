@@ -1,4 +1,7 @@
 ﻿using System;
+﻿using NextLevel.Compartidos.DTOs.Usuarios;
+using NextLevel.LogicaNegocio.Entidades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
