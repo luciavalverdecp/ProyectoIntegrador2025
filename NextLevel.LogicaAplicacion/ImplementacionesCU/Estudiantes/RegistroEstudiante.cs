@@ -52,7 +52,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
             {
                 _repositorioUsuario.UpdateUserAuthentication(usuExistente);
             }
-            else if(usuExistente.TokenVencimiento < DateTime.UtcNow)
+            else if(usuExistente != null && usuExistente.TokenVencimiento < DateTime.UtcNow)
             {
                 throw new UsuarioTokenVencimientoException("El enlace de verificación ya caducó.");
             }

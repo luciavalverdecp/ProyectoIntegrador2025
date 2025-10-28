@@ -78,21 +78,18 @@ namespace WebMVC.Controllers
             try
             {
                 _registroEstudiante.VerificarEmail(token);
-                ViewBag.ErrorVerificarEmailBool = false;
-                ViewBag.MensajeVerificarEmail = "Usuario verificado exitosamente.";
+                ViewBag.ErrorVerificarEmailMensaje = "Usuario verificado exitosamente.";
                 return View();
             }
             catch (UsuarioTokenVencimientoException ex)
             {
-                ViewBag.ErrorVerificarEmailBool = true;
-                ViewBag.MensajeVerificarEmail = ex.Message;
+                ViewBag.ErrorVerificarEmailMensaje = ex.Message;
                 ViewBag.EmailDestino = emailDestino;
                 return View("VerificarEmail");
             }
             catch (UsuarioException ex)
             {
-                ViewBag.ErrorVerificarEmailBool = true;
-                ViewBag.MensajeVerificarEmail = ex.Message;
+                ViewBag.ErrorVerificarEmailMensaje = ex.Message;
                 return View();
             }
         }
@@ -102,14 +99,12 @@ namespace WebMVC.Controllers
             try
             {
                 _registroEstudiante.CancelarVerificacion(token); 
-                ViewBag.Error = false;
-                ViewBag.Mensaje = "Usuario cancelado exitosamente.";
+                ViewBag.ErrorCancelarVerificacionMensaje = "Usuario cancelado exitosamente.";
                 return View("VerificarEmail");
             }
             catch (UsuarioException ex)
             {
-                ViewBag.Error = true;
-                ViewBag.Mensaje = ex.Message;
+                ViewBag.ErrorCancelarVerificacionMensaje = ex.Message;
                 return View("VerificarEmail");
             }
         }
