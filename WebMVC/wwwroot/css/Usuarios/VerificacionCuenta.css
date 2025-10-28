@@ -1,0 +1,97 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #ffefe5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.verification-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 2rem;
+}
+
+.box {
+    background-color: #fff;
+    border-radius: 2rem;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    padding: 3rem;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.inner-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-wrapper h2 {
+    color: #1e293b;
+    font-weight: 600;
+    margin: 1rem 0;
+}
+
+.content-wrapper p {
+    color: #555;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.btn-verificacion {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    border-radius: 1.5rem;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    background-color: #1E3A8A;
+    transition: all 0.3s ease;
+}
+
+    .btn-verificacion:hover {
+        background-color: #60A5FA;
+        transform: scale(1.05);
+    }
+
+    .btn-verificacion.amarillo {
+        background-color: #FFD27F;
+        color: #333;
+    }
+
+    .btn-verificacion.rosa {
+        background-color: #F5A8C5;
+    }
+
+.verification.success h2 {
+    color: #16a34a;
+}
+
+.verification.warning h2 {
+    color: #eab308;
+}
+
+.verification.error h2 {
+    color: #dc2626;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

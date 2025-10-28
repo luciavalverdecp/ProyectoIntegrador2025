@@ -12,6 +12,7 @@ namespace NextLevel.LogicaNegocio.Entidades
     {
         public int Id {  get; set; }
         public string Nombre { get; set; }
+        public int DocenteId { get; set; }
         public Docente Docente {  get; set; }
         public List<Estudiante> Estudiantes { get; set; }
         public List<Semana> Semanas { get; set; }

@@ -8,6 +8,7 @@ namespace NextLevel.LogicaNegocio.Entidades
 {
     public class Mensaje
     {
+        public int Id { get; set; }
         public Usuario Usuario {  get; set; }
         public string mensaje {  get; set; }
         public Mensaje() { }

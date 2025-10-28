@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Verificación de Cuenta";
+}
+
+<div class="box">
+    <div class="inner-box">
+        <div class="content-wrapper">
+            @if (ViewBag.Mensaje == "Usuario verificado exitosamente.")
+            {
+                <div class="verification success">
+                    
+                    <h2>¡Tu cuenta fue verificada exitosamente! 🎉</h2>
+                    <p>
+                        Ahora podés iniciar sesión y comenzar a disfrutar de todas las funcionalidades que <strong>NextLevel</strong> tiene para vos.
+                    </p>
+                    <a href="@Url.Action("Login","Usuarios")" class="btn-verificacion">Iniciar sesión</a>
+                </div>
+            }
+            else if (ViewBag.Mensaje == "El enlace de verificación ya caducó.")
+            {
+                <div class="verification warning">
+                    
+                    <h2>El enlace de verificación caducó ⏰</h2>
+                    <p>
+                        Parece que el enlace que utilizaste ya expiró.
+                        No te preocupes, podés solicitar un nuevo correo de verificación.
+                    </p>
+                    <a href="@Url.Action("ReenviarVerificacion","Usuarios", new {emailDestino = ViewBag.EmailDestino})" class="btn-verificacion amarillo">Reenviar verificación</a>
+                </div>
+            }
+            else if (ViewBag.Mensaje == "Error al verificar el email.")
+            {
+                <div class="verification error">
+                    
+                    <h2>Hubo un error al verificar tu correo ❌</h2>
+                    <p>
+                        Es posible que tu cuenta ya esté verificada o que el enlace haya sido invalidado.
+                        Si el problema persiste, contactá al soporte de <strong>NextLevel</strong>.
+                    </p>
+                    <a href="@Url.Action("Login","Usuarios")" class="btn-verificacion rosa">Volver al inicio</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Usuarios/VerificacionCuenta.css" />
+}
