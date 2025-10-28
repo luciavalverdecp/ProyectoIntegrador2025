@@ -24,14 +24,14 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
             _repositorioUsuario = repositorioUsuario;
         }
 
-        public void Ejecutar(EstudianteRegistroDTO estudianteDTO, string Token)
+        public void Ejecutar(EstudianteRegistroDTO estudianteDTO, string token)
         {
             Usuario usuExistente = _repositorioUsuario.FindByEmail(estudianteDTO.Email);
             if (usuExistente == null && estudianteDTO.Password.Length >= 8)
             {
                 Estudiante estudiante = EstudianteMapper.FromEstudianteRegistroDTO(estudianteDTO);
                 VerificacionEmail enviarmail =  new VerificacionEmail();
-                estudiante.TokenVerificacion = Token;
+                estudiante.TokenVerificacion = token;
                 enviarmail.EnviarCorreoVerificacion(estudiante.Email, estudiante.TokenVerificacion);
                 _repositorioEstudiante.Add(estudiante);
             }
@@ -54,7 +54,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
             }
             else if(usuExistente.TokenVencimiento < DateTime.UtcNow)
             {
-                throw new UsuarioException("El enlace de verificación ya caducó.");
+                throw new UsuarioTokenVencimientoException("El enlace de verificación ya caducó.");
             }
             else
             {
@@ -68,6 +68,23 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
             if (usuExistente != null)
             {
                 _repositorioUsuario.Remove(usuExistente.Id);
+            }
+            else
+            {
+                throw new UsuarioException("El correo ya se encuentra verificado");
+            }
+        }
+
+        public void ActualizarVerificacion(string emailDestino, string token)
+        {
+            Usuario usuExistente = _repositorioUsuario.FindByEmail(emailDestino);
+            if (usuExistente != null && !usuExistente.EstaVerificado)
+            {
+                VerificacionEmail enviarmail = new VerificacionEmail();
+                usuExistente.TokenVerificacion = token;
+                usuExistente.TokenVencimiento = DateTime.UtcNow.AddHours(24);
+                enviarmail.EnviarCorreoVerificacion(usuExistente.Email, usuExistente.TokenVerificacion);
+                _repositorioUsuario.Update(usuExistente);
             }
             else
             {

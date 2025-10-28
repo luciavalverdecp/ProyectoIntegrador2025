@@ -73,19 +73,26 @@ namespace WebMVC.Controllers
                 return View();
             }
         }
-        public ActionResult VerificarEmail(string token)
+        public ActionResult VerificarEmail(string token, string emailDestino)
         {
             try
             {
                 _registroEstudiante.VerificarEmail(token);
-                ViewBag.Error = false;
-                ViewBag.Mensaje = "Usuario verificado exitosamente.";
+                ViewBag.ErrorVerificarEmailBool = false;
+                ViewBag.MensajeVerificarEmail = "Usuario verificado exitosamente.";
                 return View();
+            }
+            catch (UsuarioTokenVencimientoException ex)
+            {
+                ViewBag.ErrorVerificarEmailBool = true;
+                ViewBag.MensajeVerificarEmail = ex.Message;
+                ViewBag.EmailDestino = emailDestino;
+                return View("VerificarEmail");
             }
             catch (UsuarioException ex)
             {
-                ViewBag.Error = true;
-                ViewBag.Mensaje = ex.Message;
+                ViewBag.ErrorVerificarEmailBool = true;
+                ViewBag.MensajeVerificarEmail = ex.Message;
                 return View();
             }
         }
@@ -94,8 +101,26 @@ namespace WebMVC.Controllers
         {
             try
             {
-                _registroEstudiante.CancelarVerificacion(token); ViewBag.Error = false;
+                _registroEstudiante.CancelarVerificacion(token); 
+                ViewBag.Error = false;
                 ViewBag.Mensaje = "Usuario cancelado exitosamente.";
+                return View("VerificarEmail");
+            }
+            catch (UsuarioException ex)
+            {
+                ViewBag.Error = true;
+                ViewBag.Mensaje = ex.Message;
+                return View("VerificarEmail");
+            }
+        }
+
+        public ActionResult ReenviarVerificacion(string emailDestino)
+        {
+            try
+            {
+                _registroEstudiante.ActualizarVerificacion(emailDestino, Token.GenerarToken(emailDestino));
+                ViewBag.Error = false;
+                ViewBag.Mensaje = "Se ha reenviado un nuevo enlace de verificacion.";
                 return View("VerificarEmail");
             }
             catch (UsuarioException ex)

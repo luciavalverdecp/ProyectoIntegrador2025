@@ -12,5 +12,6 @@ namespace NextLevel.LogicaAplicacion.InterfacesCU.Estudiante
         void Ejecutar(EstudianteRegistroDTO estudianteDTO, string token);
         void VerificarEmail(string token);
         void CancelarVerificacion(string token);
+        void ActualizarVerificacion(string emailDestino, string token);
     }
 }

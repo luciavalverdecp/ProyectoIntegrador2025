@@ -21,7 +21,7 @@ namespace NextLevel.LogicaNegocio.SistemaAutenticacion
         public void EnviarCorreoVerificacion(string emailDestino, string token)
         {
             string subject = "Verificá tu cuenta";
-            string verificationLink = $"https://localhost:7127/Usuarios/VerificarEmail?token={token}";
+            string verificationLink = $"https://localhost:7127/Usuarios/VerificarEmail?token={token}&email={Uri.EscapeDataString(emailDestino)}";
             string cancelVerification = $"https://localhost:7127/Usuarios/CancelarVerificacion?token={token}";
             string gifPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "NeoSaludando.gif");
 
