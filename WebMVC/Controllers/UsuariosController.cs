@@ -26,51 +26,83 @@ namespace WebMVC.Controllers
         {
             try
             {
-                _registroEstudiante.Ejecutar(estudianteRegistroDTO);
-                ViewBag.Error = false;
+                _registroEstudiante.Ejecutar(estudianteRegistroDTO, Token.GenerarToken(estudianteRegistroDTO.Email));
+                ViewBag.ErrorRegistroBool = false;
                 return View();
             }
             catch (UsuarioEmailException ex)
             {
-                ViewBag.Error = true;
-                ViewBag.RegistroError = ex.Message;
+                ViewBag.ErrorRegistroBool = true;
+                ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View();
             }
             catch (UsuarioPasswordException ex)
             {
-                ViewBag.Error = true;
-                ViewBag.RegistroError = ex.Message;
+                ViewBag.ErrorRegistroBool = true;
+                ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View();
             }
             catch (UsuarioNombreCompletoException ex)
             {
-                ViewBag.Error = true;
-                ViewBag.RegistroError = ex.Message;
+                ViewBag.ErrorRegistroBool = true;
+                ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View();
             }
             catch (UsuarioTelefonoException ex)
             {
-                ViewBag.Error = true;
-                ViewBag.RegistroError = ex.Message;
+                ViewBag.ErrorRegistroBool = true;
+                ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View();
             }
             catch (EstudianteCedulaException ex)
             {
-                ViewBag.Error = true;
-                ViewBag.RegistroError = ex.Message;
+                ViewBag.ErrorRegistroBool = true;
+                ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View();
             }
             catch (EstudianteException ex)
             {
-                ViewBag.Error = true;
-                ViewBag.RegistroError = ex.Message;
+                ViewBag.ErrorRegistroBool = true;
+                ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View();
             }
             catch (Exception ex)
             {
-                ViewBag.Error = true;
-                ViewBag.RegistroError = ex.Message;
+                ViewBag.ErrorRegistroBool = true;
+                ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View();
+            }
+        }
+        public ActionResult VerificarEmail(string token)
+        {
+            try
+            {
+                _registroEstudiante.VerificarEmail(token);
+                ViewBag.Error = false;
+                ViewBag.Mensaje = "Usuario verificado exitosamente.";
+                return View();
+            }
+            catch (UsuarioException ex)
+            {
+                ViewBag.Error = true;
+                ViewBag.Mensaje = ex.Message;
+                return View();
+            }
+        }
+
+        public ActionResult CancelarVerificacion(string token)
+        {
+            try
+            {
+                _registroEstudiante.CancelarVerificacion(token); ViewBag.Error = false;
+                ViewBag.Mensaje = "Usuario cancelado exitosamente.";
+                return View("VerificarEmail");
+            }
+            catch (UsuarioException ex)
+            {
+                ViewBag.Error = true;
+                ViewBag.Mensaje = ex.Message;
+                return View("VerificarEmail");
             }
         }
     }

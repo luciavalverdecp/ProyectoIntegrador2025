@@ -9,6 +9,8 @@ namespace NextLevel.LogicaAplicacion.InterfacesCU.Estudiante
 {
     public interface IRegistroEstudiante
     {
-        void Ejecutar(EstudianteRegistroDTO estudianteDTO);
+        void Ejecutar(EstudianteRegistroDTO estudianteDTO, string token);
+        void VerificarEmail(string token);
+        void CancelarVerificacion(string token);
     }
 }

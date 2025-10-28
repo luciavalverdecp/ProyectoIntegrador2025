@@ -21,14 +21,11 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         }
         public static Estudiante FromEstudianteRegistroDTO(EstudianteRegistroDTO estudianteRegistroDTO)
         {
-            return new Estudiante()
-            {
-                Email = estudianteRegistroDTO.Email,
-                Password = estudianteRegistroDTO.Password,
-                NombreCompleto = estudianteRegistroDTO.NombreCompleto,
-                Telefono = estudianteRegistroDTO.Telefono,
-                Cedula = estudianteRegistroDTO.Cedula
-            };
+            return new Estudiante(estudianteRegistroDTO.Email, 
+                estudianteRegistroDTO.Password, 
+                estudianteRegistroDTO.NombreCompleto, 
+                estudianteRegistroDTO.Telefono,
+                estudianteRegistroDTO.Cedula);
         }
     }
 }

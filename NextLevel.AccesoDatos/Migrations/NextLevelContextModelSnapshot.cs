@@ -238,6 +238,9 @@ namespace NextLevel.AccesoDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("EstaVerificado")
+                        .HasColumnType("bit");
+
                     b.Property<string>("NombreCompleto")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -250,6 +253,13 @@ namespace NextLevel.AccesoDatos.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TokenVencimiento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TokenVerificacion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -41,7 +41,16 @@ namespace NextLevel.AccesoDatos.EF
 
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            var estudiante = _db.Estudiantes.Find(id);
+            try
+            {
+                _db.Estudiantes.Remove(estudiante);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public void Update(Estudiante obj)

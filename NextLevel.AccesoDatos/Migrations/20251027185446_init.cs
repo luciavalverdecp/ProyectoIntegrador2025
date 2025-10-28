@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NextLevel.AccesoDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,6 +34,9 @@ namespace NextLevel.AccesoDatos.Migrations
                     NombreCompleto = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rol = table.Column<int>(type: "int", nullable: false),
+                    EstaVerificado = table.Column<bool>(type: "bit", nullable: false),
+                    TokenVerificacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TokenVencimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     NroDocente_NroDeDocente = table.Column<int>(type: "int", nullable: true),
                     Cedula = table.Column<string>(type: "nvarchar(max)", nullable: true)

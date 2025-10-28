@@ -6,16 +6,16 @@
 
 <h1>Registro</h1>
 
-@if (ViewBag.Error != null && !(bool)ViewBag.Error)
+@if (ViewBag.ErrorRegistroBool != null && !(bool)ViewBag.ErrorRegistroBool)
 {
     <div class="alert alert-success text-center mb-2 mt-3" role="alert">
         Usuario dado de alta correctamente
     </div>
 }
-@if (ViewBag.Error != null && (bool)ViewBag.Error)
+@if (ViewBag.ErrorRegistroBool != null && (bool)ViewBag.ErrorRegistroBool)
 {
     <div class="alert alert-danger text-center mb-2 mt-3" role="alert">
-        @ViewBag.RegistroError
+        @ViewBag.ErrorRegistroMensaje
     </div>
 }
 

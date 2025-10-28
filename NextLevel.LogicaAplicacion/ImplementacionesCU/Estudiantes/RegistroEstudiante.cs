@@ -5,6 +5,7 @@ using NextLevel.LogicaAplicacion.InterfacesCU.Estudiante;
 using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
+using NextLevel.LogicaNegocio.SistemaAutenticacion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,16 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
             _repositorioEstudiante = repositorioEstudiante;
             _repositorioUsuario = repositorioUsuario;
         }
-        public void Ejecutar(EstudianteRegistroDTO estudianteDTO)
+
+        public void Ejecutar(EstudianteRegistroDTO estudianteDTO, string Token)
         {
             Usuario usuExistente = _repositorioUsuario.FindByEmail(estudianteDTO.Email);
             if (usuExistente == null && estudianteDTO.Password.Length >= 8)
             {
                 Estudiante estudiante = EstudianteMapper.FromEstudianteRegistroDTO(estudianteDTO);
+                VerificacionEmail enviarmail =  new VerificacionEmail();
+                estudiante.TokenVerificacion = Token;
+                enviarmail.EnviarCorreoVerificacion(estudiante.Email, estudiante.TokenVerificacion);
                 _repositorioEstudiante.Add(estudiante);
             }
             else if (estudianteDTO.Password.Length < 8)
@@ -37,6 +42,36 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
             else
             {
                 throw new UsuarioEmailException("El usuario ya existe.");
+            }
+        }
+
+        public void VerificarEmail(string token)
+        {
+            Usuario usuExistente = _repositorioUsuario.FindByToken(token);
+            if (usuExistente != null && usuExistente.TokenVencimiento > DateTime.UtcNow)
+            {
+                _repositorioUsuario.UpdateUserAuthentication(usuExistente);
+            }
+            else if(usuExistente.TokenVencimiento < DateTime.UtcNow)
+            {
+                throw new UsuarioException("El enlace de verificación ya caducó.");
+            }
+            else
+            {
+                throw new UsuarioException("Error al verificar el email.");//TODO Crear excepcion por token
+            }
+        }
+
+        public void CancelarVerificacion(string token)
+        {
+            Usuario usuExistente = _repositorioUsuario.FindByToken(token);
+            if (usuExistente != null)
+            {
+                _repositorioUsuario.Remove(usuExistente.Id);
+            }
+            else
+            {
+                throw new UsuarioException("El correo ya se encuentra verificado");
             }
         }
     }
