@@ -48,7 +48,7 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Property<int>("EstudianteId")
                         .HasColumnType("int");
 
-                    b.Property<string>("NombreArchivos")
+                    b.Property<string>("NombresArchivos")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -5,7 +5,7 @@
 <div class="box">
     <div class="inner-box">
         <div class="content-wrapper">
-            @if (ViewBag.Mensaje == "Usuario verificado exitosamente.")
+            @if (ViewBag.ErrorVerificarEmailMensaje == "Usuario verificado exitosamente.")
             {
                 <div class="verification success">
                     
@@ -16,7 +16,7 @@
                     <a href="@Url.Action("Login","Usuarios")" class="btn-verificacion">Iniciar sesión</a>
                 </div>
             }
-            else if (ViewBag.Mensaje == "El enlace de verificación ya caducó.")
+            else if (ViewBag.ErrorVerificarEmailMensaje == "El enlace de verificación ya caducó.")
             {
                 <div class="verification warning">
                     
@@ -28,7 +28,7 @@
                     <a href="@Url.Action("ReenviarVerificacion","Usuarios", new {emailDestino = ViewBag.EmailDestino})" class="btn-verificacion amarillo">Reenviar verificación</a>
                 </div>
             }
-            else if (ViewBag.Mensaje == "Error al verificar el email.")
+            else if (ViewBag.ErrorVerificarEmailMensaje == "Error al verificar el email.")
             {
                 <div class="verification error">
                     
@@ -38,6 +38,39 @@
                         Si el problema persiste, contactá al soporte de <strong>NextLevel</strong>.
                     </p>
                     <a href="@Url.Action("Login","Usuarios")" class="btn-verificacion rosa">Volver al inicio</a>
+                </div>
+            }
+            else if (ViewBag.ErrorVerificarEmailMensaje == "Error al verificar el email.")
+            {
+                <div class="verification error">
+
+                    <h2>Hubo un error al verificar tu correo ❌</h2>
+                    <p>
+                        Es posible que tu cuenta ya esté verificada o que el enlace haya sido invalidado.
+                        Si el problema persiste, contactá al soporte de <strong>NextLevel</strong>.
+                    </p>
+                    <a href="@Url.Action("Login","Usuarios")" class="btn-verificacion rosa">Volver al inicio</a>
+                </div>
+            }
+            else if (ViewBag.ErrorCancelarVerificacionMensaje == "Usuario cancelado exitosamente.")
+            {
+                <div class="verification success pastel-cancel">
+                    <h2>Tu solicitud fue cancelada con éxito 💫</h2>
+                    <p>
+                        La verificación fue detenida correctamente.
+                        Si querés volver a intentarlo más adelante, siempre podés hacerlo desde tu correo.
+                    </p>
+                </div>
+            }
+            else if (ViewBag.ErrorCancelarVerificacionMensaje == "El correo ya se encuentra verificado")
+            {
+                <div class="verification success pastel-verified">
+                    <h2>Tu correo ya está verificado 🌈</h2>
+                    <p>
+                        ¡Todo está en orden! Tu cuenta ya fue confirmada anteriormente.
+                        Podés iniciar sesión sin problema en <strong>NextLevel</strong>.
+                    </p>
+                    <a href="@Url.Action("Login","Usuarios")" class="btn-verificacion verde">Ir al inicio</a>
                 </div>
             }
         </div>

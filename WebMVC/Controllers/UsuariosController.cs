@@ -55,10 +55,6 @@ namespace WebMVC.Controllers
             }
         }
         
-        public ActionResult Create()
-        {
-            return View();
-        }
         
         [HttpPost]
         public ActionResult Create(EstudianteRegistroDTO estudianteRegistroDTO)
@@ -67,49 +63,49 @@ namespace WebMVC.Controllers
             {
                 _registroEstudiante.Ejecutar(estudianteRegistroDTO, Token.GenerarToken(estudianteRegistroDTO.Email));
                 ViewBag.ErrorRegistroBool = false;
-                return View();
+                return View("Login-Registro");
             }
             catch (UsuarioEmailException ex)
             {
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View();
+                return View("Login-Registro");
             }
             catch (UsuarioPasswordException ex)
             {
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View();
+                return View("Login-Registro");
             }
             catch (UsuarioNombreCompletoException ex)
             {
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View();
+                return View("Login-Registro");
             }
             catch (UsuarioTelefonoException ex)
             {
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View();
+                return View("Login-Registro");
             }
             catch (EstudianteCedulaException ex)
             {
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View();
+                return View("Login-Registro");
             }
             catch (EstudianteException ex)
             {
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View();
+                return View("Login-Registro");
             }
             catch (Exception ex)
             {
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View();
+                return View("Login-Registro");
             }
         }
         

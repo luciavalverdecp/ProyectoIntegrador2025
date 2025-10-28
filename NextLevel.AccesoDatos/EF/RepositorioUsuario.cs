@@ -103,9 +103,5 @@ namespace NextLevel.AccesoDatos.EF
             }
         }
 
-        public Usuario FindByEmail(string email)
-        {
-            return _db.Usuarios.Where(u => u.Email == email).FirstOrDefault();
-        }
     }
 }
