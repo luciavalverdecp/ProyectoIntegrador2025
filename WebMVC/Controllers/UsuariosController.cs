@@ -1,4 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using NextLevel.Compartidos.DTOs.Usuarios;
+using NextLevel.LogicaAplicacion.InterfacesCU.Usuarios;
+using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.Compartidos.DTOs.Estudiantes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiante;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
@@ -8,19 +12,54 @@ namespace WebMVC.Controllers
 {
     public class UsuariosController : Controller
     {
+        private readonly ILoginUsuario _loginUsuario;
         private readonly IRegistroEstudiante _registroEstudiante;
-        public UsuariosController(IRegistroEstudiante registroEstudiante)
+
+        public UsuariosController(ILoginUsuario loginUsuario, IRegistroEstudiante registroEstudiante)
         {
+            _loginUsuario = loginUsuario;
             _registroEstudiante = registroEstudiante;
         }
-        public IActionResult Index()
+        
+        public IActionResult Login()
         {
-            return View();
+            return View("Login-Registro");
         }
+
+        [HttpPost]
+        public IActionResult Login(UsuarioLoginDTO dto)
+        {
+            try
+            {
+                ViewBag.ErrorLoginBool = false;
+                var usuario = _loginUsuario.Ejecutar(dto.Email, dto.Password);
+                HttpContext.Session.SetString("rolLogueado", usuario.Rol.ToString());
+                HttpContext.Session.SetString("emailLogueado", usuario.Email); //TODO hace falta
+                if (usuario.Rol.ToString() == "Estudiante")
+                {
+                    return RedirectToAction("Index", "Home"); //TODO redireccionar a cursos estudiantes
+                }else if(usuario.Rol == Rol.Docente)
+                {
+                    return RedirectToAction("Privacy", "Home");//TODO redireccionar a mis cursos del docente
+                }
+                else
+                {
+                    return RedirectToAction("Privacy", "Home");//TODO redireccionar a la pagina principal de administradores
+                }
+            }
+            catch (UsuarioException ex)
+            {
+                ViewBag.ErrorLoginBool = true;
+                ViewBag.ErrorLogin = ex.Message;
+                return View("Login-Registro");
+            }
+        }
+        
         public ActionResult Create()
         {
             return View();
         }
+        
         [HttpPost]
         public ActionResult Create(EstudianteRegistroDTO estudianteRegistroDTO)
         {
@@ -73,6 +112,7 @@ namespace WebMVC.Controllers
                 return View();
             }
         }
+        
         public ActionResult VerificarEmail(string token, string emailDestino)
         {
             try

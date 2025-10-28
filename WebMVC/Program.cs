@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NextLevel.AccesoDatos.EF;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Usuarios;
+using NextLevel.LogicaAplicacion.InterfacesCU.Usuarios;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiante;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
@@ -42,6 +44,7 @@ namespace WebMVC
             //CASOS DE USO
             builder.Services.AddScoped<IRegistroEstudiante, RegistroEstudiante>();
 
+            builder.Services.AddScoped<ILoginUsuario, LoginUsuario>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

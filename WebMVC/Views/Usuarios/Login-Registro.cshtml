@@ -1,0 +1,187 @@
+﻿@model NextLevel.Compartidos.DTOs.Usuarios.UsuarioLoginDTO
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/usuarios/Login-Registro.css?v=2" />
+
+}
+
+@section ScriptsJs{
+    <script src="~/js/Usuarios/Login-Registro.js"></script>
+}
+
+
+<div class="box">
+    <button class="btn-volver" onclick="window.location.href='@Url.Action("Index","Home")'">⟵ Volver</button>
+    <div class="inner-box">
+        <div class="forms-wrap">
+            <form action="Login" autocomplete="off" class="sign-in-form" method="post">
+                <div class="logo">
+                    <img src="~/img/logo.jpg" alt="NextLevelLogo" />
+                    <h4 class="mt-2">NextLevel</h4>
+                </div>
+
+                <div class="heading">
+                    <h2>Bienvenido</h2>
+                    <h6>No estás registrado?</h6>
+                    <a href="#" class="toggle">Registrarse</a>
+                </div>
+
+                <div class="actual-form">
+                    <div class="input-wrap">
+                        <input type="text"
+                        minlength="4"
+                        class="input-field"
+                        autocomplete="off"
+                        name="Email"
+                        id="Email"
+                        required />
+                        <label>Nombre</label>
+                    </div>
+
+                    <div class="input-wrap">
+                        <input type="password"
+                        minlength="4"
+                        class="input-field"
+                        autocomplete="off"
+                        name="Password"
+                        id="Password"
+                        required />
+                        <label>Contraseña</label>
+                    </div>
+
+                    <input type="submit" value="Ingresar" class="sign-btn" />
+
+                    @if (ViewBag.ErrorLogin != null && (bool)ViewBag.ErrorLoginBool)
+                    {
+                        <div>
+                            <div class="alert alert-danger">@ViewBag.ErrorLogin</div>
+                        </div>
+                    }
+
+                    <p class="text">
+                        Olvidaste tu contraseña?
+                        <a href="#">Ingresa aqui</a>
+                    </p>
+                </div>
+            </form>
+
+            <form action="Create" method="post" autocomplete="off" class="sign-up-form">
+                <div class="logo">
+                    <img src="~/img/logo.jpg" alt="NextLevelLogo" />
+                    <h4 class="mt-2">NextLevel</h4>
+                </div>
+
+                <div class="heading mb-2">
+                    <h2>Registrate!</h2>
+                    <h6>Ya tienes una cuenta?</h6>
+                    <a href="#" class="toggle">Inicia Sesión</a>
+                </div>
+
+                <div class="actual-form">
+                    <div class="input-wrap">
+                        <input type="text"
+                               minlength="4"
+                               class="input-field"
+                               autocomplete="off"
+                               name="NombreCompleto"
+                               id="NombreCompleto"
+                               required />
+                        <label>Nombre Completo</label>
+                    </div>
+
+                    <div class="input-wrap">
+                        <input type="email"
+                               class="input-field"
+                               autocomplete="off"
+                               name="Email"
+                               id="Email"
+                               required />
+                        <label>Email</label>
+                    </div>
+
+                    <div class="input-wrap">
+                        <input type="password"
+                               minlength="4"
+                               class="input-field"
+                               autocomplete="off"
+                               name="Password"
+                               id="Password"
+                               required />
+                        <label>Contraseña</label>
+                    </div>
+
+                    <div class="input-wrap">
+                        <input type="text"
+                               minlength="4"
+                               class="input-field"
+                               autocomplete="off"
+                               name="Cedula"
+                               id="Cedula"
+                               required />
+                        <label>Cédula</label>
+                    </div>
+
+                    <div class="input-wrap">
+                        <input type="text"
+                               minlength="4"
+                               class="input-field"
+                               autocomplete="off"
+                               name="Telefono"
+                               id="Telefono"
+                               required />
+                        <label>Teléfono</label>
+                    </div>
+
+                    <input type="submit" value="Sign Up" class="sign-btn" />
+
+                    @if (ViewBag.ErrorRegistro != null && (bool)ViewBag.ErrorRegistroBool)
+                    {
+                        <div>
+                            <div class="alert alert-danger">@ViewBag.ErrorRegistro</div>
+                        </div>
+                    }
+                    <p class="text">
+                        By signing up, I agree to the
+                        <a href="#">Terms of Services</a> and
+                        <a href="#">Privacy Policy</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+
+        <div class="carousel">
+            <div class="images-wrapper">
+                <img src="~/img/NeoEstudiandoPNG.png" class="image img-1 show" alt="" />
+                <img src="~/img/NeoMeditandoPNG.png" class="image img-2" alt="" />
+                <img src="~/img/NeoTiernoPNG.png" class="image img-3" alt="" />
+            </div>
+
+            <div class="text-slider">
+                <div class="text-wrap">
+                    <div class="text-group">
+                        <h2>Aprende a tu ritmo</h2>
+                        <h2>Crea tus rutinas</h2>
+                        <h2>Construye tu futuro</h2>
+                    </div>
+                </div>
+
+                <div class="bullets">
+                    <span class="active" data-value="1"></span>
+                    <span data-value="2"></span>
+                    <span data-value="3"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

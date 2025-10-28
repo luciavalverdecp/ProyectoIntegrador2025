@@ -15,8 +15,9 @@ namespace NextLevel.LogicaNegocio.Entidades
         public int EstudianteId { get; set; }
         public Estudiante Estudiante {  get; set; }
         [NotMapped]
-        public List<IFormFile> Archivos { get; set; }//???
-        public List<string> NombreArchivos { get; set; }
+        public List<IFormFile> Archivos { get; set; }
+        public List<string> NombresArchivos { get; set; } = new List<string>();
+
         public CambioRol() { }
         public CambioRol(Estudiante estudiante, List<IFormFile> archivos)
         {

@@ -20,7 +20,6 @@ namespace NextLevel.LogicaNegocio.Entidades
         public bool EstaVerificado { get; set; }
         public string TokenVerificacion { get; set; }
         public DateTime TokenVencimiento { get; set; }
-
         public Usuario() { }
 
         public Usuario (string email, string password, string nombreCompleto, string telefono)
