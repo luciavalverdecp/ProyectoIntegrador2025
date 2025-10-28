@@ -17,7 +17,7 @@ namespace WebMVC.Controllers
         }
         public IActionResult Login()
         {
-            return View();
+            return View("Login-Registro");
         }
 
         [HttpPost]
@@ -26,22 +26,26 @@ namespace WebMVC.Controllers
             try
             {
                 ViewBag.ErrorLoginBool = false;
-                var usuario = _loginUsuario.Ejecutar(dto.email, dto.password);
+                var usuario = _loginUsuario.Ejecutar(dto.Email, dto.Password);
                 HttpContext.Session.SetString("rolLogueado", usuario.Rol.ToString());
-                HttpContext.Session.SetString("emailLogueado", usuario.Email);
-                if (usuario is Estudiante)
+                HttpContext.Session.SetString("emailLogueado", usuario.Email); //TODO hace falta
+                if (usuario.Rol.ToString() == "Estudiante")
                 {
-                    return RedirectToAction("Index", "Home"); //TODO
-                }else
+                    return RedirectToAction("Index", "Home"); //TODO redireccionar a cursos estudiantes
+                }else if(usuario.Rol == Rol.Docente)
                 {
-                    return RedirectToAction("Privacy", "Home");//TODO
+                    return RedirectToAction("Privacy", "Home");//TODO redireccionar a mis cursos del docente
+                }
+                else
+                {
+                    return RedirectToAction("Privacy", "Home");//TODO redireccionar a la pagina principal de administradores
                 }
             }
             catch (UsuarioException ex)
             {
                 ViewBag.ErrorLoginBool = true;
                 ViewBag.ErrorLogin = ex.Message;
-                return View();
+                return View("Login-Registro");
             }
         }
     }

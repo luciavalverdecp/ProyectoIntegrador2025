@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NextLevel.Compartidos.DTOs.Mappers;
+using NextLevel.Compartidos.DTOs.Usuarios;
 using NextLevel.LogicaAplicacion.InterfacesCU.Usuarios;
 using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
@@ -19,12 +21,13 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Usuarios
             _repositorioUsuario = repositorioUsuario;
         }
 
-        public Usuario Ejecutar(string email, string pwd)
+        public UsuarioLoginVerificacionDTO Ejecutar(string email, string pwd)
         {
             Usuario usu = _repositorioUsuario.FindByEmail(email);
             if (usu != null && usu.Password == pwd)
             {
-                return usu;
+                var usuarioDto = UsuarioMapper.ToUsuarioLoginVerificacion(usu);
+                return usuarioDto;
             }
             else
             {

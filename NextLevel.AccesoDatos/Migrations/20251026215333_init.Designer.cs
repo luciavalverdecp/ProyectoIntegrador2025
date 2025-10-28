@@ -12,8 +12,8 @@ using NextLevel.AccesoDatos.EF;
 namespace NextLevel.AccesoDatos.Migrations
 {
     [DbContext(typeof(NextLevelContext))]
-    [Migration("20251024222431_Inicial")]
-    partial class Inicial
+    [Migration("20251026215333_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

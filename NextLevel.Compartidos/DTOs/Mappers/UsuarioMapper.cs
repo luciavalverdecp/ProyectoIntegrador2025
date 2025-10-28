@@ -10,6 +10,9 @@ namespace NextLevel.Compartidos.DTOs.Mappers
 {
     public class UsuarioMapper
     {
-        
+        public static UsuarioLoginVerificacionDTO ToUsuarioLoginVerificacion(Usuario u)
+        {
+            return new UsuarioLoginVerificacionDTO(u.Email, u.Password, u.EstaVerificado, u.Rol);
+        }
     }
 }

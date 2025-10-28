@@ -17,7 +17,9 @@ namespace NextLevel.LogicaNegocio.Entidades
         public string NombreCompleto { get; set; }
         public string Telefono {  get; set; }
         public Rol Rol {  get; set; }
-
+        public bool EstaVerificado { get; set; }
+        public string TokenVerificacion { get; set; }
+        public DateTime TokenVencimiento { get; set; }
         public Usuario() { }
 
         public Usuario (string email, string password, string nombreCompleto, string telefono)
@@ -27,7 +29,6 @@ namespace NextLevel.LogicaNegocio.Entidades
             NombreCompleto = nombreCompleto;
             Telefono = telefono;
             Rol = Rol.Estudiante;
-            Validar();
             Telefono = telefono;
         }
 
