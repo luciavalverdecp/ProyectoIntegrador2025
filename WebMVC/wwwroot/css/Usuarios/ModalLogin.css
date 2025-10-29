@@ -1,0 +1,98 @@
+﻿.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    padding: 30px 25px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease-in-out;
+    position: relative;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+    .close:hover {
+        color: #ff4d4d;
+    }
+
+.modal-content p {
+    margin: 15px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+#resendBtn, #resendBtnRegistro {
+    background-color: #ff7f7f;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    margin-top: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+    #resendBtn:hover:not(:disabled), #resendBtnRegistro:hover:not(:disabled) {
+        background-color: #ff4d4d;
+        transform: scale(1.05);
+    }
+
+    #resendBtn:disabled, #resendBtnRegistro:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+#cooldownText, #cooldownTextRegistro {
+    margin-top: 10px;
+    color: #555;
+    font-size: 14px;
+}
+
+@media (max-width: 500px) {
+    .modal-content {
+        padding: 20px 15px;
+        border-radius: 15px;
+    }
+
+    #resendBtn, #resendBtnRegistro {
+        width: 100%;
+    }
+}

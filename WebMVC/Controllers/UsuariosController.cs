@@ -7,6 +7,7 @@ using NextLevel.Compartidos.DTOs.Estudiantes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiante;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
+using Humanizer;
 
 namespace WebMVC.Controllers
 {
@@ -35,6 +36,7 @@ namespace WebMVC.Controllers
         {
             try
             {
+                TempData["Modal"] = false;
                 ViewBag.ErrorLoginBool = false;
                 var usuario = _loginUsuario.Ejecutar(dto.Email, dto.Password);
                 HttpContext.Session.SetString("rolLogueado", usuario.Rol.ToString());
@@ -51,8 +53,15 @@ namespace WebMVC.Controllers
                     return RedirectToAction("Privacy", "Home");//TODO redireccionar a la pagina principal de administradores
                 }
             }
+            catch (UsuarioEstaVerificadoException ex)
+            {
+                TempData["Modal"] = true;
+                ViewBag.EmailPendiente = dto.Email; 
+                return View("Login-Registro");
+            }
             catch (UsuarioException ex)
             {
+                TempData["Modal"] = false;
                 ViewBag.ErrorLoginBool = true;
                 ViewBag.ErrorLogin = ex.Message;
                 return View("Login-Registro");
@@ -68,48 +77,57 @@ namespace WebMVC.Controllers
                 _registroEstudiante.Ejecutar(estudianteRegistroDTO, Token.GenerarToken(estudianteRegistroDTO.Email));
                 TempData["MensajeRegistro"] = "Usuario creado exitosamente";
                 TempData["ErrorRegistro"] = false;
+                ViewBag.EmailPendiente = estudianteRegistroDTO.Email;
+                TempData["ModalRegistro"] = true;
                 return RedirectToAction("Login");
             }
             catch (UsuarioEmailException ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
+                TempData["ModalRegistro"] = false;
                 return RedirectToAction("Login");
             }
             catch (UsuarioPasswordException ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
+                TempData["ModalRegistro"] = false;
                 return RedirectToAction("Login");
             }
             catch (UsuarioNombreCompletoException ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
+                TempData["ModalRegistro"] = false;
                 return RedirectToAction("Login");
             }
             catch (UsuarioTelefonoException ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
+                TempData["ModalRegistro"] = false;
                 return RedirectToAction("Login");
             }
             catch (EstudianteCedulaException ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
+                TempData["ModalRegistro"] = false;
                 return RedirectToAction("Login");
             }
             catch (EstudianteException ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
+                TempData["ModalRegistro"] = false;
                 return RedirectToAction("Login");
             }
             catch (Exception ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
+                TempData["ModalRegistro"] = false;
                 return RedirectToAction("Login");
             }
         }

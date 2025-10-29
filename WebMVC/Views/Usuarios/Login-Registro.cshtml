@@ -6,12 +6,13 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/usuarios/Login-Registro.css?v=2" />
+    <link rel="stylesheet" href="~/css/usuarios/ModalLogin.css" />
 }
 
-@section ScriptsJs{
+@section ScriptsJs {
     <script src="~/js/Usuarios/Login-Registro.js"></script>
     @if (TempData["MensajeRegistro"] != null)
-        {
+    {
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 document.querySelector("main").classList.add("sign-up-mode");
@@ -21,11 +22,44 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 document.querySelector("main").classList.add("sign-in-mode");
+        </script>
+    }
+    <script src="~/js/Usuarios/ModalLogin.js"></script>
+
+    @if (TempData["Modal"] != null && (bool)TempData["Modal"])
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                openModal();
+            });
+        </script>
+    }
+    else
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                closeModal();
+            });
+        </script>
+    }
+
+    @if (TempData["ModalRegistro"] != null && (bool)TempData["ModalRegistro"])
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                openModalRegistro();
+            });
+        </script>
+    }
+    else
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                closeModalRegistro();
             });
         </script>
     }
 }
-
 
 <div class="box">
     <button class="btn-volver" onclick="window.location.href='@Url.Action("Index","Home")'">⟵ Volver</button>
@@ -182,9 +216,30 @@
     </div>
 </div>
 
+<div id="verificationModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <p>Tu usuario aún no está verificado.</p>
+        <p>¿Querés que te enviemos nuevamente el correo de verificación?</p>
+        <button data-url="@Url.Action("ReenviarVerificacion", "Usuarios", new { emailDestino = ViewBag.EmailPendiente })" id="resendBtn">Reenviar correo</button>
+        <p id="cooldownText" style="display:none;">Podés volver a enviar en <span id="seconds">60</span>s</p>
+    </div>
+</div>
+
+<div id="verificationModalRegistro" class="modal">
+    <div class="modal-content">
+        <span id="closeModalRegistro" class="close">&times;</span>
+        <p>Se acaba de enviar un enlace de verificación a tu correo electrónico.</p>
+        <p>¿Querés que te enviemos nuevamente el correo de verificación?</p>
+        <button data-url="@Url.Action("ReenviarVerificacion", "Usuarios", new { emailDestino = ViewBag.EmailPendiente })" id="resendBtnRegistro">Reenviar correo</button>
+        <p id="cooldownTextRegistro" style="display:none;">Podés volver a enviar en <span id="secondsRegistro">60</span>s</p>
+    </div>
+</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
 
 
