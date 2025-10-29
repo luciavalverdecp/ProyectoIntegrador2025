@@ -20,6 +20,7 @@ namespace NextLevel.LogicaNegocio.Entidades
         public bool EstaVerificado { get; set; }
         public string TokenVerificacion { get; set; }
         public DateTime TokenVencimiento { get; set; }
+        public DateTime RecuperarCuentaVencimiento { get; set; }
         public Usuario() { }
 
         public Usuario (string email, string password, string nombreCompleto, string telefono)
@@ -32,6 +33,7 @@ namespace NextLevel.LogicaNegocio.Entidades
             Telefono = telefono;
             TokenVencimiento = DateTime.UtcNow.AddHours(24);
             EstaVerificado = false;
+            RecuperarCuentaVencimiento = new DateTime();
         }
 
         #region Validaciones

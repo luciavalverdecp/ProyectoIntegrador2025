@@ -26,6 +26,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Usuarios
             Usuario usu = _repositorioUsuario.FindByEmail(email);
             if (usu != null && usu.Password == pwd)
             {
+                if (!usu.EstaVerificado) throw new UsuarioEstaVerificadoException("El usuario no se encuentra verificado.");
                 var usuarioDto = UsuarioMapper.ToUsuarioLoginVerificacion(usu);
                 return usuarioDto;
             }
