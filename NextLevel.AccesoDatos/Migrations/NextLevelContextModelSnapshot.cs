@@ -249,6 +249,9 @@ namespace NextLevel.AccesoDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("RecuperarCuentaVencimiento")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Rol")
                         .HasColumnType("int");
 

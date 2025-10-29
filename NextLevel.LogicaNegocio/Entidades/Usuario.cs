@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,11 +16,13 @@ namespace NextLevel.LogicaNegocio.Entidades
         public string Email { get; set; }
         public string Password { get; set; }
         public string NombreCompleto { get; set; }
+        [AllowNull]
         public string Telefono {  get; set; }
         public Rol Rol {  get; set; }
         public bool EstaVerificado { get; set; }
         public string TokenVerificacion { get; set; }
         public DateTime TokenVencimiento { get; set; }
+        public DateTime RecuperarCuentaVencimiento { get; set; }
         public Usuario() { }
 
         public Usuario (string email, string password, string nombreCompleto, string telefono)
@@ -29,9 +32,20 @@ namespace NextLevel.LogicaNegocio.Entidades
             NombreCompleto = nombreCompleto;
             Telefono = telefono;
             Rol = Rol.Estudiante;
-            Telefono = telefono;
             TokenVencimiento = DateTime.UtcNow.AddHours(24);
             EstaVerificado = false;
+            RecuperarCuentaVencimiento = new DateTime();
+        }
+
+        public Usuario(string email, string password, string nombreCompleto)
+        {
+            Email = email;
+            Password = password;
+            NombreCompleto = nombreCompleto;
+            Rol = Rol.Estudiante;
+            TokenVencimiento = DateTime.UtcNow.AddHours(24);
+            EstaVerificado = false;
+            Telefono = "";
         }
 
         #region Validaciones
@@ -40,7 +54,7 @@ namespace NextLevel.LogicaNegocio.Entidades
             validarEmail();
             validarPassword();
             validarNombreCompleto();
-            validarTelefono();
+            //validarTelefono(); TODO agregar uno qeu valide el telefono
         }
 
         private void validarEmail()

@@ -14,11 +14,15 @@ namespace WebMVC.Controllers
     {
         private readonly ILoginUsuario _loginUsuario;
         private readonly IRegistroEstudiante _registroEstudiante;
+        private readonly IRecuperarCuenta _recuperarCuenta;
 
-        public UsuariosController(ILoginUsuario loginUsuario, IRegistroEstudiante registroEstudiante)
+        public UsuariosController(ILoginUsuario loginUsuario, 
+            IRegistroEstudiante registroEstudiante,
+            IRecuperarCuenta recuperarCuenta)
         {
             _loginUsuario = loginUsuario;
             _registroEstudiante = registroEstudiante;
+            _recuperarCuenta = recuperarCuenta;
         }
         
         public IActionResult Login()
@@ -57,59 +61,60 @@ namespace WebMVC.Controllers
         
         
         [HttpPost]
-        public ActionResult Create(EstudianteRegistroDTO estudianteRegistroDTO)
+        public IActionResult Create(EstudianteRegistroDTO estudianteRegistroDTO)
         {
             try
             {
                 _registroEstudiante.Ejecutar(estudianteRegistroDTO, Token.GenerarToken(estudianteRegistroDTO.Email));
-                ViewBag.ErrorRegistroBool = false;
-                return View("Login-Registro");
+                TempData["MensajeRegistro"] = "Usuario creado exitosamente";
+                TempData["ErrorRegistro"] = false;
+                return RedirectToAction("Login");
             }
             catch (UsuarioEmailException ex)
             {
-                ViewBag.ErrorRegistroBool = true;
-                ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View("Login-Registro");
+                TempData["MensajeRegistro"] = ex.Message;
+                TempData["ErrorRegistro"] = true;
+                return RedirectToAction("Login");
             }
             catch (UsuarioPasswordException ex)
             {
-                ViewBag.ErrorRegistroBool = true;
-                ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View("Login-Registro");
+                TempData["MensajeRegistro"] = ex.Message;
+                TempData["ErrorRegistro"] = true;
+                return RedirectToAction("Login");
             }
             catch (UsuarioNombreCompletoException ex)
             {
-                ViewBag.ErrorRegistroBool = true;
-                ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View("Login-Registro");
+                TempData["MensajeRegistro"] = ex.Message;
+                TempData["ErrorRegistro"] = true;
+                return RedirectToAction("Login");
             }
             catch (UsuarioTelefonoException ex)
             {
-                ViewBag.ErrorRegistroBool = true;
-                ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View("Login-Registro");
+                TempData["MensajeRegistro"] = ex.Message;
+                TempData["ErrorRegistro"] = true;
+                return RedirectToAction("Login");
             }
             catch (EstudianteCedulaException ex)
             {
-                ViewBag.ErrorRegistroBool = true;
-                ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View("Login-Registro");
+                TempData["MensajeRegistro"] = ex.Message;
+                TempData["ErrorRegistro"] = true;
+                return RedirectToAction("Login");
             }
             catch (EstudianteException ex)
             {
-                ViewBag.ErrorRegistroBool = true;
-                ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View("Login-Registro");
+                TempData["MensajeRegistro"] = ex.Message;
+                TempData["ErrorRegistro"] = true;
+                return RedirectToAction("Login");
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorRegistroBool = true;
-                ViewBag.ErrorRegistroMensaje = ex.Message;
-                return View("Login-Registro");
+                TempData["MensajeRegistro"] = ex.Message;
+                TempData["ErrorRegistro"] = true;
+                return RedirectToAction("Login");
             }
         }
         
-        public ActionResult VerificarEmail(string token, string emailDestino)
+        public IActionResult VerificarEmail(string token, string emailDestino)
         {
             try
             {
@@ -130,7 +135,7 @@ namespace WebMVC.Controllers
             }
         }
 
-        public ActionResult CancelarVerificacion(string token)
+        public IActionResult CancelarVerificacion(string token)
         {
             try
             {
@@ -145,21 +150,79 @@ namespace WebMVC.Controllers
             }
         }
 
-        public ActionResult ReenviarVerificacion(string emailDestino)
+        public IActionResult ReenviarVerificacion(string emailDestino)
         {
             try
             {
                 _registroEstudiante.ActualizarVerificacion(emailDestino, Token.GenerarToken(emailDestino));
                 ViewBag.Error = false;
                 ViewBag.Mensaje = "Se ha reenviado un nuevo enlace de verificacion.";
-                return View("VerificarEmail");
+                return View("Login-Registro");
             }
             catch (UsuarioException ex)
             {
                 ViewBag.Error = true;
                 ViewBag.Mensaje = ex.Message;
-                return View("VerificarEmail");
+                return View("Login-Registro");
             }
+        }
+
+        public IActionResult RecuperarCuenta()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult RecuperarCuenta(string email)
+        {
+            try
+            {
+                _recuperarCuenta.Ejecutar(email);
+                ViewBag.MensajeExito = "Se le ha enviado un correo para continuar con la recuperación.";
+            }
+            catch (UsuarioException ex)
+            {
+                ViewBag.MensajeError = ex.Message;
+            }
+            return View();
+        }
+
+        public IActionResult ReiniciarContrasena(string email)
+        {
+            try
+            {
+                _recuperarCuenta.ValidarVencimientoLink(email);
+
+                if (TempData["MensajeCambio"] != null)
+                {
+                    ViewBag.MensajeCambio = TempData["MensajeCambio"];
+                    ViewBag.ErrorReset = TempData["ErrorReset"];
+                }
+
+                return View(model: email);
+            }
+            catch (UsuarioException)
+            {
+                return View("EnlaceExpirado");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ReiniciarContrasena(string email, string Password, string ConfirmarPassword)
+        {
+            try
+            {
+                if (Password != ConfirmarPassword) throw new UsuarioException("Las contraseñas no coinciden, intente nuevamente");
+                _recuperarCuenta.CambiarContrasena(email, Password);
+                TempData["MensajeCambio"] = "Se realizo el cambio de contraseña exitosamente";
+                TempData["ErrorReset"] = false;
+            }
+            catch (UsuarioException ex)
+            {
+                TempData["MensajeCambio"] = ex.Message;
+                TempData["ErrorReset"] = true;
+            }
+            return RedirectToAction("ReiniciarContrasena", new { email = email });
         }
     }
 }
