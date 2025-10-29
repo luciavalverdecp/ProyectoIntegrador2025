@@ -209,8 +209,8 @@ namespace WebMVC.Controllers
         {
             try
             {
-                if (TempData["ErrorReset"] == null || !(bool)TempData["ErrorReset"]) TempData["ErrorReset"] = false;
-                if(!(bool)TempData["ErrorReset"]) _recuperarCuenta.ValidarVencimientoLink(email);
+                if (TempData["ErrorReset"] == null || (bool)TempData["ErrorReset"]) TempData["ErrorReset"] = true;
+                if((bool)TempData["ErrorReset"]) _recuperarCuenta.ValidarVencimientoLink(email);
 
                 if (TempData["MensajeCambio"] != null)
                 {

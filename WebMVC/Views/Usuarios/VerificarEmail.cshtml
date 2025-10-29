@@ -31,18 +31,6 @@
             else if (ViewBag.ErrorVerificarEmailMensaje == "Error al verificar el email.")
             {
                 <div class="verification error">
-                    
-                    <h2>Hubo un error al verificar tu correo ❌</h2>
-                    <p>
-                        Es posible que tu cuenta ya esté verificada o que el enlace haya sido invalidado.
-                        Si el problema persiste, contactá al soporte de <strong>NextLevel</strong>.
-                    </p>
-                    <a href="@Url.Action("Login","Usuarios")" class="btn-verificacion rosa">Volver al inicio</a>
-                </div>
-            }
-            else if (ViewBag.ErrorVerificarEmailMensaje == "Error al verificar el email.")
-            {
-                <div class="verification error">
 
                     <h2>Hubo un error al verificar tu correo ❌</h2>
                     <p>
@@ -65,10 +53,10 @@
             else if (ViewBag.ErrorCancelarVerificacionMensaje == "El correo ya se encuentra verificado")
             {
                 <div class="verification success pastel-verified">
-                    <h2>Tu correo ya está verificado 🌈</h2>
+                    <h2>Solicitud no necesaria 🌈</h2>
                     <p>
-                        ¡Todo está en orden! Tu cuenta ya fue confirmada anteriormente.
-                        Podés iniciar sesión sin problema en <strong>NextLevel</strong>.
+                        La verificación de correo no es requerida en este momento.
+                        Es posible que tu cuenta ya esté confirmada o que el enlace haya sido utilizado anteriormente.
                     </p>
                     <a href="@Url.Action("Login","Usuarios")" class="btn-verificacion verde">Ir al inicio</a>
                 </div>
