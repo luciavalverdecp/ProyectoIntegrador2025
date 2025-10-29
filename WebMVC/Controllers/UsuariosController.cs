@@ -7,6 +7,7 @@ using NextLevel.Compartidos.DTOs.Estudiantes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiante;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
+using Humanizer;
 
 namespace WebMVC.Controllers
 {
@@ -31,6 +32,7 @@ namespace WebMVC.Controllers
         {
             try
             {
+                TempData["Modal"] = false;
                 ViewBag.ErrorLoginBool = false;
                 var usuario = _loginUsuario.Ejecutar(dto.Email, dto.Password);
                 HttpContext.Session.SetString("rolLogueado", usuario.Rol.ToString());
@@ -47,8 +49,15 @@ namespace WebMVC.Controllers
                     return RedirectToAction("Privacy", "Home");//TODO redireccionar a la pagina principal de administradores
                 }
             }
+            catch (UsuarioEstaVerificadoException ex)
+            {
+                TempData["Modal"] = true;
+                ViewBag.EmailPendiente = dto.Email; 
+                return View("Login-Registro");
+            }
             catch (UsuarioException ex)
             {
+                TempData["Modal"] = false;
                 ViewBag.ErrorLoginBool = true;
                 ViewBag.ErrorLogin = ex.Message;
                 return View("Login-Registro");
@@ -62,47 +71,56 @@ namespace WebMVC.Controllers
             try
             {
                 _registroEstudiante.Ejecutar(estudianteRegistroDTO, Token.GenerarToken(estudianteRegistroDTO.Email));
+                TempData["ModalRegistro"] = true;
+                ViewBag.EmailPendiente = estudianteRegistroDTO.Email;
                 ViewBag.ErrorRegistroBool = false;
                 return View("Login-Registro");
             }
             catch (UsuarioEmailException ex)
             {
+                TempData["ModalRegistro"] = false;
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View("Login-Registro");
             }
             catch (UsuarioPasswordException ex)
             {
+                TempData["ModalRegistro"] = false;
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View("Login-Registro");
             }
             catch (UsuarioNombreCompletoException ex)
             {
+                TempData["ModalRegistro"] = false;
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View("Login-Registro");
             }
             catch (UsuarioTelefonoException ex)
             {
+                TempData["ModalRegistro"] = false;
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View("Login-Registro");
             }
             catch (EstudianteCedulaException ex)
             {
+                TempData["ModalRegistro"] = false;
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View("Login-Registro");
             }
             catch (EstudianteException ex)
             {
+                TempData["ModalRegistro"] = false;
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View("Login-Registro");
             }
             catch (Exception ex)
             {
+                TempData["ModalRegistro"] = false;
                 ViewBag.ErrorRegistroBool = true;
                 ViewBag.ErrorRegistroMensaje = ex.Message;
                 return View("Login-Registro");
@@ -152,13 +170,13 @@ namespace WebMVC.Controllers
                 _registroEstudiante.ActualizarVerificacion(emailDestino, Token.GenerarToken(emailDestino));
                 ViewBag.Error = false;
                 ViewBag.Mensaje = "Se ha reenviado un nuevo enlace de verificacion.";
-                return View("VerificarEmail");
+                return View("Login-Registro");
             }
             catch (UsuarioException ex)
             {
                 ViewBag.Error = true;
                 ViewBag.Mensaje = ex.Message;
-                return View("VerificarEmail");
+                return View("Login-Registro");
             }
         }
     }
