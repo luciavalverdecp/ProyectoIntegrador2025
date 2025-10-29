@@ -76,59 +76,59 @@ namespace WebMVC.Controllers
             {
                 _registroEstudiante.Ejecutar(estudianteRegistroDTO, Token.GenerarToken(estudianteRegistroDTO.Email));
                 TempData["MensajeRegistro"] = "Usuario creado exitosamente";
-                TempData["ErrorRegistro"] = false;
                 ViewBag.EmailPendiente = estudianteRegistroDTO.Email;
                 TempData["ModalRegistro"] = true;
-                return RedirectToAction("Login");
+                TempData["ErrorRegistro"] = false;
+                return View("Login-Registro");
             }
             catch (UsuarioEmailException ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
                 TempData["ModalRegistro"] = false;
-                return RedirectToAction("Login");
+                return View("Login-Registro");
             }
             catch (UsuarioPasswordException ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
                 TempData["ModalRegistro"] = false;
-                return RedirectToAction("Login");
+                return View("Login-Registro");
             }
             catch (UsuarioNombreCompletoException ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
                 TempData["ModalRegistro"] = false;
-                return RedirectToAction("Login");
+                return View("Login-Registro");
             }
             catch (UsuarioTelefonoException ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
                 TempData["ModalRegistro"] = false;
-                return RedirectToAction("Login");
+                return View("Login-Registro");
             }
             catch (EstudianteCedulaException ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
                 TempData["ModalRegistro"] = false;
-                return RedirectToAction("Login");
+                return View("Login-Registro");
             }
             catch (EstudianteException ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
                 TempData["ModalRegistro"] = false;
-                return RedirectToAction("Login");
+                return View("Login-Registro");
             }
             catch (Exception ex)
             {
                 TempData["MensajeRegistro"] = ex.Message;
                 TempData["ErrorRegistro"] = true;
                 TempData["ModalRegistro"] = false;
-                return RedirectToAction("Login");
+                return View("Login-Registro");
             }
         }
         
@@ -209,7 +209,8 @@ namespace WebMVC.Controllers
         {
             try
             {
-                _recuperarCuenta.ValidarVencimientoLink(email);
+                if (TempData["ErrorReset"] == null || !(bool)TempData["ErrorReset"]) TempData["ErrorReset"] = false;
+                if(!(bool)TempData["ErrorReset"]) _recuperarCuenta.ValidarVencimientoLink(email);
 
                 if (TempData["MensajeCambio"] != null)
                 {
@@ -240,7 +241,7 @@ namespace WebMVC.Controllers
                 TempData["MensajeCambio"] = ex.Message;
                 TempData["ErrorReset"] = true;
             }
-            return RedirectToAction("ReiniciarContrasena", new { email = email });
+            return ReiniciarContrasena(email);
         }
     }
 }

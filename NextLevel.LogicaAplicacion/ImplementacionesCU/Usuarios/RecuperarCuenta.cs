@@ -40,8 +40,8 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Usuarios
         {
             var usuario = _repositorioUsuario.FindByEmail(email);
             if (usuario != null && 
-                usuario.RecuperarCuentaVencimiento == new DateTime() && 
-                usuario.RecuperarCuentaVencimiento < DateTime.UtcNow)
+                (usuario.RecuperarCuentaVencimiento == new DateTime() || 
+                usuario.RecuperarCuentaVencimiento < DateTime.UtcNow))
                 throw new UsuarioException("Link expirado");
         }
 
