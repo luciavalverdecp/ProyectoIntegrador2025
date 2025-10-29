@@ -12,6 +12,7 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
     {
         Usuario FindByEmail(string email);
         Usuario FindByToken(string token);
+        void UpdateContrasena(Usuario usuario);
         void UpdateUserAuthentication(Usuario usuario);
     }
 }

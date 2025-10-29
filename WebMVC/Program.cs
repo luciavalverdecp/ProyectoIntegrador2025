@@ -43,8 +43,9 @@ namespace WebMVC
 
             //CASOS DE USO
             builder.Services.AddScoped<IRegistroEstudiante, RegistroEstudiante>();
-
             builder.Services.AddScoped<ILoginUsuario, LoginUsuario>();
+            builder.Services.AddScoped<IRecuperarCuenta, RecuperarCuenta>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

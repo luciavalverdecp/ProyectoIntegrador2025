@@ -65,12 +65,12 @@ namespace NextLevel.AccesoDatos.EF
                 usuarioOriginal.NombreCompleto = obj.NombreCompleto;
                 usuarioOriginal.Password = obj.Password;
                 usuarioOriginal.Telefono = obj.Telefono;
+                usuarioOriginal.RecuperarCuentaVencimiento = obj.RecuperarCuentaVencimiento;
                 _db.Usuarios.Update(usuarioOriginal);
                 _db.SaveChanges();
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
@@ -98,10 +98,23 @@ namespace NextLevel.AccesoDatos.EF
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
 
+        public void UpdateContrasena(Usuario usuario)
+        {
+            var usuarioOriginal = _db.Usuarios.Find(usuario.Id);
+            try
+            {
+                usuarioOriginal.Password = usuario.Password;
+                _db.Usuarios.Update(usuarioOriginal);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

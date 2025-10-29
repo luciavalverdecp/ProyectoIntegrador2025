@@ -11,6 +11,19 @@
 
 @section ScriptsJs {
     <script src="~/js/Usuarios/Login-Registro.js"></script>
+    @if (TempData["MensajeRegistro"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                document.querySelector("main").classList.add("sign-up-mode");
+            });
+        </script>
+    }else{
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                document.querySelector("main").classList.add("sign-in-mode");
+        </script>
+    }
     <script src="~/js/Usuarios/ModalLogin.js"></script>
 
     @if (TempData["Modal"] != null && (bool)TempData["Modal"])
@@ -67,23 +80,21 @@
                 <div class="actual-form">
                     <div class="input-wrap">
                         <input type="text"
-                               minlength="4"
-                               class="input-field"
-                               autocomplete="off"
-                               name="Email"
-                               id="Email"
-                               required />
-                        <label>Nombre</label>
+                        class="input-field"
+                        autocomplete="off"
+                        name="Email"
+                        id="Email"
+                        required />
+                        <label>Email</label>
                     </div>
 
                     <div class="input-wrap">
                         <input type="password"
-                               minlength="4"
-                               class="input-field"
-                               autocomplete="off"
-                               name="Password"
-                               id="Password"
-                               required />
+                        class="input-field"
+                        autocomplete="off"
+                        name="Password"
+                        id="Password"
+                        required />
                         <label>Contraseña</label>
                     </div>
 
@@ -98,7 +109,7 @@
 
                     <p class="text">
                         Olvidaste tu contraseña?
-                        <a href="#">Ingresa aqui</a>
+                        <a href="@Url.Action("RecuperarCuenta","Usuarios")" class="btn-verificacion">Clickea aqui</a>
                     </p>
                 </div>
             </form>
@@ -109,7 +120,7 @@
                     <h4 class="mt-2">NextLevel</h4>
                 </div>
 
-                <div class="heading mb-2">
+                <div class="heading mb-1">
                     <h2>Registrate!</h2>
                     <h6>Ya tienes una cuenta?</h6>
                     <a href="#" class="toggle">Inicia Sesión</a>
@@ -118,7 +129,6 @@
                 <div class="actual-form">
                     <div class="input-wrap">
                         <input type="text"
-                               minlength="4"
                                class="input-field"
                                autocomplete="off"
                                name="NombreCompleto"
@@ -128,7 +138,7 @@
                     </div>
 
                     <div class="input-wrap">
-                        <input type="email"
+                        <input type="text"
                                class="input-field"
                                autocomplete="off"
                                name="Email"
@@ -139,7 +149,6 @@
 
                     <div class="input-wrap">
                         <input type="password"
-                               minlength="4"
                                class="input-field"
                                autocomplete="off"
                                name="Password"
@@ -150,7 +159,6 @@
 
                     <div class="input-wrap">
                         <input type="text"
-                               minlength="4"
                                class="input-field"
                                autocomplete="off"
                                name="Cedula"
@@ -159,24 +167,19 @@
                         <label>Cédula</label>
                     </div>
 
-                    <div class="input-wrap">
-                        <input type="text"
-                               minlength="4"
-                               class="input-field"
-                               autocomplete="off"
-                               name="Telefono"
-                               id="Telefono"
-                               required />
-                        <label>Teléfono</label>
-                    </div>
+                    <input type="submit" value="Sign Up" class="sign-btn"/>
 
-                    <input type="submit" value="Sign Up" class="sign-btn" />
-
-                    @if (ViewBag.ErrorRegistro != null && (bool)ViewBag.ErrorRegistroBool)
+                    @if (TempData["MensajeRegistro"] != null)
                     {
-                        <div>
-                            <div class="alert alert-danger">@ViewBag.ErrorRegistro</div>
-                        </div>
+                        bool error = TempData["ErrorRegistro"] != null && (bool)TempData["ErrorRegistro"];
+                        if (error)
+                        {
+                            <div class="alert alert-danger">@TempData["MensajeRegistro"]</div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-success">@TempData["MensajeRegistro"]</div>
+                        }
                     }
                     <p class="text">
                         By signing up, I agree to the

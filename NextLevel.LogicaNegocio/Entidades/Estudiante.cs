@@ -18,7 +18,7 @@ namespace NextLevel.LogicaNegocio.Entidades
         public CambioRol CambioRol { get; set; } = null;
 
         public Estudiante() { }
-        public Estudiante(string email, string password, string nombreCompleto, string telefono, string cedula) : base(email, password, nombreCompleto,telefono)
+        public Estudiante(string email, string password, string nombreCompleto, string cedula) : base(email, password, nombreCompleto)
         {
             Cedula = cedula;
             Cursos = new List<Curso>();

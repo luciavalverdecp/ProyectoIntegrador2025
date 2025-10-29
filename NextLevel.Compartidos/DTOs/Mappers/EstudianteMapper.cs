@@ -16,7 +16,6 @@ namespace NextLevel.Compartidos.DTOs.Mappers
                 estudiante.Email, 
                 estudiante.Password, 
                 estudiante.NombreCompleto, 
-                estudiante.Telefono, 
                 estudiante.Cedula);
         }
         public static Estudiante FromEstudianteRegistroDTO(EstudianteRegistroDTO estudianteRegistroDTO)
@@ -24,7 +23,6 @@ namespace NextLevel.Compartidos.DTOs.Mappers
             return new Estudiante(estudianteRegistroDTO.Email, 
                 estudianteRegistroDTO.Password, 
                 estudianteRegistroDTO.NombreCompleto, 
-                estudianteRegistroDTO.Telefono,
                 estudianteRegistroDTO.Cedula);
         }
     }

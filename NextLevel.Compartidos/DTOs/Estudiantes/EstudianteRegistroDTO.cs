@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace NextLevel.Compartidos.DTOs.Estudiantes
 {
-    public record EstudianteRegistroDTO(string Email, string Password, string NombreCompleto, string Telefono, string Cedula);
+    public record EstudianteRegistroDTO(string Email, string Password, string NombreCompleto, string Cedula);
 }

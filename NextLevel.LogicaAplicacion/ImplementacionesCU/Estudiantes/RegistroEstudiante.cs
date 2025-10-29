@@ -32,7 +32,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
                 Estudiante estudiante = EstudianteMapper.FromEstudianteRegistroDTO(estudianteDTO);
                 VerificacionEmail enviarmail =  new VerificacionEmail();
                 estudiante.TokenVerificacion = token;
-                enviarmail.EnviarCorreoVerificacion(estudiante.Email, estudiante.TokenVerificacion);
+                Task.Run(() => enviarmail.EnviarCorreoVerificacionAsync(estudiante.Email, estudiante.TokenVerificacion));
                 _repositorioEstudiante.Add(estudiante);
             }
             else if (estudianteDTO.Password.Length < 8)
@@ -82,8 +82,8 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
             {
                 VerificacionEmail enviarmail = new VerificacionEmail();
                 usuExistente.TokenVerificacion = token;
-                usuExistente.TokenVencimiento = DateTime.UtcNow.AddHours(24);
-                enviarmail.EnviarCorreoVerificacion(usuExistente.Email, usuExistente.TokenVerificacion);
+                usuExistente.TokenVencimiento = DateTime.UtcNow.AddHours(24); 
+                Task.Run(() => enviarmail.EnviarCorreoVerificacionAsync(usuExistente.Email, usuExistente.TokenVerificacion));
                 _repositorioUsuario.Update(usuExistente);
             }
             else
