@@ -16,3 +16,23 @@ html {
   position: relative;
   min-height: 100%;
 }
+
+.headerNormal {
+    background-color: lightblue;
+
+}
+
+.navbar-brand {
+    display: inline-block !important;
+    width: auto !important;
+    height: auto !important;
+    line-height: 0 !important;
+}
+
+    .navbar-brand img {
+        margin-right: 1rem;
+        width: 2.5rem;
+        display: block;
+    }
+
+
