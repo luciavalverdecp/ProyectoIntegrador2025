@@ -1,0 +1,50 @@
+﻿@model IEnumerable<NextLevel.Compartidos.DTOs.Cursos.CursoVistaPreviaDTO>
+
+@{
+    ViewData["Title"] = "Listado de Cursos";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Cursos/ListadoCursos.css" />
+}
+<style>
+    /* ====== Estilos personalizados para las cards ====== */
+    
+</style>
+
+<div class="container py-4 general">
+    <h2 class="mb-4 text-center fw-bold">Nuestros Cursos</h2>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 cartas">
+        @foreach (var curso in Model)
+        {
+            <div class="col">
+                <div class="card curso-card h-100">
+                    @if (!string.IsNullOrEmpty(curso.RutaArchivo))
+                    {
+                        <img src="@curso.RutaArchivo" alt="@curso.Nombre" class="curso-img w-100" />
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center justify-content-center bg-light curso-img">
+                            <span class="text-muted">Sin imagen</span>
+                        </div>
+                    }
+
+                    <div class="curso-body">
+                        <h5 class="curso-titulo">@curso.Nombre</h5>
+                        <p class="curso-descripcion">@curso.Descripcion</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="curso-calificacion">
+                                ⭐ @curso.Calificacion.ToString("0.0")
+                            </span>
+                            <a asp-action="Detalles" asp-route-id="@curso.Id" class="btn btn-sm btn-outline-success rounded-pill">
+                                Ver más
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

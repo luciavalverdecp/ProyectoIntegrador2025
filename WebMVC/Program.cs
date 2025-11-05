@@ -5,6 +5,8 @@ using NextLevel.LogicaAplicacion.InterfacesCU.Usuarios;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiante;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
+using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos;
 
 namespace WebMVC
 {
@@ -45,6 +47,7 @@ namespace WebMVC
             builder.Services.AddScoped<IRegistroEstudiante, RegistroEstudiante>();
             builder.Services.AddScoped<ILoginUsuario, LoginUsuario>();
             builder.Services.AddScoped<IRecuperarCuenta, RecuperarCuenta>();
+            builder.Services.AddScoped<IObtenerCursos, ObtenerCursos>();
 
             var app = builder.Build();
 
