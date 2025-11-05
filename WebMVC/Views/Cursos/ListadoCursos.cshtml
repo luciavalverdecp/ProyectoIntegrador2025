@@ -3,47 +3,59 @@
 @{
     ViewData["Title"] = "Listado de Cursos";
 }
+@section Header {
+    @await Html.PartialAsync("~/Views/Home/Header.cshtml")
+}
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/Cursos/ListadoCursos.css" />
+    <link rel="stylesheet" href="~/css/cursos/ListadoCursos.css" />
 }
-<style>
-    /* ====== Estilos personalizados para las cards ====== */
-    
-</style>
 
-<div class="container py-4 general">
-    <h2 class="mb-4 text-center fw-bold">Nuestros Cursos</h2>
+<div class="cursos-section py-5">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5 titulo-cursos">Nuestros Cursos</h2>
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 cartas">
-        @foreach (var curso in Model)
+        @if (Model == null || !Model.Any())
         {
-            <div class="col">
-                <div class="card curso-card h-100">
-                    @if (!string.IsNullOrEmpty(curso.RutaArchivo))
-                    {
-                        <img src="@curso.RutaArchivo" alt="@curso.Nombre" class="curso-img w-100" />
-                    }
-                    else
-                    {
-                        <div class="d-flex align-items-center justify-content-center bg-light curso-img">
-                            <span class="text-muted">Sin imagen</span>
-                        </div>
-                    }
+            <div class="text-center mt-5 mensaje-sin-cursos">
+                <h5>No hay cursos disponibles actualmente 😔</h5>
+                <p>Vuelve más adelante para descubrir nuevos contenidos.</p>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4 justify-content-center">
+                @foreach (var curso in Model)
+                {
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card curso-card h-100 shadow-sm border-0">
+                            @if (!string.IsNullOrEmpty(curso.RutaArchivo))
+                            {
+                                <img src="@curso.RutaArchivo" alt="@curso.Nombre" class="curso-img card-img-top" />
+                            }
+                            else
+                            {
+                                <div class="curso-img card-img-top d-flex align-items-center justify-content-center bg-pastel-placeholder">
+                                    <span class="text-muted">Sin imagen</span>
+                                </div>
+                            }
 
-                    <div class="curso-body">
-                        <h5 class="curso-titulo">@curso.Nombre</h5>
-                        <p class="curso-descripcion">@curso.Descripcion</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <span class="curso-calificacion">
-                                ⭐ @curso.Calificacion.ToString("0.0")
-                            </span>
-                            <a asp-action="Detalles" asp-route-id="@curso.Id" class="btn btn-sm btn-outline-success rounded-pill">
-                                Ver más
-                            </a>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="curso-titulo fw-semibold">@curso.Nombre</h5>
+                                <h6 class="docente">@curso.DocenteNombreDTO.NombreCompleto</h6>
+                                <p class="curso-descripcion flex-grow-1">@curso.Descripcion</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="curso-calificacion">
+                                        ⭐ @curso.Calificacion.ToString("0.0")
+                                    </span>
+                                    <a asp-action="Detalles" asp-route-id="@curso.Id" class="btn btn-vermas rounded-pill">
+                                        Ver más
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
         }
     </div>

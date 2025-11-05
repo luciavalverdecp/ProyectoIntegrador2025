@@ -68,7 +68,7 @@ namespace WebMVC
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Cursos}/{action=ListadoCursos}/{id?}");
 
             app.UseSession();
             app.Run();
