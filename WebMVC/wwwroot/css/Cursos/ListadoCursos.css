@@ -1,0 +1,115 @@
+﻿body {
+    background-color: #ff8c6b;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.general {
+    background-color: #e8745d;
+    padding: 2rem;
+    border-radius: 20px;
+    margin-top: 2.5rem;
+}
+
+.curso-card {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background-color: #ffe0d9;
+    display: flex;
+    flex-direction: column;
+    height: 370px;
+}
+
+    .curso-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+.curso-img {
+    height: 180px;
+    object-fit: cover;
+    width: 100%;
+    border-bottom: 2px solid #ffb6a3;
+}
+
+.curso-body {
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.curso-titulo {
+    font-weight: 700;
+    color: #222;
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+    text-align: center;
+}
+
+.curso-descripcion {
+    color: #444;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.8rem;
+}
+
+.curso-calificacion {
+    font-weight: 600;
+    color: #b83227;
+    font-size: 1rem;
+}
+
+.btn-outline-success {
+    border-color: #b83227;
+    color: #b83227;
+}
+
+    .btn-outline-success:hover {
+        background-color: #b83227;
+        color: white;
+    }
+
+@media (max-width: 992px) {
+    .curso-card {
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .general {
+        padding: 1.5rem;
+        margin-top: 1.8rem;
+    }
+
+    .curso-card {
+        height: 330px;
+    }
+
+    .curso-titulo {
+        font-size: 1rem;
+    }
+
+    .curso-descripcion {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .general {
+        padding: 1rem;
+        margin-top: 1.2rem;
+    }
+
+    .curso-card {
+        height: auto;
+        min-height: 300px;
+    }
+}

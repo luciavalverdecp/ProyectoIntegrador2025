@@ -243,7 +243,11 @@ namespace WebMVC.Controllers
             }
             return ReiniciarContrasena(email);
         }
-
-        
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Remove("rolLogueado");
+            HttpContext.Session.Remove("emailLogueado");
+            return RedirectToAction("Login");
+        }
     }
 }

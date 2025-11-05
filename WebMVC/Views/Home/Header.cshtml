@@ -61,10 +61,7 @@
                         {
                             <a class="navbar-brand" asp-area="" asp-controller="Docente" asp-action="Perfil"><img src="~/img/perfil.png" alt="Perfil" /></a>
                         }
-                        else
-                        {
-                            <a class="navbar-brand" asp-area="" asp-controller="Administrador" asp-action="LogOut">LogOut</a>
-                        }
+                      <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="LogOut">LogOut</a>
                     </li>
                 </ul>
             }
