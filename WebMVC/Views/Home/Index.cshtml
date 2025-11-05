@@ -1,6 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@section Header {
+    @await Html.PartialAsync("~/Views/Home/Header.cshtml")
+}
 
 <div class="text-center">
     <h1 class="display-4">SIMON</h1>
