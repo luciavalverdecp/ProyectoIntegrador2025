@@ -10,7 +10,7 @@ Plataforma educativa desarrollada en **ASP.NET MVC** para la gestión de cursos,
 ## 📽️ Evidencias en video
 En este apartado se incluirán los enlaces correspondientes a las evidencias audiovisuales de cada incremento del proyecto:
 
-- [Ver evidencia Incremento 2](https://youtu.be/tu_video](https://youtu.be/038gV0ecL-8))
+- [Ver evidencia Incremento 2](https://youtu.be/038gV0ecL-8)
 
 ## 👩‍💻 Autores
 - **Lucia Valverde**  
