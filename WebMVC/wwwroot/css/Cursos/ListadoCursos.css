@@ -1,0 +1,118 @@
+﻿/* Fondo general con un degradado pastel */
+.cursos-section {
+    background: linear-gradient(180deg, #fdf6ec 0%, #e6f4f1 100%);
+    min-height: 100vh;
+}
+
+/* Título principal */
+.titulo-cursos {
+    color: #4d6c6b;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Tarjeta del curso */
+.curso-card {
+    border-radius: 16px;
+    background-color: #fffaf4;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .curso-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(130, 170, 165, 0.2);
+    }
+
+/* Imagen del curso */
+.curso-img {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    height: 180px;
+    object-fit: cover;
+}
+
+/* Fondo para placeholder de imagen */
+.bg-pastel-placeholder {
+    background-color: #fcefe3;
+    height: 180px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+/* Título del curso */
+.curso-titulo {
+    color: #f2a679;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+}
+
+/* Nombre del docente */
+.docente {
+    color: #7fb9b0;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Descripción */
+.curso-descripcion {
+    color: #6c757d;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; 
+    -webkit-box-orient: vertical;
+}
+
+/* Calificación */
+.curso-calificacion {
+    color: #ffb84d;
+    font-weight: bold;
+}
+
+/* Botón Ver más */
+.btn-vermas {
+    background-color: #7fb9b0;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+    .btn-vermas:hover {
+        background-color: #5da69e;
+    }
+
+/* Responsividad */
+@media (max-width: 576px) {
+    .curso-titulo {
+        font-size: 1rem;
+    }
+
+    .docente {
+        font-size: 0.85rem;
+    }
+}
+
+.mensaje-sin-cursos {
+    background-color: #fffaf4;
+    border: 1px solid #f2a67933;
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 4px 12px rgba(130, 170, 165, 0.15);
+    color: #4d6c6b;
+}
+
+    .mensaje-sin-cursos h5 {
+        color: #f2a679;
+        font-weight: 600;
+    }
+
+    .mensaje-sin-cursos p {
+        color: #7fb9b0;
+        margin-top: 0.5rem;
+        font-size: 0.95rem;
+    }

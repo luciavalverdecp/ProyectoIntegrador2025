@@ -1,0 +1,48 @@
+﻿@model string
+
+@section Styles{
+<link rel="stylesheet" href="~/css/Usuarios/ReiniciarContrasena.css" />
+}
+
+@{
+    var mensajeCambio = TempData["MensajeCambio"] as string ?? "";
+    var errorReset = TempData["ErrorReset"] != null && (bool)TempData["ErrorReset"];
+}
+
+
+
+<div class="reset-container">
+    <img src="~/img/NeoSaludando.gif" alt="NextLevel Mascota" />
+    <h2>Reiniciar contraseña 🔐</h2>
+
+    <form asp-action="ReiniciarContrasena" method="post">
+
+        @if (mensajeCambio != "Se realizo el cambio de contraseña exitosamente")
+        {
+            <p>Ingresá tu nueva contraseña para continuar.</p>
+            <input hidden name="email" id="email" value="@Model" />
+
+            <div class="input-wrap">
+                <label for="Password" style="font-size:14px; color:#333;">Nueva contraseña</label>
+                <input type="password" id="Password" name="Password" class="input-field" required />
+            </div>
+
+            <div class="input-wrap">
+                <label for="ConfirmarPassword" style="font-size:14px; color:#333;">Confirmar contraseña</label>
+                <input type="password" id="ConfirmarPassword" name="ConfirmarPassword" class="input-field" required />
+            </div>
+
+            <input type="submit" value="Guardar nueva contraseña" class="btn-reset" />
+        }
+
+        @if (ViewBag.MensajeCambio != null)
+        {
+            bool error = ViewBag.ErrorReset != null && (bool)ViewBag.ErrorReset;
+            <div class="alert @(error ? "alert-danger" : "alert-success")">
+                @ViewBag.MensajeCambio
+            </div>
+        }
+    </form>
+
+    <a href="@Url.Action("Login","Usuarios")" class="btn-volver">⟵ Volver al inicio</a>
+</div>

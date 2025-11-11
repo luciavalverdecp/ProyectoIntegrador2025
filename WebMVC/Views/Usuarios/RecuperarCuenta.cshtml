@@ -1,0 +1,48 @@
+﻿@section Styles {
+    <link rel="stylesheet" href="~/css/usuarios/RecuperarCuenta.css" />
+}
+
+<div class="forms">
+        <div class="form login">
+            <div class="actual-form">
+
+                <h2 class="title">Recuperar Contraseña 🔑</h2>
+                <p class="subtitle">
+                    Ingresá tu email y te enviaremos un enlace para cambiar tu contraseña.
+                </p>
+
+            <form asp-action="RecuperarCuenta" asp-controller="Usuarios" method="post">
+                    <div class="input-wrap">
+                        <input type="email"
+                               class="input-field"
+                               name="Email"
+                               id="Email"
+                               autocomplete="off"
+                               required />
+                        <label>Email</label>
+                    </div>
+
+                    <input type="submit" value="Enviar correo" class="sign-btn" />
+                </form>
+
+                @if (ViewBag.MensajeExito != null)
+                {
+                    <div class="alert alert-success mt-3">
+                        <strong>@ViewBag.MensajeExito</strong>
+                    </div>
+                }
+
+                @if (ViewBag.MensajeError != null)
+                {
+                    <div class="alert alert-danger mt-3">
+                        <strong>@ViewBag.MensajeError</strong>
+                    </div>
+                }
+
+                <p class="text">
+                    ¿Recordaste tu contraseña?
+                    <a href="@Url.Action("Login","Usuarios")" class="btn-verificacion">Volver al inicio</a>
+                </p>
+            </div>
+        </div>
+    </div>
