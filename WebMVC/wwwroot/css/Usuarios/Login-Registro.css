@@ -8,10 +8,6 @@
     box-sizing: border-box;
 }
 
-html, body {
-    overflow-y: hidden;
-}
-
 body,
 input {
     font-family: "Poppins", sans-serif;
@@ -20,7 +16,7 @@ input {
 main {
     width: 100%;
     min-height: 100vh;
-    overflow-y: auto;
+    overflow: hidden;
     background-color: #ff8c6b;
     padding: 2rem;
     display: flex;
@@ -32,12 +28,10 @@ main {
     position: relative;
     width: 100%;
     max-width: 1020px;
-    min-height: min(640px, 90vh);
-    height: auto;
+    height: 640px;
     background-color: #fff;
     border-radius: 3.3rem;
     box-shadow: 0 60px 40px -30px rgba(0, 0, 0, 0.27);
-    overflow: hidden;
 }
 
 .btn-volver {
@@ -227,7 +221,6 @@ main.sign-up-mode .carousel {
     left: 0%;
 }
 
-/* ==== CAROUSEL ==== */
 .carousel {
     position: absolute;
     height: 100%;
@@ -238,7 +231,7 @@ main.sign-up-mode .carousel {
     border-radius: 2rem;
     display: grid;
     grid-template-rows: auto 1fr;
-    padding: 1rem 2rem;
+    padding-bottom: 2rem;
     overflow: hidden;
     transition: 0.8s ease-in-out;
 }
@@ -247,36 +240,44 @@ main.sign-up-mode .carousel {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
-    height: 100%;
 }
 
 .image {
     width: 100%;
-    height: 100%;
-    object-fit: contain;
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
+    grid-column: 1/2;
+    grid-row: 1/2;
     opacity: 0;
     transition: opacity 0.3s, transform 0.5s;
 }
 
-    .image.show {
-        opacity: 1;
-        transform: none;
-    }
+.img-1 {
+    transform: translate(0, -50px);
+}
+
+.img-2 {
+    transform: scale(0.4, 0.5);
+}
+
+.img-3 {
+    transform: scale(0.3) rotate(-20deg);
+}
+
+.image.show {
+    opacity: 1;
+    transform: none;
+}
 
 .text-slider {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding-top: 1rem;
 }
 
 .text-wrap {
     max-height: 2.2rem;
     overflow: hidden;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
 }
 
 .text-group {
@@ -316,7 +317,6 @@ main.sign-up-mode .carousel {
             border-radius: 1rem;
         }
 
-/* --- MEDIA QUERIES --- */
 @media (max-width: 850px) {
     .box {
         height: auto;
@@ -327,19 +327,19 @@ main.sign-up-mode .carousel {
     .inner-box {
         position: static;
         transform: none;
-        width: 100%;
-        height: auto;
+        width: revert;
+        height: revert;
         padding: 2rem;
     }
 
     .forms-wrap {
-        position: static;
+        position: revert;
         width: 100%;
         height: auto;
     }
 
     form {
-        max-width: 100%;
+        max-width: revert;
         padding: 1.5rem 2.5rem 2rem;
         transition: transform 0.8s ease-in-out, opacity 0.45s linear;
     }
@@ -361,13 +361,11 @@ main.sign-up-mode .carousel {
     }
 
     .carousel {
-        position: static;
+        position: revert;
         height: auto;
         width: 100%;
-        padding: 2rem 1.5rem;
+        padding: 3rem 2rem;
         display: flex;
-        flex-direction: column;
-        align-items: center;
     }
 
     .images-wrapper {
@@ -376,7 +374,6 @@ main.sign-up-mode .carousel {
 
     .text-slider {
         width: 100%;
-        padding: 0;
     }
 }
 
@@ -387,7 +384,6 @@ main.sign-up-mode .carousel {
 
     .box {
         border-radius: 2rem;
-        min-height: auto;
     }
 
     .inner-box {
