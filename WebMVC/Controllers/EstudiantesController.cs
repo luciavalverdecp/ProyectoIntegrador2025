@@ -14,8 +14,12 @@ namespace WebMVC.Controllers
 
         public IActionResult MisCursos()
         {
-            var misCursos = obtenerMisCursos.Ejecutar(HttpContext.Session.GetString("emailLogueado"));
-            return View(misCursos);
+            if(HttpContext.Session.GetString("rolLogueado") == "Estudiante")
+            {
+                var misCursos = obtenerMisCursos.Ejecutar(HttpContext.Session.GetString("emailLogueado"));
+                return View(misCursos);
+            }
+            return RedirectToAction("Login", "Usuarios");    
         }
     }
 }

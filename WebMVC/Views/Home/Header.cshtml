@@ -1,4 +1,9 @@
-﻿<header>
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow p-0">
         <div class="container-fluid headerNormal py-1">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
@@ -54,8 +59,20 @@
                     <ul class="navbar-nav ms-auto">
                         @if (Context.Session.GetString("rolLogueado") == "Estudiante")
                         {
+                            if (!(currentController == "Estudiantes" && currentAction == "MisCursos"))
+                            {
+                                <li class="nav-item">
+                                    <a class="navbar-brand" asp-area="" asp-controller="Estudiantes" asp-action="MisCursos">Mis cursos</a>
+                                </li>
+                            }
+                            if (!(currentController == "Estudiantes" && currentAction == "Explorar"))
+                            {
+                                <li class="nav-item">
+                                    <a class="navbar-brand" asp-area="" asp-controller="Estudiantes" asp-action="Explorar">Explorar</a>
+                                </li>
+                            }
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Estudiante" asp-action="Perfil">
+                                <a class="navbar-brand" asp-area="" asp-controller="Estudiantes" asp-action="Perfil">
                                     <img src="~/img/perfil.png" alt="Perfil" />
                                 </a>
                             </li>
@@ -63,7 +80,7 @@
                         else if (Context.Session.GetString("rolLogueado") == "Docente")
                         {
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Docente" asp-action="Perfil">
+                                <a class="navbar-brand" asp-area="" asp-controller="Docentes" asp-action="Perfil">
                                     <img src="~/img/perfil.png" alt="Perfil" />
                                 </a>
                             </li>
