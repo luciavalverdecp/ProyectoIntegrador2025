@@ -61,7 +61,7 @@ namespace NextLevel.AccesoDatos.EF
 
         public Estudiante FindByEmail(string email)
         {
-            return _db.Estudiantes.Where(e => e.Email == email).Include(e => e.Cursos).FirstOrDefault();
+            return _db.Estudiantes.Where(e => e.Email == email).Include(e => e.Cursos).ThenInclude(c => c.Docente).FirstOrDefault();
         }
     }
 }
