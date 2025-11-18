@@ -10,5 +10,6 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
 {
     public interface IRepositorioCurso : IRepositorio<Curso>
     {
+        IEnumerable<Curso> FindWithFilter(string filter);
     }
 }

@@ -29,12 +29,67 @@ namespace NextLevel.AccesoDatos.EF
                 var cursos = _db.Cursos
                              .Include(c => c.Docente)
                              .Include(c => c.Estudiantes)
-                             .Include(c => c.Semanas);
+                             .Include(c => c.Semanas)
+                             .Include(c => c.Temarios);
                 return cursos;
             }
             catch (Exception ex)
             {
                 throw new CursoException("Error al obtener los cursos", ex);
+            }
+        }
+
+        public IEnumerable<Curso> FindWithFilter(string filtro)
+        {
+            try
+            {
+                filtro = filtro.ToLower();
+
+                var query = _db.Cursos
+                    .Include(c => c.Docente)
+                    .Include(c => c.Estudiantes)
+                    .Include(c => c.Semanas)
+                    .Include(c => c.Temarios)
+                    .Where(c =>
+                        (c.Nombre != null && c.Nombre.ToLower().Contains(filtro))
+                        || (c.Descripcion != null && c.Descripcion.ToLower().Contains(filtro))
+                        || (c.Temarios != null && c.Temarios.Any(t =>
+                                t.Tema != null && t.Tema.ToLower().Contains(filtro)
+                           ))
+                    );
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new CursoException("Error al obtener los cursos filtrados", ex);
+            }
+        }
+
+        public IEnumerable<Curso> FindWithFilterAndCategory(string filtro, string categoria)
+        {
+            try
+            {
+                filtro = filtro.ToLower();
+
+                var query = _db.Cursos
+                    .Include(c => c.Docente)
+                    .Include(c => c.Estudiantes)
+                    .Include(c => c.Semanas)
+                    .Include(c => c.Temarios)
+                    .Where(c =>
+                        (c.Nombre != null && c.Nombre.ToLower().Contains(filtro))
+                        || (c.Descripcion != null && c.Descripcion.ToLower().Contains(filtro))
+                        || (c.Temarios != null && c.Temarios.Any(t =>
+                                t.Tema != null && t.Tema.ToLower().Contains(filtro)
+                           ))
+                    );
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new CursoException("Error al obtener los cursos filtrados", ex);
             }
         }
 

@@ -27,6 +27,7 @@ namespace NextLevel.LogicaNegocio.Entidades
         public DateTime FechaFin { get; set; }
         public double Calificacion { get; set; }
         public string Descripcion { get; set; }
+        public IEnumerable<Temario> Temarios { get; set; }
 
         public Curso() { }
         public Curso(Docente docente, string rutaArchivo, string descripcion)
@@ -39,6 +40,19 @@ namespace NextLevel.LogicaNegocio.Entidades
             RutaArchivo = rutaArchivo;
             Calificacion = 0;
             Descripcion = descripcion;
+        }
+
+        public Curso(Docente docente, string rutaArchivo, string descripcion, IEnumerable<Temario> temarios)
+        {
+            this.Docente = docente;
+            Estudiantes = new List<Estudiante>();
+            Semanas = new List<Semana>();
+            Foro = new Foro();
+            FechaInicio = DateTime.Now;
+            RutaArchivo = rutaArchivo;
+            Calificacion = 0;
+            Descripcion = descripcion;
+            Temarios = temarios;
         }
 
         #region Equals - CompareTo

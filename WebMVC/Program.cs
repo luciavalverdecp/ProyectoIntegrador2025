@@ -48,6 +48,7 @@ namespace WebMVC
             builder.Services.AddScoped<ILoginUsuario, LoginUsuario>();
             builder.Services.AddScoped<IRecuperarCuenta, RecuperarCuenta>();
             builder.Services.AddScoped<IObtenerCursos, ObtenerCursos>();
+            builder.Services.AddScoped<IObtenerCursosFiltrados, ObtenerCursosFiltrados>();
 
             var app = builder.Build();
 
