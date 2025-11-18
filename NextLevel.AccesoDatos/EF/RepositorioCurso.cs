@@ -39,24 +39,30 @@ namespace NextLevel.AccesoDatos.EF
             }
         }
 
-        public IEnumerable<Curso> FindWithFilter(string filtro)
+        public IEnumerable<Curso> FindWithFilter(string filtro, IEnumerable<Curso> lista)
         {
             try
             {
-                filtro = filtro.ToLower();
+                Func<string, string> sinTildes = s =>
+                {
+                    if (s == null) return null;
+                    var formD = s.Normalize(System.Text.NormalizationForm.FormD);
+                    return new string(formD
+                        .Where(c => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c)
+                                    != System.Globalization.UnicodeCategory.NonSpacingMark)
+                        .ToArray()
+                    ).Normalize(System.Text.NormalizationForm.FormC);
+                };
 
-                var query = _db.Cursos
-                    .Include(c => c.Docente)
-                    .Include(c => c.Estudiantes)
-                    .Include(c => c.Semanas)
-                    .Include(c => c.Temarios)
-                    .Where(c =>
-                        (c.Nombre != null && c.Nombre.ToLower().Contains(filtro))
-                        || (c.Descripcion != null && c.Descripcion.ToLower().Contains(filtro))
-                        || (c.Temarios != null && c.Temarios.Any(t =>
-                                t.Tema != null && t.Tema.ToLower().Contains(filtro)
-                           ))
-                    );
+                filtro = sinTildes(filtro.ToLower());
+
+                var query = lista.Where(c =>
+                    (c.Nombre != null && sinTildes(c.Nombre.ToLower()).Contains(filtro))
+                    || (c.Descripcion != null && sinTildes(c.Descripcion.ToLower()).Contains(filtro))
+                    || (c.Temarios != null && c.Temarios.Any(t =>
+                            t.Tema != null && sinTildes(t.Tema.ToLower()).Contains(filtro)
+                       ))
+                );
 
                 return query.ToList();
             }
@@ -66,24 +72,44 @@ namespace NextLevel.AccesoDatos.EF
             }
         }
 
-        public IEnumerable<Curso> FindWithFilterAndCategory(string filtro, string categoria)
+
+        public IEnumerable<Curso> FindWithCategory(string categoria, string? alfabetico, int? calificacion, string? docente, IEnumerable<Curso> lista)
         {
             try
             {
-                filtro = filtro.ToLower();
+                var query = lista;
 
-                var query = _db.Cursos
-                    .Include(c => c.Docente)
-                    .Include(c => c.Estudiantes)
-                    .Include(c => c.Semanas)
-                    .Include(c => c.Temarios)
-                    .Where(c =>
-                        (c.Nombre != null && c.Nombre.ToLower().Contains(filtro))
-                        || (c.Descripcion != null && c.Descripcion.ToLower().Contains(filtro))
-                        || (c.Temarios != null && c.Temarios.Any(t =>
-                                t.Tema != null && t.Tema.ToLower().Contains(filtro)
-                           ))
+                if (categoria == "Nombre" && !string.IsNullOrEmpty(alfabetico))
+                {
+                    if (alfabetico.ToLower() == "asc")
+                    {
+                        query = lista.OrderBy(c => c.Nombre);
+                    }
+                    else if (alfabetico.ToLower() == "desc")
+                    {
+                        query = lista.OrderByDescending(c => c.Nombre);
+                    }
+                }
+                else if (categoria == "Calificacion" && calificacion.HasValue)
+                {
+                    int valor = calificacion.Value;
+
+                    int min = valor;
+                    int max = valor + 1;
+
+                    query = lista.Where(c =>
+                        c.Calificacion >= min &&
+                        c.Calificacion <= max
                     );
+                }
+                else if (categoria == "Docente" && !string.IsNullOrEmpty(docente))
+                {
+                    var filtro = docente.ToLower();
+                    query = lista.Where(c =>
+                        c.Docente != null &&
+                        c.Docente.NombreCompleto.ToLower().Contains(filtro)
+                    );
+                }
 
                 return query.ToList();
             }

@@ -41,21 +41,21 @@ document.addEventListener("DOMContentLoaded", () => {
         orderMenu.style.transform = "translateX(0)";
     });
 
-    document.querySelectorAll("#orderOptions li").forEach(li => {
-        li.addEventListener("click", () => {
-            const opcion = li.dataset.opcion;
+    //document.querySelectorAll("#orderOptions li").forEach(li => {
+    //    li.addEventListener("click", () => {
+    //        const opcion = li.dataset.opcion;
 
-            let filtro = searchInput.value || new URLSearchParams(window.location.search).get('filtro') || "";
+    //        let filtro = searchInput.value || new URLSearchParams(window.location.search).get('filtro') || "";
 
-            const url = li.dataset.url;
+    //        const url = li.dataset.url;
 
-            if (url) {
-                window.location.href = `${url}?filtro=${encodeURIComponent(filtro)}&opcionMenu=${encodeURIComponent(opcion)}`;
-            } else {
-                console.error("URL del ActionResult no encontrada en data-url");
-            }
-        });
-    });
+    //        if (url) {
+    //            window.location.href = `${url}?filtro=${encodeURIComponent(filtro)}&opcionMenu=${encodeURIComponent(opcion)}`;
+    //        } else {
+    //            console.error("URL del ActionResult no encontrada en data-url");
+    //        }
+    //    });
+    //});
 
     document.addEventListener("click", (e) => {
         if (!orderMenu.contains(e.target)) {
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const filtro = document.querySelector(".search-box input").value || new URLSearchParams(window.location.search).get('filtro') || "";
             const url = document.querySelector('li[data-opcion="Nombre"]').dataset.url;
 
-            window.location.href = `${url}?filtro=${encodeURIComponent(filtro)}&opcionMenu=Nombre&sort=${sort}`;
+            window.location.href = `${url}?filtro=${encodeURIComponent(filtro)}&opcionMenu=Nombre&alfabetico=${sort}`;
         });
     });
 
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const filtro = document.querySelector(".search-box input").value || new URLSearchParams(window.location.search).get('filtro') || "";
             const url = document.querySelector('li[data-opcion="Calificacion"]').dataset.url;
 
-            window.location.href = `${url}?filtro=${encodeURIComponent(filtro)}&opcionMenu=Calificacion&rating=${rating}`;
+            window.location.href = `${url}?filtro=${encodeURIComponent(filtro)}&opcionMenu=Calificacion&calificacion=${rating}`;
         });
     });
 

@@ -19,10 +19,19 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
         {
             _repositorioCurso = repositorioCurso;
         }
-        public IEnumerable<CursoVistaPreviaDTO> Ejecutar(string filtro)
+        public IEnumerable<CursoVistaPreviaDTO> Ejecutar(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
-            IEnumerable<Curso> cursos = _repositorioCurso.FindWithFilter(filtro);
+            IEnumerable<Curso> cursos = _repositorioCurso.FindAll();
 
+            if (!string.IsNullOrWhiteSpace(filtro))
+            {
+                cursos = _repositorioCurso.FindWithFilter(filtro, cursos);
+            }
+            if (!string.IsNullOrWhiteSpace(opcionMenu))
+            {
+                cursos = _repositorioCurso.FindWithCategory(opcionMenu, alfabetico, calificacion, docente, cursos);
+            }
+                
             return CursoMapper.ToListaDTO(cursos);
         }
     }

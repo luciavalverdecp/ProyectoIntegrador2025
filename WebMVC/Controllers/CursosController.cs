@@ -6,27 +6,15 @@ namespace WebMVC.Controllers
 {
     public class CursosController : Controller
     {
-        private readonly IObtenerCursos _obtenerCursos;
         private readonly IObtenerCursosFiltrados _obtenerCursosFiltrados;
-        public CursosController(IObtenerCursos obtenerCursos, IObtenerCursosFiltrados obtenerCursosFiltrados)
+        public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados)
         {
-            _obtenerCursos = obtenerCursos;
             _obtenerCursosFiltrados = obtenerCursosFiltrados;
         }
-        public IActionResult ListadoCursos(string? filtro, string? opcionMenu)
+        public IActionResult ListadoCursos(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
-            IEnumerable<CursoVistaPreviaDTO> cursos;
+            var cursos = _obtenerCursosFiltrados.Ejecutar(filtro, opcionMenu, alfabetico, calificacion, docente);
 
-            if (!string.IsNullOrWhiteSpace(filtro))
-            {
-                cursos = _obtenerCursosFiltrados.Ejecutar(filtro);
-            }
-            else
-            {
-                cursos = _obtenerCursos.Ejecutar();
-            }
-
-            ViewBag.OpcionMenu = opcionMenu; // para usar en la vista si querés resaltar la opción
             return View(cursos);
         }
     }
