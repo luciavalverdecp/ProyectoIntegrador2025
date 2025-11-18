@@ -18,4 +18,8 @@
     <ProjectReference Include="..\NextLevel.LogicaAplicacion\NextLevel.LogicaAplicacion.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\Cursos\" />
+  </ItemGroup>
+
 </Project>
