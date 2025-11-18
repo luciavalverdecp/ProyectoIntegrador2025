@@ -6,7 +6,7 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow p-0">
         <div class="container-fluid headerNormal py-1">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+            <a class="navbar-brand" asp-area="" asp-controller="Cursos" asp-action="ListadoCursos">
                 <img src="~/img/logo.png" alt="Logo de NextLevel">
             </a>
 
@@ -20,7 +20,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
+                            <a class="navbar-brand" asp-area="" asp-controller="Cursos" asp-action="ListadoCursos">Inicio</a>
                         </li>
                     </ul>
                 </div>
@@ -37,9 +37,18 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (Context.Session.GetString("rolLogueado") == "Estudiante")
                         {
-                            <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
-                            </li>
+                            if (!(currentController == "Estudiantes" && currentAction == "MisCursos"))
+                            {
+                                <li class="nav-item">
+                                    <a class="navbar-brand" asp-area="" asp-controller="Estudiantes" asp-action="MisCursos">Mis cursos</a>
+                                </li>
+                            }
+                            if (!(currentController == "Cursos" && currentAction == "ListadoCursos"))
+                            {
+                                <li class="nav-item">
+                                    <a class="navbar-brand" asp-area="" asp-controller="Cursos" asp-action="ListadoCursos">Explorar</a>
+                                </li>
+                            }
                         }
                         else if (Context.Session.GetString("rolLogueado") == "Docente")
                         {
@@ -59,18 +68,6 @@
                     <ul class="navbar-nav ms-auto">
                         @if (Context.Session.GetString("rolLogueado") == "Estudiante")
                         {
-                            if (!(currentController == "Estudiantes" && currentAction == "MisCursos"))
-                            {
-                                <li class="nav-item">
-                                    <a class="navbar-brand" asp-area="" asp-controller="Estudiantes" asp-action="MisCursos">Mis cursos</a>
-                                </li>
-                            }
-                            if (!(currentController == "Estudiantes" && currentAction == "Explorar"))
-                            {
-                                <li class="nav-item">
-                                    <a class="navbar-brand" asp-area="" asp-controller="Cursos" asp-action="ListadoCursos">Explorar</a>
-                                </li>
-                            }
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="" asp-controller="Estudiantes" asp-action="Perfil">
                                     <img src="~/img/perfil.png" alt="Perfil" />

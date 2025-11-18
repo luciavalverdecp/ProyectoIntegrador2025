@@ -25,5 +25,22 @@ namespace NextLevel.Compartidos.DTOs.Mappers
                 estudianteRegistroDTO.NombreCompleto, 
                 estudianteRegistroDTO.Cedula);
         }
+
+        public static EstudianteInfoDTO ToEstudianteInfoDTO(Estudiante estudiante)
+        {
+            return new EstudianteInfoDTO(
+                estudiante.Email,
+                estudiante.Password,
+                estudiante.NombreCompleto,
+                estudiante.Cedula,
+                CursoMapper.ToListCursoNombreDTO(estudiante.Cursos),
+                estudiante.Telefono
+                );
+        }
+
+        public static EstudianteEmailDTO ToEstudianteEmailDTO(Estudiante estudiante)
+        {
+            return new EstudianteEmailDTO(estudiante.Email);
+        }
     }
 }

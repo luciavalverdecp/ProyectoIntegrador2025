@@ -38,6 +38,13 @@ namespace NextLevel.Compartidos.DTOs.Mappers
                 curso.Calificacion,
                 curso.Descripcion));
         }
+
+        public static IEnumerable<CursoNombreDTO> ToListCursoNombreDTO(List<Curso> cursos)
+        {
+            return cursos.Select(curso => new CursoNombreDTO(curso.Nombre));
+        }
+
+        
     }
 
 }

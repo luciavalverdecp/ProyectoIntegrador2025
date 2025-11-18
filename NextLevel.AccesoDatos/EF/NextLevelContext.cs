@@ -1,5 +1,7 @@
 ﻿using System.Reflection.Emit;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using NextLevel.LogicaNegocio.Entidades;
 
 namespace NextLevel.AccesoDatos.EF
@@ -20,6 +22,10 @@ namespace NextLevel.AccesoDatos.EF
         public DbSet<Mensaje> Mensajes { get; set; }
         public DbSet<Mensajeria> Mensajerias { get; set; }
         public DbSet<Semana> Semanas { get; set; }
+        //public DbSet<Prueba> Pruebas { get; set; }
+        //public DbSet<Calificacion> Calificaciones { get; set; }
+        //public DbSet<CambioRol> CambiosRol { get; set; }
+        //public DbSet<Temario> Temarios { get; set; } //TODO ???
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
@@ -98,6 +104,12 @@ namespace NextLevel.AccesoDatos.EF
                 .WithMany()
                 .HasForeignKey(m => m.CursoId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            mb.Entity<Temario>()
+                .HasOne(t => t.Curso)
+                .WithMany(c => c.Temarios)
+                .HasForeignKey(t => t.CursoId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // 👇 Siempre al final
             base.OnModelCreating(mb);
