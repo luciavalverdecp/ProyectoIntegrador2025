@@ -10,8 +10,4 @@
     <ProjectReference Include="..\NextLevel.LogicaNegocio\NextLevel.LogicaNegocio.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\Estudiantes\" />
-  </ItemGroup>
-
 </Project>

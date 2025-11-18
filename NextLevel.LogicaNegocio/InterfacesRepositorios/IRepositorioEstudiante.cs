@@ -11,5 +11,6 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
     public interface IRepositorioEstudiante : IRepositorio<Estudiante>
     {
         Estudiante FindByEmail(string email);
+        bool TerminoCurso(Curso curso, Estudiante estudiante);
     }
 }

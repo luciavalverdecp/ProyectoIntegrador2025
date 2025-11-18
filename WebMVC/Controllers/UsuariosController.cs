@@ -43,7 +43,7 @@ namespace WebMVC.Controllers
                 HttpContext.Session.SetString("emailLogueado", usuario.Email); //TODO hace falta
                 if (usuario.Rol.ToString() == "Estudiante")
                 {
-                    return RedirectToAction("Explorar", "Estudiantes"); //TODO redireccionar a cursos estudiantes
+                    return RedirectToAction("ListadoCursos", "Cursos"); //TODO redireccionar a cursos estudiantes
                 }else if(usuario.Rol == Rol.Docente)
                 {
                     return RedirectToAction("Privacy", "Home");//TODO redireccionar a mis cursos del docente
@@ -191,7 +191,7 @@ namespace WebMVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult RecuperarCuenta(string email)
+        public IActionResult RecuperarCuenta(string email, string returnTo)
         {
             try
             {
@@ -202,8 +202,16 @@ namespace WebMVC.Controllers
             {
                 ViewBag.MensajeError = ex.Message;
             }
-            return View();
+
+            if (returnTo == "Perfil")
+            {
+                TempData["TabActivo"] = "contra";
+                return RedirectToAction("Perfil", "Estudiantes");
+            }
+
+            return View("RecuperarContraseña");
         }
+
 
         public IActionResult ReiniciarContrasena(string email)
         {

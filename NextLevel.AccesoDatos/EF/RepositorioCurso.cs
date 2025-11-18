@@ -133,5 +133,10 @@ namespace NextLevel.AccesoDatos.EF
         {
             throw new NotImplementedException();
         }
+
+        public Curso FindByNombre(string nombre)
+        {
+            return _db.Cursos.Where(c => c.Nombre == nombre).FirstOrDefault();
+        }
     }
 }
