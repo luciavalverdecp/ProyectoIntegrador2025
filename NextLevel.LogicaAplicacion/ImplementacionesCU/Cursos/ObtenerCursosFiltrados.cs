@@ -11,19 +11,27 @@ using System.Threading.Tasks;
 
 namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
 {
-    public class ObtenerCursos : IObtenerCursos
+    public class ObtenerCursosFiltrados : IObtenerCursosFiltrados
     {
         private readonly IRepositorioCurso _repositorioCurso;
 
-        public ObtenerCursos(IRepositorioCurso repositorioCurso)
+        public ObtenerCursosFiltrados(IRepositorioCurso repositorioCurso)
         {
             _repositorioCurso = repositorioCurso;
         }
-
-        public IEnumerable<CursoVistaPreviaDTO> Ejecutar()
+        public IEnumerable<CursoVistaPreviaDTO> Ejecutar(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
             IEnumerable<Curso> cursos = _repositorioCurso.FindAll();
 
+            if (!string.IsNullOrWhiteSpace(filtro))
+            {
+                cursos = _repositorioCurso.FindWithFilter(filtro, cursos);
+            }
+            if (!string.IsNullOrWhiteSpace(opcionMenu))
+            {
+                cursos = _repositorioCurso.FindWithCategory(opcionMenu, alfabetico, calificacion, docente, cursos);
+            }
+                
             return CursoMapper.ToListaDTO(cursos);
         }
     }
