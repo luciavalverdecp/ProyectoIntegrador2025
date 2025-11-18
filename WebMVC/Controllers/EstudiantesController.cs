@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
+using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
 
 namespace WebMVC.Controllers
 {
