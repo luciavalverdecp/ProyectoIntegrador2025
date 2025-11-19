@@ -58,19 +58,6 @@ namespace NextLevel.LogicaNegocio.Entidades
             Temarios = temarios;
         }
 
-        public Curso(Docente docente, string rutaArchivo, string descripcion, IEnumerable<Temario> temarios)
-        {
-            this.Docente = docente;
-            Estudiantes = new List<Estudiante>();
-            Semanas = new List<Semana>();
-            Foro = new Foro();
-            FechaInicio = DateTime.Now;
-            RutaArchivo = rutaArchivo;
-            Calificacion = 0;
-            Descripcion = descripcion;
-            Temarios = temarios;
-        }
-
         #region Equals - CompareTo
         public override bool Equals(object? obj)
         {
