@@ -1,0 +1,272 @@
+﻿/* Contenedor principal */
+.top-tools {
+    position: relative;
+    height: 70px;
+}
+
+/* Wrapper del buscador + menú */
+.search-filter-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Contenedor del buscador */
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Buscador */
+.search-box {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    transition: width 0.4s ease;
+    z-index: 1000;
+}
+
+    .search-box.expanded {
+        width: 260px;
+    }
+
+    .search-box input {
+        width: 100%;
+        height: 100%;
+        border-radius: 50px;
+        border: 2px solid #aacfd0;
+        padding: 0 20px 0 15px;
+        font-size: 16px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+        background: #fff;
+        color: #333;
+    }
+
+    .search-box.expanded input {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+/* Icono lupa */
+.search-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #a4d8e1;
+    color: #fff;
+    border: 2px solid #6aa8b1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Menú hamburguesa */
+.order-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: transform 0.4s ease;
+    position: relative;
+    z-index: 9999;
+}
+
+.hamburger {
+    width: 50px;
+    height: 50px;
+    background: #a4d8e1;
+    border: 2px solid #6aa8b1;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 10000;
+}
+
+    .hamburger span {
+        width: 24px;
+        height: 3px;
+        background: white;
+        transition: 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+/* Lista de opciones */
+.order-options {
+    margin-top: 0;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 10px 0;
+    min-width: 150px; /* ancho mínimo */
+    width: auto; /* se ajusta al contenido */
+    display: none;
+    list-style: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    z-index: 10000 !important;
+}
+
+    .order-options.show {
+        display: block;
+    }
+
+    .order-options li {
+        position: relative;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .order-options li:hover {
+            background: #e6f5f7;
+            color: #3f8794;
+        }
+
+/* Sub-menús para cada opción */
+.submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 10px;
+    z-index: 20;
+    min-width: 120px; /* ancho mínimo */
+    width: auto; /* se ajusta al contenido */
+    flex-direction: column;
+    gap: 5px;
+}
+
+.has-submenu:hover .submenu {
+    display: flex;
+}
+
+/* Botones dentro del sub-menú */
+.submenu button {
+    display: block;
+    padding: 6px 10px;
+    width: 100%; /* ocupa todo el ancho del submenú */
+    text-align: left;
+    border: none;
+    border-radius: 6px;
+    background: #a4d8e1;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+    .submenu button:hover {
+        background: #6aa8b1;
+    }
+
+/* Input docente */
+.submenu input.docente-input {
+    width: calc(100% - 10px); /* ocupa ancho del submenú */
+    padding: 5px;
+    border: 2px solid #aacfd0;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.submenu button.docente-submit {
+    background: #a4d8e1;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+    .submenu button.docente-submit:hover {
+        background: #6aa8b1;
+    }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .search-filter-wrapper {
+        gap: 8px;
+    }
+
+    .order-menu, .search-box {
+        height: 45px;
+    }
+
+    .hamburger, .search-icon {
+        width: 45px;
+        height: 45px;
+    }
+
+        .hamburger span {
+            width: 20px;
+            height: 3px;
+        }
+
+    .order-options {
+        min-width: 140px;
+    }
+
+    .submenu {
+        min-width: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-filter-wrapper {
+        gap: 6px;
+    }
+
+    .order-menu, .search-box {
+        height: 40px;
+    }
+
+    .hamburger, .search-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+        .hamburger span {
+            width: 18px;
+            height: 2px;
+        }
+
+    .order-options {
+        min-width: 120px;
+    }
+
+    .submenu {
+        min-width: 100px;
+    }
+}

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace NextLevel.LogicaAplicacion.InterfacesCU.Cursos
 {
-    public interface IObtenerCursos
+    public interface IObtenerCursosFiltrados
     {
-        IEnumerable<CursoVistaPreviaDTO> Ejecutar();
+        IEnumerable<CursoVistaPreviaDTO> Ejecutar(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente);
     }
 }

@@ -191,7 +191,7 @@ namespace WebMVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult RecuperarCuenta(string email)
+        public IActionResult RecuperarCuenta(string email, string returnTo)
         {
             try
             {
@@ -202,8 +202,16 @@ namespace WebMVC.Controllers
             {
                 ViewBag.MensajeError = ex.Message;
             }
-            return View();
+
+            if (returnTo == "Perfil")
+            {
+                TempData["TabActivo"] = "contra";
+                return RedirectToAction("Perfil", "Estudiantes");
+            }
+
+            return View("RecuperarContraseña");
         }
+
 
         public IActionResult ReiniciarContrasena(string email)
         {

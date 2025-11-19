@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
@@ -56,6 +57,25 @@ namespace NextLevel.AccesoDatos.EF
         public void Update(Estudiante obj)
         {
             throw new NotImplementedException();
+        }
+
+        public Estudiante FindByEmail(string email)
+        {
+            return _db.Estudiantes.Where(e => e.Email == email).Include(e => e.Cursos).ThenInclude(c => c.Docente).FirstOrDefault();
+        }
+
+        public bool TerminoCurso(Curso curso, Estudiante estudiante)
+        {
+            var cursoObtenido = _db.Cursos
+                .Include(c => c.Pruebas)
+                .ThenInclude(p => p.Calificaciones)
+                .First(c => c.Id == curso.Id);
+
+            if (!cursoObtenido.Pruebas.Any())
+                return false;
+
+            return cursoObtenido.Pruebas.All(p =>
+                p.Calificaciones.Any(c => c.EstudianteId == estudiante.Id));
         }
     }
 }

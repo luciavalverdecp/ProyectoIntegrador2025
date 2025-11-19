@@ -18,7 +18,7 @@ namespace NextLevel.LogicaNegocio.SistemaAutenticacion
         public async Task EnviarCorreoVerificacionAsync(string emailDestino)
         {
             string subject = "Recuperación de cuenta";
-            string recoveryLink = $"https://localhost:7127/Usuarios/ReiniciarContrasena?email={Uri.EscapeDataString(emailDestino)}";
+            string recoveryLink = $"proyectointegrador2025-dnbdbdegfygpduec.eastus2-01.azurewebsites.net/Usuarios/ReiniciarContrasena?email={Uri.EscapeDataString(emailDestino)}";
             string gifPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "NeoSaludando.gif");
 
             MailMessage mail = new MailMessage

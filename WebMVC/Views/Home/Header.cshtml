@@ -1,7 +1,12 @@
-﻿<header>
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow p-0">
         <div class="container-fluid headerNormal py-1">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+            <a class="navbar-brand" asp-area="" asp-controller="Cursos" asp-action="ListadoCursos">
                 <img src="~/img/logo.png" alt="Logo de NextLevel">
             </a>
 
@@ -15,7 +20,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
+                            <a class="navbar-brand" asp-area="" asp-controller="Cursos" asp-action="ListadoCursos">Inicio</a>
                         </li>
                     </ul>
                 </div>
@@ -32,9 +37,18 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (Context.Session.GetString("rolLogueado") == "Estudiante")
                         {
-                            <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
-                            </li>
+                            if (!(currentController == "Estudiantes" && currentAction == "MisCursos"))
+                            {
+                                <li class="nav-item">
+                                    <a class="navbar-brand" asp-area="" asp-controller="Estudiantes" asp-action="MisCursos">Mis cursos</a>
+                                </li>
+                            }
+                            if (!(currentController == "Cursos" && currentAction == "ListadoCursos"))
+                            {
+                                <li class="nav-item">
+                                    <a class="navbar-brand" asp-area="" asp-controller="Cursos" asp-action="ListadoCursos">Explorar</a>
+                                </li>
+                            }
                         }
                         else if (Context.Session.GetString("rolLogueado") == "Docente")
                         {
@@ -52,26 +66,47 @@
                 </div>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav ms-auto">
-                        @if (Context.Session.GetString("rolLogueado") == "Estudiante")
-                        {
-                            <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Estudiante" asp-action="Perfil">
-                                    <img src="~/img/perfil.png" alt="Perfil" />
-                                </a>
-                            </li>
-                        }
-                        else if (Context.Session.GetString("rolLogueado") == "Docente")
-                        {
-                            <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Docente" asp-action="Perfil">
-                                    <img src="~/img/perfil.png" alt="Perfil" />
-                                </a>
-                            </li>
-                        }
 
-                        <li class="nav-item d-flex align-items-center">
-                            <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Usuarios" asp-action="LogOut">LogOut</a>
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link dropdown-toggle d-flex align-items-center"
+                               href="#" id="perfilMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <img src="~/img/perfil.png"
+                                     alt="Perfil"
+                                     style="width:32px; height:32px; border-radius:50%; object-fit:cover;">
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="perfilMenu" style="z-index: 10000000">
+
+                                @if (Context.Session.GetString("rolLogueado") == "Estudiante")
+                                {
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Estudiantes" asp-action="Perfil">
+                                            <i class="bi bi-person"></i> Mi perfil
+                                        </a>
+                                    </li>
+                                }
+                                else if (Context.Session.GetString("rolLogueado") == "Docente")
+                                {
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Docentes" asp-action="Perfil">
+                                            <i class="bi bi-person"></i> Mi perfil
+                                        </a>
+                                    </li>
+                                }
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li>
+                                    <a class="dropdown-item text-danger" asp-controller="Usuarios" asp-action="LogOut">
+                                        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                                    </a>
+                                </li>
+
+                            </ul>
                         </li>
+
                     </ul>
                 </div>
             }
