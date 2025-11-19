@@ -9,11 +9,74 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/cursos/ListadoCursos.css" />
+    <link rel="stylesheet" href="~/css/cursos/Buscador.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+}
+
+@section ScriptsJs {
+    <script src="~/js/Cursos/Buscador.js"></script>
 }
 
 <div class="cursos-section py-5">
     <div class="container">
-        <h2 class="text-center fw-bold mb-5 titulo-cursos">Nuestros Cursos</h2>
+
+        <div class="top-tools">
+            <h2 class="text-center fw-bold mb-5 titulo-cursos d-none d-lg-block ">Nuestros Cursos</h2>
+            <div class="search-filter-wrapper">
+                <div class="order-menu" id="orderMenu">
+                    <div class="hamburger" id="hamburgerBtn">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <ul class="order-options" id="orderOptions">
+                        <!-- Nombre -->
+                        <li data-opcion="Nombre" class="has-submenu" data-url="/Cursos/ListadoCursos" >
+                            Nombre
+                            <div class="submenu">
+                                <button data-sort="asc">A-Z</button>
+                                <button data-sort="desc">Z-A</button>
+                            </div>
+                        </li>
+
+                        <!-- Calificación -->
+                        <li data-opcion="Calificacion" class="has-submenu" data-url="/Cursos/ListadoCursos">
+                            Calificación
+                            <div class="submenu">
+                                <button data-rating="1">1-2</button>
+                                <button data-rating="2">2-3</button>
+                                <button data-rating="3">3-4</button>
+                                <button data-rating="4">4-5</button>
+                            </div>
+                        </li>
+
+                        <!-- Docente -->
+                        <li data-opcion="Docente" class="has-submenu" data-url="/Cursos/ListadoCursos">
+                            Docente
+                            <div class="submenu">
+                                <input type="text" placeholder="Nombre del docente" class="docente-input">
+                                <button class="docente-submit">Buscar</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <form method="get" asp-action="ListadoCursos">
+                    <div class="search-box">
+                        <input type="text" name="filtro" placeholder="Buscar...">
+                        <div class="search-icon">
+                            <i class="fa fa-search"></i>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        <h2 class="text-center fw-bold mb-5 titulo-cursos d-lg-none d-block">Nuestros Cursos</h2>
+
+        
 
         @if (Model == null || !Model.Any())
         {
