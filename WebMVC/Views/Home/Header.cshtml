@@ -66,26 +66,46 @@
                 </div>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav ms-auto">
-                        @if (Context.Session.GetString("rolLogueado") == "Estudiante")
-                        {
-                            <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Estudiantes" asp-action="Perfil">
-                                    <img src="~/img/perfil.png" alt="Perfil" />
-                                </a>
-                            </li>
-                        }
-                        else if (Context.Session.GetString("rolLogueado") == "Docente")
-                        {
-                            <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Docentes" asp-action="Perfil">
-                                    <img src="~/img/perfil.png" alt="Perfil" />
-                                </a>
-                            </li>
-                        }
+                        <li class="nav-item dropdown">
 
-                        <li class="nav-item d-flex align-items-center">
-                            <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Usuarios" asp-action="LogOut">LogOut</a>
+                            <a class="nav-link dropdown-toggle d-flex align-items-center"
+                               href="#" id="perfilMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <img src="~/img/perfil.png"
+                                     alt="Perfil"
+                                     style="width:32px; height:32px; border-radius:50%; object-fit:cover;">
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="perfilMenu">
+
+                                @if (Context.Session.GetString("rolLogueado") == "Estudiante")
+                                {
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Estudiantes" asp-action="Perfil">
+                                            <i class="bi bi-person"></i> Mi perfil
+                                        </a>
+                                    </li>
+                                }
+                                else if (Context.Session.GetString("rolLogueado") == "Docente")
+                                {
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Docentes" asp-action="Perfil">
+                                            <i class="bi bi-person"></i> Mi perfil
+                                        </a>
+                                    </li>
+                                }
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li>
+                                    <a class="dropdown-item text-danger" asp-controller="Usuarios" asp-action="LogOut">
+                                        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                                    </a>
+                                </li>
+
+                            </ul>
                         </li>
+
                     </ul>
                 </div>
             }
