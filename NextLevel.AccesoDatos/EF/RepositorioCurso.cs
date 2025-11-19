@@ -31,7 +31,7 @@ namespace NextLevel.AccesoDatos.EF
                              .Include(c => c.Estudiantes)
                              .Include(c => c.Semanas)
                              .Include(c => c.Temarios);
-                return cursos;
+                return cursos.ToList();
             }
             catch (Exception ex)
             {

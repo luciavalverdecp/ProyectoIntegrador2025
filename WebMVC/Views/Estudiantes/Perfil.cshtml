@@ -123,7 +123,7 @@
                     <h2 class="section-title">Cursos finalizados</h2>
                     <hr />
 
-                    @if (ViewBag.CursosFinalizados == null)
+                    @if (ViewBag.CursosFinalizados.Count == 0)
                     {
                         <p class="text-center mt-3">Todavía no finalizaste cursos.</p>
                     }
