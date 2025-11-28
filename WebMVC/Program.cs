@@ -53,6 +53,7 @@ namespace WebMVC
             builder.Services.AddScoped<IObtenerEstudiante, ObtenerEstudiante>();
             builder.Services.AddScoped<ICursosTerminados, CursosTerminados>();
             builder.Services.AddScoped<IObtenerCursosDocente, ObtenerCursosDocente>();
+            builder.Services.AddScoped<IObtenerCurso, ObtenerCurso>();
 
             var app = builder.Build();
 

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NextLevel.Compartidos.DTOs.Cursos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
 
 namespace WebMVC.Controllers
 {
@@ -7,10 +9,14 @@ namespace WebMVC.Controllers
     {
         private readonly IObtenerCursosFiltrados _obtenerCursosFiltrados;
         private readonly IObtenerCursosDocente _obtenerCursosDocente;
-        public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados, IObtenerCursosDocente obtenerCursosDocente)
+        private readonly IObtenerCurso _obtenerCurso;
+        public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados, 
+            IObtenerCursosDocente obtenerCursosDocente,
+             IObtenerCurso obtenerCurso)
         {
             _obtenerCursosFiltrados = obtenerCursosFiltrados;
             _obtenerCursosDocente = obtenerCursosDocente;
+            _obtenerCurso = obtenerCurso;
         }
         public IActionResult ListadoCursos(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
@@ -21,8 +27,29 @@ namespace WebMVC.Controllers
 
         public IActionResult ListadoCursosDocente()
         {
-            var cursosDelDocente = _obtenerCursosDocente.Ejecutar(HttpContext.Session.GetString("emailLogueado"));
-            return View(cursosDelDocente);
+            if(HttpContext.Session.GetString("rolLogueado") == "Docente")
+            {
+                var cursosDelDocente = _obtenerCursosDocente.Ejecutar(HttpContext.Session.GetString("emailLogueado"));
+                return View(cursosDelDocente);
+            }
+            return Redirect("/Usuarios/Login");
+        }
+
+        public IActionResult VisualizarCurso(string nombreCurso)
+        {
+            try
+            {
+                var cursosDTO = _obtenerCurso.Ejecturar(nombreCurso);
+                return View(cursosDTO);
+            }
+            catch(CursoException ex)
+            {
+                ViewBag.Error = ex.Message;
+            }catch(Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+            }
+            return View();
         }
     }
 }

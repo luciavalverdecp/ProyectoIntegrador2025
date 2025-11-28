@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace NextLevel.Compartidos.DTOs.Docentes
 {
-    public record DocenteNombreDTO(string NombreCompleto, NroDocente NroDocente);
+    public record DocenteNombreDTO(string NombreCompleto, int NroDocente);
 }

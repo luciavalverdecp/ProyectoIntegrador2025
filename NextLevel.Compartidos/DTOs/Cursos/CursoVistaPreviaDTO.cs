@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace NextLevel.Compartidos.DTOs.Cursos
 {
-    public record CursoVistaPreviaDTO(int Id, string Nombre, DocenteNombreDTO DocenteNombreDTO, string RutaArchivo, double Calificacion, string Descripcion);
+    public record CursoVistaPreviaDTO(string Nombre, DocenteNombreDTO DocenteNombreDTO, string RutaArchivo, double Calificacion, string Descripcion);
 }

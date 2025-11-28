@@ -14,10 +14,9 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         public static CursoVistaPreviaDTO ToCursoVistaPreviaDTO(Curso curso)
         {
             return new CursoVistaPreviaDTO(
-                curso.Id,
                 curso.Nombre,
                 DocenteMapper.ToDocenteNombreDTO(curso.Docente),
-                curso.RutaArchivo,
+                curso.Imagen,
                 curso.Calificacion,
                 curso.Descripcion);
         }
@@ -31,10 +30,9 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         public static IEnumerable<CursoVistaPreviaDTO> ToListaDTO(IEnumerable<Curso> cursos) 
         {
             return cursos.Select(curso => new CursoVistaPreviaDTO(
-                curso.Id,
                 curso.Nombre,
                 DocenteMapper.ToDocenteNombreDTO(curso.Docente),
-                curso.RutaArchivo,
+                curso.Imagen,
                 curso.Calificacion,
                 curso.Descripcion));
         }
@@ -44,7 +42,23 @@ namespace NextLevel.Compartidos.DTOs.Mappers
             return cursos.Select(curso => new CursoNombreDTO(curso.Nombre));
         }
 
-        
+        public static CursoDTO ToCursoDTO(Curso curso)
+        {
+            return new CursoDTO(curso.Nombre,
+                DocenteMapper.ToDocenteNombreDTO(curso.Docente),
+                curso.Imagen,
+                curso.Calificacion,
+                curso.Descripcion,
+                curso.Pruebas,
+                curso.Temarios,
+                curso.FechasClases,
+                curso.Estudiantes,
+                curso.Duracion,
+                curso.Foro, 
+                curso.Dificultad,
+                curso.Precio,
+                curso.Semanas);
+        }
     }
 
 }
