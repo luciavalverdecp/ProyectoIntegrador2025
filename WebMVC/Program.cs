@@ -43,6 +43,7 @@ namespace WebMVC
             builder.Services.AddScoped<IRepositorioMensajeria, RepositorioMensajeria>();
             builder.Services.AddScoped<IRepositorioSemana, RepositorioSemana>();
             builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
+            builder.Services.AddScoped<IRepositorioAltaCurso, RepositorioAltaCurso>();
 
             //CASOS DE USO
             builder.Services.AddScoped<IRegistroEstudiante, RegistroEstudiante>();
@@ -52,6 +53,7 @@ namespace WebMVC
             builder.Services.AddScoped<IObtenerMisCursos, ObtenerMisCursos>();
             builder.Services.AddScoped<IObtenerEstudiante, ObtenerEstudiante>();
             builder.Services.AddScoped<ICursosTerminados, CursosTerminados>();
+            builder.Services.AddScoped<IAltaCurso, AltaCursoCU>();
 
             var app = builder.Build();
 

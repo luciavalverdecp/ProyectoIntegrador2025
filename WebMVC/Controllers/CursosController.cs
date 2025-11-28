@@ -1,21 +1,103 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NextLevel.Compartidos.DTOs.Cursos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.AltaCurso;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 
 namespace WebMVC.Controllers
 {
     public class CursosController : Controller
     {
         private readonly IObtenerCursosFiltrados _obtenerCursosFiltrados;
-        public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados)
+        private readonly IAltaCurso _altaCurso;
+        public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados, IAltaCurso altaCurso)
         {
             _obtenerCursosFiltrados = obtenerCursosFiltrados;
+            _altaCurso = altaCurso;
         }
         public IActionResult ListadoCursos(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
             var cursos = _obtenerCursosFiltrados.Ejecutar(filtro, opcionMenu, alfabetico, calificacion, docente);
 
             return View(cursos);
+        }
+        public IActionResult AltaCurso()
+        {
+            if (HttpContext.Session.GetString("rolLogueado") == "Docente")
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "Usuarios");
+        }
+        [HttpPost]
+        public IActionResult AltaCurso(CursoAltaDTO curso, List<IFormFile> archivos)
+        {
+            if (HttpContext.Session.GetString("rolLogueado") == "Docente")
+            {
+                try
+                {
+                    _altaCurso.Ejecutar(curso, archivos, HttpContext.Session.GetString("emailLogueado"));
+                    TempData["MensajeAlta"] = "Curso dado de alta exitosamente.";
+                    TempData["ErrorAlta"] = false;
+                    return View(curso);
+                }
+                catch (CursoNombreException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (CursoDescripcionException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (CursoFechaException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (CursoPrecioException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (CursoDificultadException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (CursoTemarioException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (AltaCursoArchivosException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (CursoException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (AltaCursoException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+            }
+            return RedirectToAction("Login", "Usuarios");
         }
     }
 }

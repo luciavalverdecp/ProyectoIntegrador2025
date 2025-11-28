@@ -12,8 +12,11 @@ namespace NextLevel.LogicaNegocio.Entidades
         public string Tema { get; set; }
         public Curso Curso { get; set; }
         public int CursoId { get; set; }
-
         public Temario() { }
+        public Temario(string tema)
+        {
+            Tema = tema;
+        }
         public Temario(string tema, Curso curso)
         {
             Tema = tema;

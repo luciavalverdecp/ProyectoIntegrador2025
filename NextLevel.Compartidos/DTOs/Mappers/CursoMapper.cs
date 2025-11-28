@@ -17,15 +17,42 @@ namespace NextLevel.Compartidos.DTOs.Mappers
                 curso.Id,
                 curso.Nombre,
                 DocenteMapper.ToDocenteNombreDTO(curso.Docente),
-                curso.RutaArchivo,
+                curso.Imagen,
                 curso.Calificacion,
                 curso.Descripcion);
         }
         public static Curso FromCursoVistaPreviaDTO(CursoVistaPreviaDTO cursoVistaPreviaDTO)
         {
             return new Curso(DocenteMapper.FromDocenteNombreDTO(cursoVistaPreviaDTO.DocenteNombreDTO),
-                cursoVistaPreviaDTO.RutaArchivo,
+                cursoVistaPreviaDTO.Imagen,
                 cursoVistaPreviaDTO.Descripcion);
+        }
+
+        public static CursoAltaDTO ToCursoAltaDTO(Curso curso)
+        {
+            return new CursoAltaDTO(curso.Id, 
+                curso.Nombre, 
+                DocenteMapper.ToDocenteNombreDTO(curso.Docente), 
+                curso.Imagen, 
+                curso.FechaInicio, 
+                curso.FechaFin, 
+                curso.Descripcion, 
+                TemarioMapper.ToListaDTO(curso.Temarios), 
+                curso.Precio, 
+                curso.Dificultad);
+        }
+
+        public static Curso FromCursoAltaDTO(CursoAltaDTO cursoAltaDTO)
+        {
+            return new Curso(cursoAltaDTO.Nombre,
+                DocenteMapper.FromDocenteNombreDTO(cursoAltaDTO.DocenteNombreDTO),
+                cursoAltaDTO.Imagen,
+                cursoAltaDTO.FechaInicio,
+                cursoAltaDTO.FechaFin,
+                cursoAltaDTO.Descripcion,
+                TemarioMapper.FromListaDTO(cursoAltaDTO.Temarios),
+                cursoAltaDTO.Precio,
+                cursoAltaDTO.Dificultad);
         }
 
         public static IEnumerable<CursoVistaPreviaDTO> ToListaDTO(IEnumerable<Curso> cursos) 
@@ -34,7 +61,7 @@ namespace NextLevel.Compartidos.DTOs.Mappers
                 curso.Id,
                 curso.Nombre,
                 DocenteMapper.ToDocenteNombreDTO(curso.Docente),
-                curso.RutaArchivo,
+                curso.Imagen,
                 curso.Calificacion,
                 curso.Descripcion));
         }
@@ -44,7 +71,17 @@ namespace NextLevel.Compartidos.DTOs.Mappers
             return cursos.Select(curso => new CursoNombreDTO(curso.Nombre));
         }
 
-        
+        public static CursoNombreDTO ToCursoNombreDTO(Curso curso)
+        {
+            return new CursoNombreDTO(curso.Nombre);
+        }
+        public static Curso FromCursoNombreDTO(CursoNombreDTO curso)
+        {
+            return new Curso()
+            {
+                Nombre = curso.Nombre
+            };
+        }
     }
 
 }

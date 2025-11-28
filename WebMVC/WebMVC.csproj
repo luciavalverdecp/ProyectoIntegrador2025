@@ -19,7 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\js\Cursos\" />
+    <Folder Include="wwwroot\css\Docentes\" />
+    <Folder Include="wwwroot\js\Docentes\" />
   </ItemGroup>
 
 </Project>
