@@ -138,5 +138,10 @@ namespace NextLevel.AccesoDatos.EF
         {
             return _db.Cursos.Where(c => c.Nombre == nombre).FirstOrDefault();
         }
+
+        public IEnumerable<Curso> GetByDocente(Usuario usuario)
+        {
+            return _db.Cursos.Where(c => c.Docente.Email == usuario.Email).ToList();
+        }
     }
 }
