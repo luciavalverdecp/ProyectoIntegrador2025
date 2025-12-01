@@ -37,19 +37,25 @@ namespace WebMVC.Controllers
 
         public IActionResult VisualizarCurso(string nombreCurso)
         {
-            try
+            if(HttpContext.Session.GetString("rolLogueado") == "Estudiante" ||
+                HttpContext.Session.GetString("rolLogueado") == "Docente")
             {
-                var cursosDTO = _obtenerCurso.Ejecturar(nombreCurso);
-                return View(cursosDTO);
+                try
+                {
+                    var cursosDTO = _obtenerCurso.Ejecturar(nombreCurso);
+                    return View(cursosDTO);
+                }
+                catch (CursoException ex)
+                {
+                    ViewBag.Error = ex.Message;
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error = ex.Message;
+                }
+                return View();
             }
-            catch(CursoException ex)
-            {
-                ViewBag.Error = ex.Message;
-            }catch(Exception ex)
-            {
-                ViewBag.Error = ex.Message;
-            }
-            return View();
+            return Redirect("/Usuarios/Loguin");
         }
     }
 }

@@ -151,7 +151,7 @@ body {
     border-radius: 10px;
 }
 .semanas-scroll {
-    max-height: 350px; /* Ajustable */
+    max-height: 350px; 
     overflow-y: auto;
     padding-right: 5px;
 }
@@ -166,7 +166,7 @@ body {
     }
 
     .semanas-scroll::-webkit-scrollbar-thumb {
-        background: #b9b9ff; /* pastel */
+        background: #b9b9ff; 
         border-radius: 10px;
     }
 .semana-btn.active {
@@ -175,3 +175,29 @@ body {
     font-weight: bold;
     border-color: #b19cd9;
 }
+
+.cal-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: var(--pastel-purple);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .cal-btn:hover {
+        background: var(--pastel-blue);
+        transform: scale(1.1);
+    }
+
+    .cal-btn:active {
+        transform: scale(0.95);
+    }
+
+
