@@ -200,4 +200,24 @@ body {
         transform: scale(0.95);
     }
 
+.agregar-material-btn {
+    background-color: #A7C7E7; /* Azul pastel */
+    color: #3A3A3A;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    transition: 0.2s ease-in-out;
+}
+
+    .agregar-material-btn:hover {
+        background-color: #91b8dc; /* Un poquito más oscuro */
+        transform: translateY(-1px);
+    }
+
+    .agregar-material-btn:focus,
+    .agregar-material-btn:active {
+        outline: none !important;
+        box-shadow: none !important; /* Quita el borde azul */
+    }
 
