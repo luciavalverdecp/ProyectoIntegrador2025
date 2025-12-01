@@ -110,6 +110,10 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Property<DateTime>("FechaInicio")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("FechasClases")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ForoId")
                         .HasColumnType("int");
 
