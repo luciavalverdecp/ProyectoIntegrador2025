@@ -37,6 +37,57 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.ToTable("CursoEstudiante");
                 });
 
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.AltaCurso", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CursoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CursoId");
+
+                    b.ToTable("AltaCursos");
+                });
+
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Archivo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AltaCursoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NombreArchivo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Peso")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Ruta")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AltaCursoId");
+
+                    b.ToTable("Archivo");
+                });
+
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Calificacion", b =>
                 {
                     b.Property<int>("Id")
@@ -101,7 +152,13 @@ namespace NextLevel.AccesoDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Dificultad")
+                        .HasColumnType("int");
+
                     b.Property<int>("DocenteId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Duracion")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("FechaFin")
@@ -117,13 +174,16 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Property<int>("ForoId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Imagen")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RutaArchivo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("Precio")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -407,6 +467,24 @@ namespace NextLevel.AccesoDatos.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.AltaCurso", b =>
+                {
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Curso", "Curso")
+                        .WithMany()
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Curso");
+                });
+
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Archivo", b =>
+                {
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.AltaCurso", null)
+                        .WithMany("Archivos")
+                        .HasForeignKey("AltaCursoId");
+                });
+
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Calificacion", b =>
                 {
                     b.HasOne("NextLevel.LogicaNegocio.Entidades.Estudiante", "Estudiante")
@@ -528,6 +606,11 @@ namespace NextLevel.AccesoDatos.Migrations
                         .IsRequired();
 
                     b.Navigation("Curso");
+                });
+
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.AltaCurso", b =>
+                {
+                    b.Navigation("Archivos");
                 });
 
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Curso", b =>

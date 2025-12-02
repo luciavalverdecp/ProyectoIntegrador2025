@@ -96,7 +96,7 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         #endregion
 
-        #region Metodos
+            #region Metodos
         public void ActualizarSemanas()
         {
             if (Semanas == null)
@@ -130,8 +130,6 @@ namespace NextLevel.LogicaNegocio.Entidades
                 });
             }
         }
-
-
         private int CalcularDuracion()
         {
             int meses = (FechaFin.Year - FechaInicio.Year) * 12

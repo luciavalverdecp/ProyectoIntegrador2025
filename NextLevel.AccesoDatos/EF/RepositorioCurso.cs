@@ -19,7 +19,15 @@ namespace NextLevel.AccesoDatos.EF
         }
         public void Add(Curso obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _db.Cursos.Add(obj);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new CursoException("Error al dar de alta el curso");
+            }
         }
 
         public IEnumerable<Curso> FindAll()
@@ -131,16 +139,16 @@ namespace NextLevel.AccesoDatos.EF
 
         public void Update(Curso obj)
         {
-            var cursoOriginal = _db.Cursos.Find(obj.Id);
+            var curso = _db.Cursos.Find(obj.Id);
             try
             {
-                cursoOriginal.Semanas = obj.Semanas;
-                _db.Cursos.Update(cursoOriginal);
+                curso.Temarios = obj.Temarios;
+                _db.Cursos.Update(curso);
                 _db.SaveChanges();
             }
             catch (Exception ex)
             {
-                throw;
+                throw new CursoException("Error al actualizar el curso", ex);
             }
         }
 

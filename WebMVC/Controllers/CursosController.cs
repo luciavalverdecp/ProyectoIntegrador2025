@@ -4,6 +4,9 @@ using NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.AltaCurso;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 
 namespace WebMVC.Controllers
 {
@@ -13,16 +16,18 @@ namespace WebMVC.Controllers
         private readonly IObtenerCursosDocente _obtenerCursosDocente;
         private readonly IObtenerCurso _obtenerCurso;
         private readonly IObtenerMisCursos obtenerMisCursos;
-        public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados, 
+		private readonly IAltaCurso _altaCurso;
+		public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados, 
             IObtenerCursosDocente obtenerCursosDocente,
              IObtenerCurso obtenerCurso, 
-             IObtenerMisCursos obtenerMisCursos
-             )
+             IObtenerMisCursos obtenerMisCursos, 
+             IAltaCurso altaCurso)
         {
             _obtenerCursosFiltrados = obtenerCursosFiltrados;
             _obtenerCursosDocente = obtenerCursosDocente;
             _obtenerCurso = obtenerCurso;
             this.obtenerMisCursos = obtenerMisCursos;
+            _altaCurso = altaCurso;
         }
         public IActionResult ListadoCursos(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
@@ -71,6 +76,83 @@ namespace WebMVC.Controllers
             {
                 var misCursos = obtenerMisCursos.Ejecutar(HttpContext.Session.GetString("emailLogueado"));
                 return View(misCursos);
+            }
+            return RedirectToAction("Login", "Usuarios");
+        }
+        public IActionResult AltaCurso()
+        {
+            if (HttpContext.Session.GetString("rolLogueado") == "Docente")
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "Usuarios");
+        }
+        [HttpPost]
+        public async Task<IActionResult> AltaCurso(CursoAltaDTO curso, List<IFormFile> archivos, IFormFile imagen)
+        {
+            if (HttpContext.Session.GetString("rolLogueado") == "Docente")
+            {
+                try
+                {
+                    await _altaCurso.Ejecutar(curso, archivos, HttpContext.Session.GetString("emailLogueado"), imagen);
+                    TempData["MensajeAlta"] = "Curso dado de alta exitosamente.";
+                    TempData["ErrorAlta"] = false;
+                    return View(curso);
+                }
+                catch (CursoNombreException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (CursoDescripcionException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (CursoFechaException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (CursoPrecioException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (CursoDificultadException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (CursoTemarioException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (AltaCursoArchivosException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (CursoException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
+                catch (AltaCursoException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
             }
             return RedirectToAction("Login", "Usuarios");
         }

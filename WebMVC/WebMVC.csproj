@@ -18,4 +18,9 @@
     <ProjectReference Include="..\NextLevel.LogicaAplicacion\NextLevel.LogicaAplicacion.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\Docentes\" />
+    <Folder Include="wwwroot\js\Docentes\" />
+  </ItemGroup>
+
 </Project>
