@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NextLevel.Compartidos.DTOs.Cursos;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
+using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
 
 namespace WebMVC.Controllers
@@ -10,13 +12,17 @@ namespace WebMVC.Controllers
         private readonly IObtenerCursosFiltrados _obtenerCursosFiltrados;
         private readonly IObtenerCursosDocente _obtenerCursosDocente;
         private readonly IObtenerCurso _obtenerCurso;
+        private readonly IObtenerMisCursos obtenerMisCursos;
         public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados, 
             IObtenerCursosDocente obtenerCursosDocente,
-             IObtenerCurso obtenerCurso)
+             IObtenerCurso obtenerCurso, 
+             IObtenerMisCursos obtenerMisCursos
+             )
         {
             _obtenerCursosFiltrados = obtenerCursosFiltrados;
             _obtenerCursosDocente = obtenerCursosDocente;
             _obtenerCurso = obtenerCurso;
+            this.obtenerMisCursos = obtenerMisCursos;
         }
         public IActionResult ListadoCursos(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
@@ -56,6 +62,17 @@ namespace WebMVC.Controllers
                 return View();
             }
             return Redirect("/Usuarios/Loguin");
+        }
+
+
+        public IActionResult ListadoCursosEstudiante()
+        {
+            if (HttpContext.Session.GetString("rolLogueado") == "Estudiante")
+            {
+                var misCursos = obtenerMisCursos.Ejecutar(HttpContext.Session.GetString("emailLogueado"));
+                return View(misCursos);
+            }
+            return RedirectToAction("Login", "Usuarios");
         }
     }
 }

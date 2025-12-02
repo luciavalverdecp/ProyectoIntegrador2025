@@ -37,10 +37,10 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (Context.Session.GetString("rolLogueado") == "Estudiante")
                         {
-                            if (!(currentController == "Estudiantes" && currentAction == "MisCursos"))
+                            if (!(currentController == "Estudiantes" && currentAction == "ListadoCursosEstudiante"))
                             {
                                 <li class="nav-item">
-                                    <a class="navbar-brand" asp-area="" asp-controller="Estudiantes" asp-action="MisCursos">Mis cursos</a>
+                                    <a class="navbar-brand" asp-area="" asp-controller="Cursos" asp-action="ListadoCursosEstudiante">Mis cursos</a>
                                 </li>
                             }
                             if (!(currentController == "Cursos" && currentAction == "ListadoCursos"))
