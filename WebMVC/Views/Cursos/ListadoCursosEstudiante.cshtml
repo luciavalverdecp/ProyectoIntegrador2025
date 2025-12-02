@@ -48,7 +48,7 @@
                                     <span class="curso-calificacion">
                                         ⭐ @curso.Calificacion.ToString("0.0")
                                     </span>
-                                    <a asp-action="Detalles" asp-route-id="@curso.Id" class="btn btn-vermas rounded-pill">
+                                    <a asp-controller="Cursos" asp-action="VisualizarCurso" asp-route-nombreCurso="@curso.Nombre" class="btn btn-vermas rounded-pill">
                                         Ver más
                                     </a>
                                 </div>

@@ -82,6 +82,23 @@ namespace NextLevel.Compartidos.DTOs.Mappers
                 Nombre = curso.Nombre
             };
         }
+        public static CursoDTO ToCursoDTO(Curso curso)
+        {
+            return new CursoDTO(curso.Nombre,
+                DocenteMapper.ToDocenteNombreDTO(curso.Docente),
+                curso.Imagen,
+                curso.Calificacion,
+                curso.Descripcion,
+                curso.Pruebas,
+                curso.Temarios,
+                curso.FechasClases,
+                curso.Estudiantes,
+                curso.Duracion,
+                curso.Foro, 
+                curso.Dificultad,
+                curso.Precio,
+                curso.Semanas);
+        }
     }
 
 }

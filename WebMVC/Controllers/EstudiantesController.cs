@@ -7,29 +7,17 @@ namespace WebMVC.Controllers
 {
     public class EstudiantesController : Controller
     {
-        private readonly IObtenerMisCursos obtenerMisCursos;
         private readonly IObtenerEstudiante obtenerEstudiante;
         private readonly ICursosTerminados cursosTerminados;
 
-        public EstudiantesController(IObtenerMisCursos obtenerMisCursos, 
-            IObtenerEstudiante obtenerEstudiante, 
+        public EstudiantesController(IObtenerEstudiante obtenerEstudiante, 
             ICursosTerminados terminoCurso
             )
         {
-            this.obtenerMisCursos = obtenerMisCursos;
             this.obtenerEstudiante = obtenerEstudiante;
             this.cursosTerminados = terminoCurso;
         }
 
-        public IActionResult MisCursos()
-        {
-            if(HttpContext.Session.GetString("rolLogueado") == "Estudiante")
-            {
-                var misCursos = obtenerMisCursos.Ejecutar(HttpContext.Session.GetString("emailLogueado"));
-                return View(misCursos);
-            }
-            return RedirectToAction("Login", "Usuarios");    
-        }
 
         public IActionResult Perfil()
         {

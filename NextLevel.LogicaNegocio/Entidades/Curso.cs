@@ -99,15 +99,29 @@ namespace NextLevel.LogicaNegocio.Entidades
             #region Metodos
         public void ActualizarSemanas()
         {
-            if (FechaInicio > DateTime.Now)
+            if (Semanas == null)
+                Semanas = new List<Semana>();
+
+            DateTime hoy = DateTime.Today;
+
+            if (FechaInicio > hoy)
                 return;
 
-            int semanasTranscurridas = (int)((DateTime.Now - FechaInicio).TotalDays / 7) + 1;
+            int semanasTranscurridas = (int)((hoy - FechaInicio.Date).TotalDays / 7) + 1;
+
+            if (Semanas.Count == 0)
+            {
+                Semanas.Add(new Semana
+                {
+                    Numero = 1,
+                    FechaInicio = FechaInicio.Date
+                });
+            }
 
             while (Semanas.Count < semanasTranscurridas)
             {
                 int numeroNueva = Semanas.Count + 1;
-                DateTime fechaInicioNueva = FechaInicio.AddDays((numeroNueva - 1) * 7);
+                DateTime fechaInicioNueva = FechaInicio.AddDays((numeroNueva - 1) * 7).Date;
 
                 Semanas.Add(new Semana
                 {

@@ -10,6 +10,7 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
 {
     public interface IRepositorioDocente : IRepositorio<Docente>
     {
-        Docente FindByEmail(string email);
+        Usuario FindByEmail(string email);
+        Docente GetDocenteByNroDocente(int nroDocente);
     }
 }

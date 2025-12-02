@@ -21,7 +21,7 @@
     <div class="container">
 
         <div class="top-tools">
-            <h2 class="text-center fw-bold mb-5 titulo-cursos d-none d-lg-block ">Nuestros Cursos</h2>
+            <h2 class="text-center fw-bold mb-5 titulo-cursos d-none d-lg-block ">Tus Cursos</h2>
             <div class="search-filter-wrapper">
                 <div class="order-menu" id="orderMenu">
                     <div class="hamburger" id="hamburgerBtn">
@@ -30,8 +30,8 @@
                         <span></span>
                     </div>
                     <ul class="order-options" id="orderOptions">
-                        <!-- Nombre -->
-                        <li data-opcion="Nombre" class="has-submenu" data-url="/Cursos/ListadoCursos" >
+
+                        <li data-opcion="Nombre" class="has-submenu" data-url="/Cursos/ListadoCursos">
                             Nombre
                             <div class="submenu">
                                 <button data-sort="asc">A-Z</button>
@@ -39,7 +39,6 @@
                             </div>
                         </li>
 
-                        <!-- Calificación -->
                         <li data-opcion="Calificacion" class="has-submenu" data-url="/Cursos/ListadoCursos">
                             Calificación
                             <div class="submenu">
@@ -50,7 +49,6 @@
                             </div>
                         </li>
 
-                        <!-- Docente -->
                         <li data-opcion="Docente" class="has-submenu" data-url="/Cursos/ListadoCursos">
                             Docente
                             <div class="submenu">
@@ -60,7 +58,6 @@
                         </li>
                     </ul>
                 </div>
-
 
                 <form method="get" asp-action="ListadoCursos">
                     <div class="search-box">
@@ -76,50 +73,52 @@
 
         <h2 class="text-center fw-bold mb-5 titulo-cursos d-lg-none d-block">Nuestros Cursos</h2>
 
-        
+        <div class="row g-4 justify-content-center">
 
-        @if (Model == null || !Model.Any())
-        {
-            <div class="text-center mt-5 mensaje-sin-cursos">
-                <h5>No hay cursos disponibles actualmente 😔</h5>
-                <p>Vuelve más adelante para descubrir nuevos contenidos.</p>
-            </div>
-        }
-        else
-        {
-            <div class="row g-4 justify-content-center">
-                @foreach (var curso in Model)
-                {
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                        <div class="card curso-card h-100 shadow-sm border-0">
-                            @if (!string.IsNullOrEmpty(curso.Imagen))
-                            {
-                                <img src="@curso.Imagen" alt="@curso.Nombre" class="curso-img card-img-top" />
-                            }
-                            else
-                            {
-                                <div class="curso-img card-img-top d-flex align-items-center justify-content-center bg-pastel-placeholder">
-                                    <span class="text-muted">Sin imagen</span>
-                                </div>
-                            }
+            @foreach (var curso in Model)
+            {
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="card curso-card h-100 shadow-sm border-0">
+                        @if (!string.IsNullOrEmpty(curso.RutaArchivo))
+                        {
+                            <img src="@curso.RutaArchivo" alt="@curso.Nombre" class="curso-img card-img-top" />
+                        }
+                        else
+                        {
+                            <div class="curso-img card-img-top d-flex align-items-center justify-content-center bg-pastel-placeholder">
+                                <span class="text-muted">Sin imagen</span>
+                            </div>
+                        }
 
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="curso-titulo fw-semibold">@curso.Nombre</h5>
-                                <h6 class="docente">@curso.DocenteNombreDTO.NombreCompleto</h6>
-                                <p class="curso-descripcion flex-grow-1">@curso.Descripcion</p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <span class="curso-calificacion">
-                                        ⭐ @curso.Calificacion.ToString("0.0")
-                                    </span>
-                                    <a asp-action="Detalles" asp-route-id="@curso.Nombre" class="btn btn-vermas rounded-pill">
-                                        Ver más
-                                    </a>
-                                </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="curso-titulo fw-semibold">@curso.Nombre</h5>
+                            <h6 class="docente">@curso.DocenteNombreDTO.NombreCompleto</h6>
+                            <p class="curso-descripcion flex-grow-1">@curso.Descripcion</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="curso-calificacion">
+                                    ⭐ @curso.Calificacion.ToString("0.0")
+                                </span>
+                                <a asp-action="VisualizarCurso"
+                                   asp-route-nombreCurso="@curso.Nombre"
+                                   class="btn btn-vermas rounded-pill">
+                                    Ver más
+                                </a>
                             </div>
                         </div>
                     </div>
-                }
+                </div>
+            }
+
+            <!-- CARD PARA AGREGAR UN NUEVO CURSO -->
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <a asp-controller="Cursos" asp-action="AltaCurso"
+                   class="card add-card h-100 shadow-sm border-0 d-flex align-items-center justify-content-center">
+                    <div class="add-icon">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                </a>
+
             </div>
-        }
+        </div>
     </div>
 </div>

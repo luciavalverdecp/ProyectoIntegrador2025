@@ -1,5 +1,6 @@
 ﻿using NextLevel.Compartidos.DTOs.Docentes;
 using NextLevel.LogicaNegocio.Entidades;
+using NextLevel.LogicaNegocio.ValueObject.Docente;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +15,14 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         {
             return new DocenteNombreDTO(
                 docente.NombreCompleto,
-                docente.NroDocente);
+                docente.NroDocente.NroDeDocente);
         }
         public static Docente FromDocenteNombreDTO(DocenteNombreDTO docenteNombreDTO)
         {
             return new Docente()
             {
                 NombreCompleto = docenteNombreDTO.NombreCompleto,
-                NroDocente = docenteNombreDTO.NroDocente
+                NroDocente = new NroDocente(docenteNombreDTO.NroDocente)
             };
         }
     }

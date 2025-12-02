@@ -154,7 +154,22 @@ namespace NextLevel.AccesoDatos.EF
 
         public Curso FindByNombre(string nombre)
         {
-            return _db.Cursos.Where(c => c.Nombre == nombre).FirstOrDefault();
+            var curso = _db.Cursos.Where(c => c.Nombre == nombre)
+                .Include(c => c.Pruebas)
+                .Include(c => c.Docente)
+                .Include(c => c.Temarios)
+                .Include(c => c.Estudiantes)
+                .Include(c => c.Foro)
+                .Include(c => c.Semanas)
+                    .ThenInclude(s => s.Materiales).FirstOrDefault();
+            curso.ActualizarSemanas();
+            this.Update(curso);
+            return curso;
+        }
+
+        public IEnumerable<Curso> GetByDocente(Usuario usuario)
+        {
+            return _db.Cursos.Where(c => c.Docente.Email == usuario.Email).ToList();
         }
     }
 }

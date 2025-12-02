@@ -12,10 +12,7 @@ namespace NextLevel.LogicaNegocio.Entidades
         public int Id { get; set; }
         public List<Mensaje> Mensajes { get; set; }
 
-        public Foro() 
-        {
-            Mensajes = new List<Mensaje>();
-        }
+        
 
     }
 }

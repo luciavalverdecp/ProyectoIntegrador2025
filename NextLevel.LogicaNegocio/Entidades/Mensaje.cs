@@ -11,6 +11,8 @@ namespace NextLevel.LogicaNegocio.Entidades
         public int Id { get; set; }
         public Usuario Usuario {  get; set; }
         public string mensaje {  get; set; }
+        public bool EsDelEstudiante => Usuario != null && Usuario.Rol == Rol.Estudiante;
+
         public Mensaje() { }
         public Mensaje(Usuario usuario, string mensaje)
         {

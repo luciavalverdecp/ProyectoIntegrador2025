@@ -60,7 +60,7 @@
     line-height: 1.4;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 3; 
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 }
 
@@ -116,3 +116,31 @@
         margin-top: 0.5rem;
         font-size: 0.95rem;
     }
+
+/* --- Tarjeta para agregar curso --- */
+.add-card {
+    background: #ffffff;
+    border: 2px dashed #b6c8d6;
+    border-radius: 20px;
+    transition: all 0.25s ease-in-out;
+    cursor: pointer;
+    min-height: 350px;
+}
+
+    .add-card .add-icon {
+        font-size: 3rem;
+        color: #7fb3d5;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .add-card:hover {
+        background: #eaf6ff;
+        border-color: #7fb3d5;
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+        .add-card:hover .add-icon {
+            color: #4a89ad;
+            transform: scale(1.12);
+        }
