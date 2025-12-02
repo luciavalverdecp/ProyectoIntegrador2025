@@ -34,13 +34,21 @@ namespace WebMVC
 
             builder.Services.AddSingleton(x =>
             {
-                // Intentamos leer la clave desde appsettings.json
+                // Leer desde appsettings.json
                 string connectionString = builder.Configuration["Azure:BlobStorage"];
 
-                // Si está vacía, usamos la variable de entorno
+                // Si está vacía, intentar desde variable de entorno
                 if (string.IsNullOrEmpty(connectionString))
                 {
                     connectionString = Environment.GetEnvironmentVariable("AZURE_BLOB_STORAGE");
+                }
+
+                // Si sigue siendo nula, lanzar un error claro
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    throw new InvalidOperationException(
+                        "La cadena de conexión de Azure Blob Storage no está configurada. " +
+                        "Define AZURE_BLOB_STORAGE en tu entorno o en appsettings.json.");
                 }
 
                 return new BlobServiceClient(connectionString);

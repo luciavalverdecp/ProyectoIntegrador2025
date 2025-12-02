@@ -21,6 +21,18 @@ h2 {
     color: #444;
 }
 
+.btn-volver {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    border: none;
+    color: #ff8c6b;
+    font-size: 14px;
+    background-color: transparent;
+    cursor: pointer;
+    z-index: 10;
+}
+
 form {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -141,20 +153,6 @@ input, select, textarea {
 
 .form-group.half {
     flex: 1;
-}
-
-/* NUEVO LAYOUT */
-form {
-    display: flex;
-    gap: 25px;
-}
-
-.left-column,
-.right-column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
 }
 
 /* Temario input + botón en fila */

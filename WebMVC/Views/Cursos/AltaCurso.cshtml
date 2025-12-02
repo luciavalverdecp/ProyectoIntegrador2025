@@ -1,157 +1,150 @@
 ﻿@model NextLevel.Compartidos.DTOs.Cursos.CursoAltaDTO
 
 @{
-    ViewData["Title"] = "AltaCurso";
+	ViewData["Title"] = "AltaCurso";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/Cursos/AltaCurso.css" />
+	<link rel="stylesheet" href="~/css/Cursos/AltaCurso.css" />
 }
 
 @section ScriptsJs {
-    <script src="~/js/Cursos/AltaCurso.js"></script>
+	<script src="~/js/Cursos/AltaCurso.js"></script>
 }
 
 <body>
 
-    <div class="card">
-        <h2>Postulación de Alta de Curso</h2>
+	<div class="card">
+		<button class="btn-volver" onclick="window.location.href='@Url.Action("ListadoCursosDocente","Docentes")'">⟵ Volver</button>
+		<h2>Postulación de Alta de Curso</h2>
 
-        <form id="cursoForm"
-              asp-action="AltaCurso"
-              asp-controller="Cursos"
-              method="post"
-              enctype="multipart/form-data">
+		<form id="cursoForm"
+			  asp-action="AltaCurso"
+			  asp-controller="Cursos"
+			  method="post"
+			  enctype="multipart/form-data">
 
-            <!-- NOMBRE -->
-            <div class="form-group">
-                <label>Nombre del Curso:</label>
-                <input type="text" id="nombre" name="Nombre"
-                       value="@(Model?.Nombre ?? "")" />
-            </div>
+			<!-- NOMBRE -->
+			<div class="form-group">
+				<label>Nombre del Curso:</label>
+				<input type="text" id="nombre" name="Nombre"
+					   value="@(Model?.Nombre ?? "")" />
+			</div>
 
-            <!-- FECHAS -->
-            <div class="fechas-row">
-                <div class="form-group half">
-                    <label>Fecha de Inicio:</label>
-                    <input type="date" id="fechaInicio" name="FechaInicio"
-                           value="@(Model != null && Model.FechaInicio != default(DateTime)
-                            ? Model.FechaInicio.ToString("yyyy-MM-dd")
-                            : "")" />
-                </div>
+			<!-- FECHAS -->
+			<div class="fechas-row">
+				<div class="form-group half">
+					<label>Fecha de Inicio:</label>
+					<input type="date" id="fechaInicio" name="FechaInicio"
+						   value="@(Model != null && Model.FechaInicio != default(DateTime)
+							   ? Model.FechaInicio.ToString("yyyy-MM-dd")
+							   : "")" />
+				</div>
 
-                <div class="form-group half">
-                    <label>Fecha de Fin:</label>
-                    <input type="date" id="fechaFin" name="FechaFin"
-                           value="@(Model != null && Model.FechaFin != default(DateTime)
-                            ? Model.FechaFin.ToString("yyyy-MM-dd")
-                            : "")" />
-                </div>
-            </div>
+				<div class="form-group half">
+					<label>Fecha de Fin:</label>
+					<input type="date" id="fechaFin" name="FechaFin"
+						   value="@(Model != null && Model.FechaFin != default(DateTime)
+							   ? Model.FechaFin.ToString("yyyy-MM-dd")
+							   : "")" />
+				</div>
+			</div>
 
-            <!-- DESCRIPCION -->
-            <div class="form-group full">
-                <label>Descripción:</label>
-                <textarea id="descripcion" name="Descripcion" rows="4">@(
-                    Model?.Descripcion ?? ""
-                )</textarea>
-            </div>
+			<!-- DESCRIPCION -->
+			<div class="form-group full">
+				<label>Descripción:</label>
+				<textarea id="descripcion" name="Descripcion" rows="4">@(
+					Model?.Descripcion ?? ""
+				)</textarea>
+			</div>
 
-            <!-- IMAGEN DEL CURSO -->
-            <div class="form-group full">
-                <label>Imagen del Curso:</label>
-                <input type="file" id="imagenCurso" name="imagen" accept="image/*" />
-            </div>
+			<!-- IMAGEN DEL CURSO -->
+			<div class="form-group full">
+				<label>Imagen del Curso:</label>
+				<input type="file" id="imagenCurso" name="imagen" accept="image/*" />
+			</div>
 
-            <!-- DIFICULTAD -->
-            <div class="form-group">
-                <label>Dificultad:</label>
+			<!-- DIFICULTAD -->
+			<div class="form-group">
+				<label>Dificultad:</label>
 
-                <input type="hidden" id="dificultad" name="Dificultad"
-                       value="@(Model != null ? (int)Model.Dificultad : 0)" />
+				<input type="hidden" id="dificultad" name="Dificultad"
+					   value="@(Model != null ? (int)Model.Dificultad : 0)" />
 
-                <div class="dificultad-buttons">
-                    <button type="button"
-                            class="dif-btn @(Model != null && (int)Model.Dificultad == 1 ? "active" : "")"
-                            data-value="1">
-                        Básico
-                    </button>
+				<div class="dificultad-buttons">
+					<button type="button"
+							class="dif-btn @(Model != null && (int)Model.Dificultad == 1 ? "active" : "")"
+							data-value="1">
+						Básico
+					</button>
 
-                    <button type="button"
-                            class="dif-btn @(Model != null && (int)Model.Dificultad == 2 ? "active" : "")"
-                            data-value="2">
-                        Intermedio
-                    </button>
+					<button type="button"
+							class="dif-btn @(Model != null && (int)Model.Dificultad == 2 ? "active" : "")"
+							data-value="2">
+						Intermedio
+					</button>
 
-                    <button type="button"
-                            class="dif-btn @(Model != null && (int)Model.Dificultad == 3 ? "active" : "")"
-                            data-value="3">
-                        Avanzado
-                    </button>
-                </div>
+					<button type="button"
+							class="dif-btn @(Model != null && (int)Model.Dificultad == 3 ? "active" : "")"
+							data-value="3">
+						Avanzado
+					</button>
+				</div>
+			</div>
 
-            </div>
+			<!-- TEMARIO -->
+			<div class="form-group full">
+				<label>Temario:</label>
+				<div class="temario-box">
+					<input type="text" id="temaInput" placeholder="Ingrese un tema..." />
+					<button type="button" id="agregarTema">Agregar</button>
 
-            <!-- TEMARIO -->
-            <div class="form-group full">
-                <label>Temario:</label>
-                <div class="temario-box">
-                    <input type="text" id="temaInput" placeholder="Ingrese un tema..." />
-                    <button type="button" id="agregarTema">Agregar</button>
+					<ul id="listaTemas">
+						@if (Model?.Temarios != null)
+						{
+							foreach (var t in Model.Temarios)
+							{
+								<li>@t.Tema <button type="button" class="eliminar">X</button></li>
+							}
+						}
+					</ul>
+				</div>
 
-                    <ul id="listaTemas">
-                        @if (Model?.Temarios != null)
-                        {
-                            foreach (var t in Model.Temarios)
-                            {
-                                <li>
-                                    @t.Tema
-                                    <button type="button" class="eliminar">X</button>
-                                </li>
-                            }
-                        }
-                    </ul>
-                </div>
+				<div id="temariosContainer"></div>
+			</div>
 
-                <div id="temariosContainer"></div>
-            </div>
+			<!-- ARCHIVOS -->
+			<div class="form-group full">
+				<label>Documentación:</label>
+				<input type="file" id="documento" name="archivos" multiple />
+			</div>
 
-            <!-- ARCHIVOS -->
-            <div class="form-group full">
-                <label>Documentación:</label>
-                <input type="file" id="documento" name="archivos" multiple />
-            </div>
+			<!-- PRECIO -->
+			<div class="form-group">
+				<label>Precio (UYU):</label>
+				<input type="number" id="precio" name="Precio" min="0"
+					   value="@(Model?.Precio ?? 0)" />
+			</div>
 
-            <!-- PRECIO -->
-            <div class="form-group">
-                <label>Precio (UYU):</label>
-                <input type="number" id="precio" name="Precio" min="0"
-                       value="@(Model?.Precio ?? 0)" />
-            </div>
+			<!-- MENSAJES -->
+			<div class="mensajes-form">
+				@if (TempData["ErrorAlta"] != null && !(bool)TempData["ErrorAlta"])
+				{
+					<div class="alert alert-success text-center mb-2 mt-3">@TempData["MensajeAlta"]</div>
+				}
 
-            <!-- MENSAJES (separado del precio) -->
-            <div class="mensajes-form">
-                @if (TempData["ErrorAlta"] != null && !(bool)TempData["ErrorAlta"])
-                {
-                    <div class="alert alert-success text-center mb-2 mt-3">
-                        @TempData["MensajeAlta"]
-                    </div>
-                }
+				@if (TempData["ErrorAlta"] != null && (bool)TempData["ErrorAlta"])
+				{
+					<div class="alert alert-danger text-center mb-2 mt-3">@TempData["MensajeAlta"]</div>
+				}
+			</div>
 
-                @if (TempData["ErrorAlta"] != null && (bool)TempData["ErrorAlta"])
-                {
-                    <div class="alert alert-danger text-center mb-2 mt-3">
-                        @TempData["MensajeAlta"]
-                    </div>
-                }
-            </div>
+			<!-- BOTÓN -->
+			<button class="submit-btn" type="submit">Enviar Solicitud</button>
 
-            <!-- BOTÓN -->
-            <button class="submit-btn" type="submit">Enviar Solicitud</button>
+		</form>
 
-        </form>
-
-    </div>
+	</div>
 
 </body>
 </html>
