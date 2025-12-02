@@ -34,9 +34,18 @@ namespace WebMVC
 
             builder.Services.AddSingleton(x =>
             {
+                // Intentamos leer la clave desde appsettings.json
                 string connectionString = builder.Configuration["Azure:BlobStorage"];
+
+                // Si está vacía, usamos la variable de entorno
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    connectionString = Environment.GetEnvironmentVariable("AZURE_BLOB_STORAGE");
+                }
+
                 return new BlobServiceClient(connectionString);
             });
+
 
             //REPOSITORIOS
             builder.Services.AddScoped<IRepositorioAdministrador, RepositorioAdministrador>();
