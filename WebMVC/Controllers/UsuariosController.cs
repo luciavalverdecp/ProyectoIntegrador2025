@@ -47,7 +47,7 @@ namespace WebMVC.Controllers
                 }
                 else if(usuario.Rol == Rol.Docente)
                 {
-                    return RedirectToAction("ListadoCursosDocente", "Cursos");//TODO redireccionar a mis cursos del docente
+                    return RedirectToAction("ListadoCursosDocente", "Cursos");
                 }
                 else
                 {
