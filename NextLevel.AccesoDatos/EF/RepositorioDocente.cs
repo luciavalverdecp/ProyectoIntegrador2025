@@ -25,6 +25,11 @@ namespace NextLevel.AccesoDatos.EF
             throw new NotImplementedException();
         }
 
+        public Docente FindByEmail(string email)
+        {
+            return _db.Docentes.Where(u => u.Email == email).FirstOrDefault();
+        }
+
         public Docente FindById(int id)
         {
             throw new NotImplementedException();

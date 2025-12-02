@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace NextLevel.LogicaNegocio.InterfacesRepositorios
 {
-    public interface IRepositorioDocente : IRepositorio<Docente>
+    public interface IRepositorioAltaCurso : IRepositorio<AltaCurso>
     {
-        Docente FindByEmail(string email);
     }
 }

@@ -8,6 +8,7 @@ using NextLevel.LogicaNegocio.InterfacesRepositorios;
 using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
+using Azure.Storage.Blobs;
 
 namespace WebMVC
 {
@@ -31,6 +32,12 @@ namespace WebMVC
             builder.Services.AddDbContext<NextLevelContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("ConexionNextLevel")));
 
+            builder.Services.AddSingleton(x =>
+            {
+                string connectionString = builder.Configuration["Azure:BlobStorage"];
+                return new BlobServiceClient(connectionString);
+            });
+
             //REPOSITORIOS
             builder.Services.AddScoped<IRepositorioAdministrador, RepositorioAdministrador>();
             builder.Services.AddScoped<IRepositorioCambioRol, RepositorioCambioRol>();
@@ -43,6 +50,7 @@ namespace WebMVC
             builder.Services.AddScoped<IRepositorioMensajeria, RepositorioMensajeria>();
             builder.Services.AddScoped<IRepositorioSemana, RepositorioSemana>();
             builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
+            builder.Services.AddScoped<IRepositorioAltaCurso, RepositorioAltaCurso>();
 
             //CASOS DE USO
             builder.Services.AddScoped<IRegistroEstudiante, RegistroEstudiante>();
@@ -52,6 +60,7 @@ namespace WebMVC
             builder.Services.AddScoped<IObtenerMisCursos, ObtenerMisCursos>();
             builder.Services.AddScoped<IObtenerEstudiante, ObtenerEstudiante>();
             builder.Services.AddScoped<ICursosTerminados, CursosTerminados>();
+            builder.Services.AddScoped<IAltaCurso, AltaCursoCU>();
 
             var app = builder.Build();
 
