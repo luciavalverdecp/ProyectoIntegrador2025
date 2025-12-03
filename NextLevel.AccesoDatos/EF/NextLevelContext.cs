@@ -83,8 +83,6 @@ namespace NextLevel.AccesoDatos.EF
                 .HasForeignKey<CambioRol>(c => c.EstudianteId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // 🔹 Ignorar archivo físico
-            mb.Entity<Material>().Ignore(m => m.Archivo);
 
             // 🔹 Relación Mensajeria ↔ Emisor / Receptor
             mb.Entity<Mensajeria>()
