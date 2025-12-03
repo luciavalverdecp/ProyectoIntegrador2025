@@ -9,6 +9,10 @@ using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
 using Azure.Storage.Blobs;
+using NextLevel.LogicaAplicacion.InterfacesCU.CambiosDeRol;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.CambiosDeRol;
+using NextLevel.LogicaAplicacion.InterfacesCU.Docentes;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Docentes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Materiales;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Materiales;
 
@@ -39,7 +43,7 @@ namespace WebMVC
                 // Leer desde appsettings.json
                 string connectionString = builder.Configuration["Azure:BlobStorage"];
 
-                // Si est· vacÌa, intentar desde variable de entorno
+                // Si est√° vac√≠a, intentar desde variable de entorno
                 if (string.IsNullOrEmpty(connectionString))
                 {
                     connectionString = Environment.GetEnvironmentVariable("AZURE_BLOB_STORAGE");
@@ -49,7 +53,7 @@ namespace WebMVC
                 if (string.IsNullOrEmpty(connectionString))
                 {
                     throw new InvalidOperationException(
-                        "La cadena de conexiÛn de Azure Blob Storage no est· configurada. " +
+                        "La cadena de conexi√≥n de Azure Blob Storage no est√° configurada. " +
                         "Define AZURE_BLOB_STORAGE en tu entorno o en appsettings.json.");
                 }
 
@@ -82,6 +86,8 @@ namespace WebMVC
             builder.Services.AddScoped<IObtenerCursosDocente, ObtenerCursosDocente>();
             builder.Services.AddScoped<IObtenerCurso, ObtenerCurso>();
             builder.Services.AddScoped<IAltaCurso, AltaCursoCU>();
+            builder.Services.AddScoped<ICambioDeRol, CambioDeRolCU>();
+            builder.Services.AddScoped<IObtenerDocente, ObtenerDocente>();
             builder.Services.AddScoped<ICRUDMaterial, CRUDMaterial>();
 
             var app = builder.Build();

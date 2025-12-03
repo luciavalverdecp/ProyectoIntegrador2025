@@ -15,7 +15,14 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         {
             return new CambioRolDTO(
                 EstudianteMapper.ToEstudianteEmailDTO(cambioRol.Estudiante),
-                cambioRol.NombresArchivos);
+                cambioRol.Archivos);
+        }
+        public static CambioRol FromCambioRolDTO(CambioRolDTO cambioRolDTO)
+        {
+            return new CambioRol()
+            {
+                Estudiante = EstudianteMapper.FromEstudianteEmailDTO(cambioRolDTO.Estudiante)
+            };
         }
     }
 }

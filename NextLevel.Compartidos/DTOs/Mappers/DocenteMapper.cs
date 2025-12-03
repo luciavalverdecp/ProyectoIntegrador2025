@@ -25,6 +25,26 @@ namespace NextLevel.Compartidos.DTOs.Mappers
                 NroDocente = new NroDocente(docenteNombreDTO.NroDocente)
             };
         }
+        public static DocenteInfoDTO ToDocenteInfoDTO(Docente docente)
+        {
+            return new DocenteInfoDTO(
+                docente.Email,
+                docente.Password,
+                docente.NombreCompleto,
+                docente.Telefono,
+                docente.NroDocente);
+        }
+        public static Docente FromDocenteInfoDTO(DocenteInfoDTO docenteInfoDTO)
+        {
+            return new Docente()
+            {
+                Email = docenteInfoDTO.Email,
+                Password = docenteInfoDTO.Password,
+                NombreCompleto = docenteInfoDTO.NombreCompleto,
+                Telefono = docenteInfoDTO.Telefono,
+                NroDocente = docenteInfoDTO.NroDocente
+            };
+        }
     }
 
 }

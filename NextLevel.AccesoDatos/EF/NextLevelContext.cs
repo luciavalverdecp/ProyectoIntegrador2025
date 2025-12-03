@@ -23,6 +23,7 @@ namespace NextLevel.AccesoDatos.EF
         public DbSet<Mensajeria> Mensajerias { get; set; }
         public DbSet<Semana> Semanas { get; set; }
         public DbSet<AltaCurso> AltaCursos { get; set; }
+        public DbSet<CambioRol> CambiosDeRol {  get; set; } 
         //public DbSet<Prueba> Pruebas { get; set; }
         //public DbSet<Calificacion> Calificaciones { get; set; }
         //public DbSet<CambioRol> CambiosRol { get; set; }
