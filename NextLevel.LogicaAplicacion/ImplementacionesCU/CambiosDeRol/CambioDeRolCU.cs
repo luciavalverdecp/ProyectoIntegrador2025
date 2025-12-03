@@ -5,6 +5,7 @@ using NextLevel.Compartidos.DTOs.Mappers;
 using NextLevel.LogicaAplicacion.InterfacesCU.CambiosDeRol;
 using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.AltaCurso;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.CambioRol;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
 using System;
 using System.Collections.Generic;
@@ -19,22 +20,28 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.CambiosDeRol
 	{
 		private readonly IRepositorioCambioRol _repositorioCambioRol;
 		private readonly IRepositorioEstudiante _repositorioEstudiante;
+		private readonly IRepositorioDocente _repositorioDocente;
 		private readonly BlobServiceClient _blobServiceClient;
 
 		public CambioDeRolCU (IRepositorioCambioRol repositorioCambioRol, 
 			BlobServiceClient blobServiceClient,
-			IRepositorioEstudiante repositorioEstudiante)
+			IRepositorioEstudiante repositorioEstudiante,
+			IRepositorioDocente repositorioDocente)
 		{
 			_repositorioCambioRol = repositorioCambioRol;
 			_blobServiceClient = blobServiceClient;
 			_repositorioEstudiante = repositorioEstudiante;
+			_repositorioDocente = repositorioDocente;
 		}
 
 		public async Task Ejecutar(CambioRolDTO cambioRolDTO, List<IFormFile> archivos)
 		{
 			var cambioPendiente = _repositorioCambioRol.FindByEmail(cambioRolDTO.Estudiante.Email);
 			if (cambioPendiente != null)
-				throw new 
+				throw new CambioRolExistenteException("El usuario tiene un cambio de rol pendiente de aprobación.");
+			var docenteExistente = _repositorioDocente.FindByEmail(cambioRolDTO.Estudiante.Email);
+			if (docenteExistente != null)
+				throw new CambioRolDocenteExistenteException("Este correo ya tiene una cuenta de tipo Docente.");
 			if (archivos.Count() <= 0)
 				throw new AltaCursoArchivosException("Debe ingresar al menos un archivo para validar su formación.");
 

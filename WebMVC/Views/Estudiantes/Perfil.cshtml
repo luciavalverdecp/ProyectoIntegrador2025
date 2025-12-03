@@ -184,9 +184,22 @@
                             </button>
                         </div>
 
+                        <div class="mensajes-form">
+                            @if (TempData["ErrorCambioRol"] != null && !(bool)TempData["ErrorCambioRol"])
+                            {
+                                <div class="alert alert-success text-center mb-2 mt-3">@TempData["MensajeCambioRol"]</div>
+                            }
+
+                            @if (TempData["ErrorCambioRol"] != null && (bool)TempData["ErrorCambioRol"])
+                            {
+                                <div class="alert alert-danger text-center mb-2 mt-3">@TempData["MensajeCambioRol"]</div>
+                            }
+                        </div>
+
                     </form>
 
                 </div>
+
             </div>
 
         </div>

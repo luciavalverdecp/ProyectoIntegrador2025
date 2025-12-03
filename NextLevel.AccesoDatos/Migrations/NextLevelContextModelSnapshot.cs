@@ -125,16 +125,12 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Property<int>("EstudianteId")
                         .HasColumnType("int");
 
-                    b.Property<string>("NombresArchivos")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EstudianteId")
                         .IsUnique();
 
-                    b.ToTable("CambioRol");
+                    b.ToTable("CambiosDeRol");
                 });
 
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Curso", b =>
