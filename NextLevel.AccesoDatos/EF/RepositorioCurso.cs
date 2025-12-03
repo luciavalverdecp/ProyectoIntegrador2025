@@ -143,6 +143,7 @@ namespace NextLevel.AccesoDatos.EF
             try
             {
                 curso.Temarios = obj.Temarios;
+                curso.FechasClases = obj.FechasClases;
                 _db.Cursos.Update(curso);
                 _db.SaveChanges();
             }

@@ -300,8 +300,86 @@ body {
             background: #ccc;
         }
 
-
-
 .material-link {
     cursor: pointer; 
 }
+
+
+
+/* GRID general del calendario */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+/* Celdas de día */
+.day-cell {
+    background: #f3e8ff; /* violeta muy suave */
+    border: 1px solid #d9c8ff;
+    padding: 10px;
+    min-height: 65px;
+    position: relative;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+    /* Hover */
+    .day-cell:hover {
+        background: #e9d9ff;
+    }
+
+    /* Día expandido */
+    .day-cell.expanded {
+        background: #e0c6ff;
+        box-shadow: 0 4px 10px rgba(80, 0, 160, 0.2);
+        padding-bottom: 30px;
+        transform: scale(1.03);
+    }
+
+/* Número del día */
+.day-number {
+    font-weight: bold;
+    font-size: 18px;
+    color: #4b008f;
+}
+
+/* Contenedor que aparece */
+.expand-content {
+    display: none;
+    margin-top: 10px;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Expandido */
+.day-cell.expanded .expand-content {
+    display: flex;
+}
+
+/* Input horario */
+.time-input {
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #b38cff;
+    background: white;
+}
+
+/* Botón agendar */
+.btn-agendar {
+    padding: 6px 10px;
+    background: #7b33e5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+    .btn-agendar:hover {
+        background: #692bc7;
+    }
+

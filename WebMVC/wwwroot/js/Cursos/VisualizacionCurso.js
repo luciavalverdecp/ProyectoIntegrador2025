@@ -232,3 +232,176 @@ document.addEventListener('hidden.bs.modal', function () {
     document.body.classList.remove('modal-open');
     document.body.style.overflow = "auto";
 });
+
+
+// -----------------------
+// VARIABLES QUE VIENEN DE RAZOR
+// -----------------------
+const fechaInicioCurso = new Date(FECHA_INICIO_CURSO);
+const fechaFinCurso = new Date(FECHA_FIN_CURSO);
+const nombreCurso = NOMBRE_CURSO;
+
+const calGrid = document.getElementById("calGrid");
+const lblMesActual = document.getElementById("mesActual");
+const btnNext = document.getElementById("nextMes");
+const btnPrev = document.getElementById("prevMes");
+
+let fechaActual = new Date(); // mes mostrado
+
+// Si estás fuera del curso → movete al mes del inicio/fin
+(function clampFecha() {
+    const inicioMes = new Date(fechaInicioCurso.getFullYear(), fechaInicioCurso.getMonth(), 1);
+    const finMes = new Date(fechaFinCurso.getFullYear(), fechaFinCurso.getMonth(), 1);
+
+    if (fechaActual < inicioMes) fechaActual = new Date(inicioMes);
+    if (fechaActual > finMes) fechaActual = new Date(finMes);
+
+    // normalizar día a 1
+    fechaActual = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1);
+})();
+
+const meses = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+
+// -----------------------
+// RENDERIZAR MES
+// -----------------------
+function renderMes() {
+    const mes = fechaActual.getMonth();
+    const anio = fechaActual.getFullYear();
+
+    lblMesActual.textContent = `${meses[mes]} ${anio}`;
+    calGrid.innerHTML = "";
+
+    const totalDias = new Date(anio, mes + 1, 0).getDate();
+    let hayDias = false;
+
+    for (let dia = 1; dia <= totalDias; dia++) {
+        const fechaDia = new Date(anio, mes, dia);
+
+        // si no entra en el rango del curso → no mostrar
+        if (fechaDia < fechaInicioCurso || fechaDia > fechaFinCurso) continue;
+
+        hayDias = true;
+
+        const cell = document.createElement("div");
+        cell.classList.add("day-cell");
+
+        const fechaStr = `${anio}-${String(mes + 1).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+        cell.dataset.fecha = fechaStr;
+
+        cell.innerHTML = `
+            <div class="day-number">${dia}</div>
+            <div class="expand-content">
+                <input type="time" class="time-input" step="900" />
+                <button class="btn-agendar">Agendar clase</button>
+            </div>
+        `;
+
+        // expandir celda
+        cell.addEventListener("click", (e) => {
+            e.stopPropagation();
+            expandirCelda(cell);
+        });
+
+        // enviar al backend
+        cell.querySelector(".btn-agendar").addEventListener("click", (e) => {
+            e.stopPropagation();
+            const hora = cell.querySelector(".time-input").value;
+            if (!hora) return;
+
+            const fechaCompleta = `${fechaStr} ${hora}`;
+
+            // --- crear form dinámico ---
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/Cursos/AgregarClase";
+
+            const inputFecha = document.createElement("input");
+            inputFecha.type = "hidden";
+            inputFecha.name = "fecha";
+            inputFecha.value = fechaCompleta;
+
+            // 🔥 Enviar nombre del curso (desde Razor)
+            const inputCurso = document.createElement("input");
+            inputCurso.type = "hidden";
+            inputCurso.name = "CursoNombre";
+            inputCurso.value = NOMBRE_CURSO;
+
+            form.appendChild(inputFecha);
+            form.appendChild(inputCurso);
+
+            document.body.appendChild(form);
+            form.submit();
+        });
+
+
+        calGrid.appendChild(cell);
+    }
+
+    if (!hayDias) {
+        calGrid.innerHTML = `<div class="empty-month">No hay días del curso en este mes</div>`;
+    }
+
+    actualizarFlechas();
+}
+
+
+// -----------------------
+// EXPANDIR / COLAPSAR CELDAS
+// -----------------------
+function expandirCelda(celda) {
+    document.querySelectorAll(".day-cell.expanded")
+        .forEach(c => { if (c !== celda) c.classList.remove("expanded"); });
+
+    celda.classList.add("expanded");
+}
+
+document.addEventListener("click", (e) => {
+    const abierta = document.querySelector(".day-cell.expanded");
+    if (abierta && !abierta.contains(e.target)) abierta.classList.remove("expanded");
+});
+
+
+// -----------------------
+// CONTROL DE FLECHAS SEGÚN FECHAS DEL CURSO
+// -----------------------
+function actualizarFlechas() {
+    const mes = fechaActual.getMonth();
+    const anio = fechaActual.getFullYear();
+
+    const mesAnteriorFin = new Date(anio, mes, 0);  // último día del mes anterior
+    const mesSiguienteInicio = new Date(anio, mes + 1, 1);
+
+    btnPrev.disabled = mesAnteriorFin < fechaInicioCurso;
+    btnNext.disabled = mesSiguienteInicio > fechaFinCurso;
+}
+
+
+// -----------------------
+// BOTONES SIGUIENTE / ANTERIOR
+// -----------------------
+btnNext.addEventListener("click", () => {
+    if (btnNext.disabled) return;
+
+    fechaActual.setMonth(fechaActual.getMonth() + 1);
+    fechaActual.setDate(1);
+    renderMes();
+});
+
+btnPrev.addEventListener("click", () => {
+    if (btnPrev.disabled) return;
+
+    fechaActual.setMonth(fechaActual.getMonth() - 1);
+    fechaActual.setDate(1);
+    renderMes();
+});
+
+
+// -----------------------
+// INICIO
+// -----------------------
+renderMes();

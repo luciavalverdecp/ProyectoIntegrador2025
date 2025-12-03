@@ -6,10 +6,15 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css" />
+<link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css" />
 }
 
 @section ScriptsJs {
+    <script>
+        const NOMBRE_CURSO = "@Model.Nombre";
+        const FECHA_INICIO_CURSO = "@Model.FechaInico.ToString("yyyy-MM-dd")";
+        const FECHA_FIN_CURSO    = "@Model.FechaFin.ToString("yyyy-MM-dd")";
+    </script>
     <script src="~/js/Cursos/VisualizacionCurso.js"></script>
 }
 
@@ -29,41 +34,6 @@
     <div class="mt-4 p-4 rounded" style="background: var(--pastel-bg)">
         <h4 class="fw-semibold">Descripción</h4>
         <p>@Model.Descripcion</p>
-
-        <div class="row">
-            <div class="col-md-6"><strong>Dificultad:</strong> @Model.Dificultad</div>
-            <div class="col-md-6"><strong>Duración:</strong> @Model.Duracion semanas</div>
-
-            <div class="col-md-6 mt-2">
-                <strong>Fecha de inicio:</strong>
-                @{
-                    var primera = Model.Semanas?.FirstOrDefault();
-                }
-                @if (primera != null)
-                {
-                    @primera.FechaInicio.ToString("dd/MM/yyyy")
-                }
-                else
-                {
-                    <span class="text-muted">Sin definir</span>
-                }
-            </div>
-
-            <div class="col-md-6 mt-2">
-                <strong>Fecha fin:</strong>
-                @{
-                    var ultima = Model.Semanas?.LastOrDefault();
-                }
-                @if (ultima != null)
-                {
-                    @ultima.FechaInicio.AddDays(7).ToString("dd/MM/yyyy")
-                }
-                else
-                {
-                    <span class="text-muted">Sin definir</span>
-                }
-            </div>
-        </div>
     </div>
 
     <!-- TABS -->
@@ -84,92 +54,45 @@
             <div class="col-3">
                 <div class="semanas-scroll">
                     <ul class="list-group">
-                        @if (Model.Semanas != null && Model.Semanas.Any())
+                        @if (Model.Semanas != null)
                         {
-                            @foreach (var semana in Model.Semanas)
+                            foreach (var semana in Model.Semanas)
                             {
                                 <li class="list-group-item semana-btn"
-                                    data-semana="@semana.Numero"
-                                    data-fechainicio="@semana.FechaInicio.ToString("yyyy-MM-dd")">
+                                data-semana="@semana.Numero"
+                                data-fInicio="@semana.FechaInicio.ToString("yyyy-MM-dd")">
                                     Semana @semana.Numero
                                 </li>
                             }
-                        }
-                        else
-                        {
-                            <li class="list-group-item text-muted">No hay semanas definidas.</li>
                         }
                     </ul>
                 </div>
             </div>
 
-            <!-- MATERIALES -->
+            <!-- MATERIAL POR SEMANA -->
             <div class="col-9">
-                @if (Model.Semanas != null)
+                @foreach (var semana in Model.Semanas)
                 {
-                    foreach (var semana in Model.Semanas)
-                    {
-                        <div id="semana-@semana.Numero" class="semana-material" style="display:none;">
-                            <h5 class="fw-bold">Material Semana @semana.Numero</h5>
+                    <div id="semana-@semana.Numero" class="semana-material" style="display:none;">
+                        <h5>Material Semana @semana.Numero</h5>
 
-                            @if (semana.Materiales != null && semana.Materiales.Any())
+                        @if (semana.Materiales != null)
+                        {
+                            foreach (var mat in semana.Materiales)
                             {
-                                <div class="material-list mt-3">
-                                    @foreach (var mat in semana.Materiales)
-                                    {
-                                        <div class="material-item d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <span class="material-name material-link "
-                                                      data-tipo="@((int)mat.TipoMaterial)"
-                                                      data-ruta="@mat.RutaArchivo"
-                                                      data-texto="@mat.Nombre">
-                                                    📄 @mat.Nombre
-                                                </span>
-                                            </div>
-
-                                            @if (Context.Session.GetString("rolLogueado") == "Docente")
-                                            {
-                                                <form method="post"
-                                                      asp-action="EliminarMaterial"
-                                                      asp-controller="Materiales"
-                                                      class="m-0 p-0">
-
-                                                    <input type="hidden" name="CursoNombre" value="@Model.Nombre" />
-                                                    <input type="hidden" name="SemanaNumero" value="@semana.Numero" />
-
-                                                    <input type="hidden" name="RutaArchivo" value="@mat.RutaArchivo" />
-                                                    <input type="hidden" name="Nombre" value="@mat.Nombre" />
-                                                    <input type="hidden" name="TipoMaterial" value="@((int)mat.TipoMaterial)" />
-
-                                                    <button type="submit"
-                                                            class="btn btn-link text-danger p-0 fs-4"
-                                                            title="Eliminar material"
-                                                            style="text-decoration:none;">
-                                                        🗑
-                                                    </button>
-                                                </form>
-                                            }
-                                        </div>
-                                    }
-                                </div>
-
-                                <div class="material-texto mt-3" id="materialTexto-@semana.Numero" style="display:none;"></div>
-                            }
-                            else
-                            {
-                                <p class="text-muted">No hay materiales esta semana.</p>
-                            }
-
-                            @if (Context.Session.GetString("rolLogueado") == "Docente")
-                            {
-                                <div class="mt-3">
-                                    <button class="agregar-material-btn" data-semana="@semana.Numero">
-                                        ➕ Agregar material
-                                    </button>
+                                <div class="material-item d-flex justify-content-between">
+                                    <span class="material-link"
+                                    data-tipo="@((int)mat.TipoMaterial)"
+                                    data-ruta="@mat.RutaArchivo"
+                                    data-texto="@mat.Nombre">
+                                        📄 @mat.Nombre
+                                    </span>
                                 </div>
                             }
-                        </div>
-                    }
+
+                            <div class="material-texto mt-3" id="materialTexto-@semana.Numero" style="display:none;"></div>
+                        }
+                    </div>
                 }
             </div>
         </div>
@@ -182,16 +105,10 @@
         <div class="chat-box" id="foroMensajes">
             @if (Model.Foro?.Mensajes != null)
             {
-                foreach (var msg in Model.Foro.Mensajes.Where(m => m.Usuario != null))
+                foreach (var msg in Model.Foro.Mensajes)
                 {
-                    <div class="msg @(msg.EsDelEstudiante ? "mine" : "")">
-                        @msg.mensaje
-                    </div>
+                    <div class="msg @(msg.EsDelEstudiante ? "mine" : "")">@msg.mensaje</div>
                 }
-            }
-            else
-            {
-                <p class="text-muted">Aún no hay mensajes.</p>
             }
         </div>
 
@@ -215,16 +132,28 @@
 
     <!-- CALENDARIO -->
     <div id="clases" class="tab-content">
+        @if (TempData["ErrorAgendarClase"] != null && !(bool)TempData["ErrorAgendarClase"])
+        {
+            <div class="alert alert-success text-center mb-2 mt-3">@TempData["MensajeAgendaClase"]</div>
+        }
+
+        @if (TempData["ErrorAgendarClase"] != null && (bool)TempData["ErrorAgendarClase"])
+        {
+            <div class="alert alert-danger text-center mb-2 mt-3">@TempData["MensajeAgendaClase"]</div>
+        }
         <div class="calendar-header">
-            <button id="prevMes">◀</button>
+            <button class="cal-btn" id="prevMes">◀</button>
             <h4 id="mesActual"></h4>
-            <button id="nextMes">▶</button>
+            <button class="cal-btn" id="nextMes">▶</button>
         </div>
 
         <div class="calendar-grid" id="calGrid"></div>
+
     </div>
 
 </div>
+
+
 
 <!-- MODAL PARA AGREGAR MATERIAL -->
 <div class="modal fade" id="modalAgregarMaterial" tabindex="-1" aria-hidden="true">

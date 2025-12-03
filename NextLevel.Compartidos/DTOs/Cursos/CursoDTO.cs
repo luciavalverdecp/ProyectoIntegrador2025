@@ -13,5 +13,5 @@ using NextLevel.LogicaNegocio.Entidades;
 
 namespace NextLevel.Compartidos.DTOs.Cursos
 {
-    public record CursoDTO(string Nombre, DocenteNombreDTO DocenteNombreDTO, string RutaArchivo, double Calificacion, string Descripcion, IEnumerable<PruebaDTO> Pruebas, IEnumerable<TemarioVistaPreviaDTO> Temarios, List<DateTime> FechasClases, IEnumerable<EstudianteEmailDTO> Estudiantes, int Duracion, ForoDTO Foro, Dificultad Dificultad, double Precio, IEnumerable<SemanaDTO> Semanas);
+    public record CursoDTO(string Nombre, DocenteNombreDTO DocenteNombreDTO, string RutaArchivo, double Calificacion, string Descripcion, IEnumerable<PruebaDTO> Pruebas, IEnumerable<TemarioVistaPreviaDTO> Temarios, List<DateTime> FechasClases, IEnumerable<EstudianteEmailDTO> Estudiantes, int Duracion, ForoDTO Foro, Dificultad Dificultad, double Precio, IEnumerable<SemanaDTO> Semanas, DateTime FechaInico, DateTime FechaFin);
 }

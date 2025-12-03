@@ -89,6 +89,7 @@ namespace WebMVC
             builder.Services.AddScoped<ICambioDeRol, CambioDeRolCU>();
             builder.Services.AddScoped<IObtenerDocente, ObtenerDocente>();
             builder.Services.AddScoped<ICRUDMaterial, CRUDMaterial>();
+            builder.Services.AddScoped<IAgregarClase, AgregarClase>();
 
             var app = builder.Build();
 

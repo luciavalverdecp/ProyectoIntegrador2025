@@ -15,18 +15,21 @@ namespace WebMVC.Controllers
         private readonly IObtenerCursosDocente _obtenerCursosDocente;
         private readonly IObtenerCurso _obtenerCurso;
         private readonly IObtenerMisCursos obtenerMisCursos;
-		private readonly IAltaCurso _altaCurso;
-		public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados, 
+        private readonly IAltaCurso _altaCurso;
+        private readonly IAgregarClase _agregarClase;
+        public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados,
             IObtenerCursosDocente obtenerCursosDocente,
-             IObtenerCurso obtenerCurso, 
-             IObtenerMisCursos obtenerMisCursos, 
-             IAltaCurso altaCurso)
+             IObtenerCurso obtenerCurso,
+             IObtenerMisCursos obtenerMisCursos,
+             IAltaCurso altaCurso,
+             IAgregarClase agregarClase)
         {
             _obtenerCursosFiltrados = obtenerCursosFiltrados;
             _obtenerCursosDocente = obtenerCursosDocente;
             _obtenerCurso = obtenerCurso;
             this.obtenerMisCursos = obtenerMisCursos;
             _altaCurso = altaCurso;
+            _agregarClase = agregarClase;
         }
         public IActionResult ListadoCursos(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
@@ -37,7 +40,7 @@ namespace WebMVC.Controllers
 
         public IActionResult ListadoCursosDocente()
         {
-            if(HttpContext.Session.GetString("rolLogueado") == "Docente")
+            if (HttpContext.Session.GetString("rolLogueado") == "Docente")
             {
                 var cursosDelDocente = _obtenerCursosDocente.Ejecutar(HttpContext.Session.GetString("emailLogueado"));
                 return View(cursosDelDocente);
@@ -47,7 +50,7 @@ namespace WebMVC.Controllers
 
         public IActionResult VisualizarCurso(string nombreCurso)
         {
-            if(HttpContext.Session.GetString("rolLogueado") == "Estudiante" ||
+            if (HttpContext.Session.GetString("rolLogueado") == "Estudiante" ||
                 HttpContext.Session.GetString("rolLogueado") == "Docente")
             {
                 try
@@ -154,6 +157,36 @@ namespace WebMVC.Controllers
                 }
             }
             return RedirectToAction("Login", "Usuarios");
+        }
+
+        [HttpPost]
+        public IActionResult AgregarClase(AgendarClaseDTO claseAgendada)
+        {
+            try
+            {
+                _agregarClase.Ejecutar(claseAgendada);
+                TempData["MensajeAgendaClase"] = "Se agrego correctamente la clase";
+                TempData["ErrorAgendarClase"] = false;
+                return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso  = claseAgendada.CursoNombre});
+            }
+            catch(CursoFechaException ex)
+            {
+                TempData["MensajeAgendaClase"] = ex.Message;
+                TempData["ErrorAgendarClase"] = true;
+                return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = claseAgendada.CursoNombre });
+            }
+            catch (CursoException ex)
+            {
+                TempData["MensajeAgendaClase"] = ex.Message;
+                TempData["ErrorAgendarClase"] = true;
+                return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = claseAgendada.CursoNombre });
+            }
+            catch (Exception ex)
+            {
+                TempData["MensajeAgendaClase"] = ex.Message;
+                TempData["ErrorAgendarClase"] = true;
+                return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = claseAgendada.CursoNombre });
+            }
         }
     }
 }
