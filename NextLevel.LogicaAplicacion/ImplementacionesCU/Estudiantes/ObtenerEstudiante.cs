@@ -20,7 +20,21 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
             _repoitorioEstudiante = repoitorioEstudiante;
         }
 
-        public EstudianteInfoDTO Ejectuar(string email)
+        public EstudianteEmailDTO EjecutarEstudianteEmailDTO(string email)
+        {
+            try
+            {
+                var estudiante = _repoitorioEstudiante.FindByEmail(email);
+                EstudianteEmailDTO dto = EstudianteMapper.ToEstudianteEmailDTO(estudiante);
+                return dto;
+            }
+            catch (Exception ex)
+            {
+                throw new EstudianteException("Error al obtener al usuario estudiante.");
+            }
+        }
+
+        public EstudianteInfoDTO EjecutarEstudianteInfoDTO(string email)
         {
             try
             {

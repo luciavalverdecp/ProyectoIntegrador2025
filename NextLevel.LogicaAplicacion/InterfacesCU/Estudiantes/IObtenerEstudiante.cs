@@ -9,6 +9,7 @@ namespace NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes
 {
     public interface IObtenerEstudiante
     {
-        EstudianteInfoDTO Ejectuar(string email);
+        EstudianteInfoDTO EjecutarEstudianteInfoDTO(string email);
+        EstudianteEmailDTO EjecutarEstudianteEmailDTO(string email);
     }
 }

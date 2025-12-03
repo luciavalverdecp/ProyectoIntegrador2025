@@ -9,6 +9,8 @@ using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
 using Azure.Storage.Blobs;
+using NextLevel.LogicaAplicacion.InterfacesCU.CambiosDeRol;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.CambiosDeRol;
 
 namespace WebMVC
 {
@@ -80,6 +82,7 @@ namespace WebMVC
             builder.Services.AddScoped<IObtenerCursosDocente, ObtenerCursosDocente>();
             builder.Services.AddScoped<IObtenerCurso, ObtenerCurso>();
             builder.Services.AddScoped<IAltaCurso, AltaCursoCU>();
+            builder.Services.AddScoped<ICambioDeRol, CambioDeRolCU>();
 
             var app = builder.Build();
 

@@ -42,5 +42,12 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         {
             return new EstudianteEmailDTO(estudiante.Email);
         }
+        public static Estudiante FromEstudianteEmailDTO(EstudianteEmailDTO estudiante)
+        {
+            return new Estudiante()
+            {
+                Email = estudiante.Email
+            };
+        }
     }
 }

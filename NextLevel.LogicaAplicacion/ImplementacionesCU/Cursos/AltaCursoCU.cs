@@ -61,7 +61,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
             if (imagen == null)
                 throw new CursoException("Debe ingresar una imagen para el curso.");
 
-            Docente docente = _repositorioDocente.FindByEmail(email);
+            Docente docente = (Docente)_repositorioDocente.FindByEmail(email);
 
             CursoAltaDTO altaDTO = new CursoAltaDTO(
                 cursoAltaDTO.Id,
