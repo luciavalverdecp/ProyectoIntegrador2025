@@ -97,7 +97,9 @@ namespace NextLevel.Compartidos.DTOs.Mappers
                 ForoMapper.ToForoDTO(curso.Foro), 
                 curso.Dificultad,
                 curso.Precio,
-                SemanaMapper.ToListSemanaNumeroDTO(curso.Semanas));
+                SemanaMapper.ToListSemanaNumeroDTO(curso.Semanas),
+                curso.FechaInicio, 
+                curso.FechaFin);
         }
     }
 
