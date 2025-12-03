@@ -15,4 +15,9 @@
     <ProjectReference Include="..\NextLevel.Compartidos\NextLevel.Compartidos.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ImplementacionesCU\Semanas\" />
+    <Folder Include="InterfacesCU\Semanas\" />
+  </ItemGroup>
+
 </Project>

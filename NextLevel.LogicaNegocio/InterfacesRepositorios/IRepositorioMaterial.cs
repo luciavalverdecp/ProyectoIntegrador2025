@@ -10,5 +10,7 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
 {
     public interface IRepositorioMaterial : IRepositorio<Material>
     {
+        Material FindByRuta(string rutaArchivo);
+        void Eliminar(Material material);
     }
 }

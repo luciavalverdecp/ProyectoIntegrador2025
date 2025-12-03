@@ -16,25 +16,24 @@ namespace NextLevel.LogicaNegocio.Entidades
         public string Nombre { get; set; }
         public DateTime FechaAgregado {  get; set; }
         public TipoMaterial TipoMaterial { get; set; }
-        [NotMapped] 
-        public IFormFile Archivo { get; set; }
         public string RutaArchivo { get; set; } 
         public string Texto { get; set; }
         public Material() { }
 
-        public Material(string nombre, TipoMaterial tipoMaterial, IFormFile archivo, string texto)
+        public Material(string nombre, TipoMaterial tipoMaterial, string rutaArchivo, string texto)
         {
             Nombre = nombre;
             FechaAgregado = DateTime.Now;
             TipoMaterial = tipoMaterial;
-            Archivo = archivo;
             Texto = texto;
+            RutaArchivo = rutaArchivo;
         }
 
         #region Validaciones
         public void Validar()
         {
             validarNombre();
+            validarArchivoYTexto();
         }
 
         private void validarNombre()
@@ -44,7 +43,7 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         private void validarArchivoYTexto()
         {
-            if (Archivo == null && string.IsNullOrEmpty(Texto)) throw new MaterialArchivoTextoException("Debe subir un archivo o un texto");
+            if (string.IsNullOrEmpty(RutaArchivo) == null && string.IsNullOrEmpty(Texto)) throw new MaterialArchivoTextoException("Debe subir un archivo o un texto");
         }
         #endregion
     }
