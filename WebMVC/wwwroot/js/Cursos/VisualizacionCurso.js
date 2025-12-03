@@ -232,4 +232,3 @@ document.addEventListener('hidden.bs.modal', function () {
     document.body.classList.remove('modal-open');
     document.body.style.overflow = "auto";
 });
-

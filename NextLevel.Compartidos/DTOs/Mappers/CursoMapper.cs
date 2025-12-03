@@ -89,15 +89,15 @@ namespace NextLevel.Compartidos.DTOs.Mappers
                 curso.Imagen,
                 curso.Calificacion,
                 curso.Descripcion,
-                curso.Pruebas,
-                curso.Temarios,
+                PruebaMapper.ToListPruebaDTO(curso.Pruebas),
+                TemarioMapper.ToListaDTO(curso.Temarios),
                 curso.FechasClases,
-                curso.Estudiantes,
+                EstudianteMapper.ToListEstudianteEmailDTO(curso.Estudiantes),
                 curso.Duracion,
-                curso.Foro, 
+                ForoMapper.ToForoDTO(curso.Foro), 
                 curso.Dificultad,
                 curso.Precio,
-                curso.Semanas);
+                SemanaMapper.ToListSemanaNumeroDTO(curso.Semanas));
         }
     }
 

@@ -5,7 +5,6 @@ using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.AltaCurso;
-using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 
 namespace WebMVC.Controllers

@@ -114,17 +114,45 @@
 
                             @if (semana.Materiales != null && semana.Materiales.Any())
                             {
-                                <ul class="mt-3">
+                                <div class="material-list mt-3">
                                     @foreach (var mat in semana.Materiales)
                                     {
-                                        <li>
-                                            <a href="javascript:void(0);" class="material-link"data-tipo="@((int)mat.TipoMaterial)"
-                                               data-ruta="@mat.RutaArchivo" data-texto="@mat.Nombre">
-                                                @mat.Nombre
-                                            </a>
-                                        </li>
+                                        <div class="material-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <span class="material-name material-link "
+                                                      data-tipo="@((int)mat.TipoMaterial)"
+                                                      data-ruta="@mat.RutaArchivo"
+                                                      data-texto="@mat.Nombre">
+                                                    📄 @mat.Nombre
+                                                </span>
+                                            </div>
+
+                                            @if (Context.Session.GetString("rolLogueado") == "Docente")
+                                            {
+                                                <form method="post"
+                                                      asp-action="EliminarMaterial"
+                                                      asp-controller="Materiales"
+                                                      class="m-0 p-0">
+
+                                                    <input type="hidden" name="CursoNombre" value="@Model.Nombre" />
+                                                    <input type="hidden" name="SemanaNumero" value="@semana.Numero" />
+
+                                                    <input type="hidden" name="RutaArchivo" value="@mat.RutaArchivo" />
+                                                    <input type="hidden" name="Nombre" value="@mat.Nombre" />
+                                                    <input type="hidden" name="TipoMaterial" value="@((int)mat.TipoMaterial)" />
+
+                                                    <button type="submit"
+                                                            class="btn btn-link text-danger p-0 fs-4"
+                                                            title="Eliminar material"
+                                                            style="text-decoration:none;">
+                                                        🗑
+                                                    </button>
+                                                </form>
+                                            }
+                                        </div>
                                     }
-                                </ul>
+                                </div>
+
                                 <div class="material-texto mt-3" id="materialTexto-@semana.Numero" style="display:none;"></div>
                             }
                             else
@@ -135,8 +163,7 @@
                             @if (Context.Session.GetString("rolLogueado") == "Docente")
                             {
                                 <div class="mt-3">
-                                    <button class="agregar-material-btn"
-                                            data-semana="@semana.Numero">
+                                    <button class="agregar-material-btn" data-semana="@semana.Numero">
                                         ➕ Agregar material
                                     </button>
                                 </div>
@@ -178,8 +205,7 @@
     <div id="contacto" class="tab-content">
         <h4 class="fw-bold mb-3">📨 Contacto con el docente</h4>
 
-        <div class="chat-box" id="contactoMensajes">
-        </div>
+        <div class="chat-box" id="contactoMensajes"></div>
 
         <div class="chat-input">
             <input type="text" id="contactoInput" placeholder="Escribe un mensaje...">
@@ -236,6 +262,39 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Subir material</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PARA CONFIRMAR ELIMINACIÓN -->
+<div class="modal fade" id="modalEliminarMaterial" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">Eliminar material</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form method="post" asp-action="EliminarMaterial" asp-controller="Materiales">
+                <div class="modal-body">
+                    <p>¿Seguro que deseas eliminar <strong id="deleteMaterialName"></strong>?</p>
+
+                    <input type="hidden" name="CursoNombre" id="deleteCursoNombre" />
+                    <input type="hidden" name="SemanaNumero" id="deleteSemanaNumero" />
+
+                    <!-- Estos 3 van dentro del DTO MaterialBasicoDTO -->
+                    <input type="hidden" name="RutaArchivo" id="deleteMaterialRuta" />
+                    <input type="hidden" name="Nombre" id="deleteMaterialNombre" />
+                    <input type="hidden" name="TipoMaterial" id="deleteMaterialTipo" />
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-danger" type="submit">Eliminar</button>
                 </div>
             </form>
 

@@ -10,8 +10,9 @@ using NextLevel.Compartidos.DTOs.Semanas;
 
 namespace NextLevel.LogicaAplicacion.InterfacesCU.Materiales
 {
-    public interface IAgregarMaterial
+    public interface ICRUDMaterial
     {
-        Task Ejecutar(MaterialDTO material, int semana, string nombreCurso);
+        Task Agregar(MaterialDTO material, int semana, string nombreCurso);
+        Task Eliminar(MaterialBasicoDTO material, int semana, string nombreCurso);
     }
 }

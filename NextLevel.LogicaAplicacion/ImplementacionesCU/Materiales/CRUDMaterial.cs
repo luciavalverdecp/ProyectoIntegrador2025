@@ -8,14 +8,14 @@ using NextLevel.LogicaNegocio.InterfacesRepositorios;
 
 namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Materiales
 {
-    public class AgregarMaterial : IAgregarMaterial
+    public class CRUDMaterial : ICRUDMaterial
     {
         private readonly IRepositorioMaterial repositorioMaterial;
         private readonly IRepositorioCurso repositorioCurso;
         private readonly IRepositorioSemana repositorioSemana;
         private readonly BlobServiceClient _blobServiceClient;
 
-        public AgregarMaterial(IRepositorioMaterial repositorioMaterial, 
+        public CRUDMaterial(IRepositorioMaterial repositorioMaterial, 
             BlobServiceClient blobServiceClient,
             IRepositorioCurso repositorioCurso,
             IRepositorioSemana repositorioSemana)
@@ -26,7 +26,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Materiales
             this.repositorioSemana = repositorioSemana;
         }
 
-        public async Task Ejecutar(MaterialDTO material, int numeroSemana, string nombreCurso)
+        public async Task Agregar(MaterialDTO material, int numeroSemana, string nombreCurso)
         {
             var file = material.Archivo;
             string ruta = null;
@@ -55,6 +55,32 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Materiales
             semana.Materiales.Add(materialNuevo);
             repositorioSemana.Update(semana);
         }
+
+        public async Task Eliminar(MaterialBasicoDTO material, int numeroSemana, string nombreCurso)
+        {
+            Material materialObtenido = repositorioMaterial.FindByRuta(material.RutaArchivo);
+
+            if (materialObtenido == null)
+                throw new Exception("No se encontró el material a eliminar.");
+
+            if (!string.IsNullOrEmpty(materialObtenido.RutaArchivo))
+            {
+                var contenedor = _blobServiceClient.GetBlobContainerClient("materiales");
+                string blobName = Path.GetFileName(materialObtenido.RutaArchivo);
+                var blob = contenedor.GetBlobClient(blobName);
+
+                await blob.DeleteIfExistsAsync();
+            }
+
+            Curso curso = repositorioCurso.FindByNombre(nombreCurso);
+            Semana semana = curso.Semanas[numeroSemana - 1];
+
+            semana.Materiales.Remove(materialObtenido);
+            repositorioSemana.Update(semana);
+
+            repositorioMaterial.Eliminar(materialObtenido);
+        }
+
 
         private TipoMaterial obtenerTipoMaterial(IFormFile material)
         {

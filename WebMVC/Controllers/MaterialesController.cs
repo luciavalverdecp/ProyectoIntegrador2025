@@ -7,10 +7,10 @@ namespace WebMVC.Controllers
 {
     public class MaterialesController : Controller
     {
-        private readonly IAgregarMaterial agregarMaterial;
-        public MaterialesController(IAgregarMaterial agregarMaterial)
+        private readonly ICRUDMaterial crudMaterial;
+        public MaterialesController(ICRUDMaterial crudMaterial)
         {
-            this.agregarMaterial = agregarMaterial;
+            this.crudMaterial = crudMaterial;
         }
 
         [HttpPost]
@@ -20,7 +20,26 @@ namespace WebMVC.Controllers
             {
                 try
                 {
-                    await agregarMaterial.Ejecutar(material, SemanaNumero, CursoNombre);
+                    await crudMaterial.Agregar(material, SemanaNumero, CursoNombre);
+                    return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = CursoNombre });
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.ErrorMessage = ex.Message;
+                    return View("VisualizarCurso");
+                }
+            }
+            return Redirect("/Usuarios/Login");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EliminarMaterial(string CursoNombre, int SemanaNumero, MaterialBasicoDTO material)
+        {
+            if (HttpContext.Session.GetString("rolLogueado") == "Docente")
+            {
+                try
+                {
+                    await crudMaterial.Eliminar(material, SemanaNumero, CursoNombre);
                     return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = CursoNombre });
                 }
                 catch (Exception ex)

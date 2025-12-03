@@ -299,3 +299,9 @@ body {
         .modal-footer .btn-secondary:hover {
             background: #ccc;
         }
+
+
+
+.material-link {
+    cursor: pointer; 
+}

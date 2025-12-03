@@ -82,7 +82,7 @@ namespace WebMVC
             builder.Services.AddScoped<IObtenerCursosDocente, ObtenerCursosDocente>();
             builder.Services.AddScoped<IObtenerCurso, ObtenerCurso>();
             builder.Services.AddScoped<IAltaCurso, AltaCursoCU>();
-            builder.Services.AddScoped<IAgregarMaterial, AgregarMaterial>();
+            builder.Services.AddScoped<ICRUDMaterial, CRUDMaterial>();
 
             var app = builder.Build();
 

@@ -14,5 +14,11 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         {
             return new SemanaNumeroDTO(semana.Numero);
         }
+
+        public static IEnumerable<SemanaDTO> ToListSemanaNumeroDTO(IEnumerable<Semana> semanas)
+        {
+            if (semanas == null || semanas.Count() == 0) return new List<SemanaDTO>();
+            return semanas.Select(s => new SemanaDTO(s.Numero, MaterialMapper.ToListMaterialBasicoDTO(s.Materiales), s.FechaInicio));
+        }
     }
 }
