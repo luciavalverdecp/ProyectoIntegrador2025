@@ -20,6 +20,7 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         }
         public static IEnumerable<TemarioVistaPreviaDTO> ToListaDTO(IEnumerable<Temario> temarios) 
         {
+            if (temarios == null || temarios.Count() == 0) return new List<TemarioVistaPreviaDTO>();
             return temarios.Select(temario => new TemarioVistaPreviaDTO(temario.Tema, CursoMapper.ToCursoNombreDTO(temario.Curso)));
         } 
         public static IEnumerable<Temario> FromListaDTO(IEnumerable<TemarioVistaPreviaDTO> temarios)

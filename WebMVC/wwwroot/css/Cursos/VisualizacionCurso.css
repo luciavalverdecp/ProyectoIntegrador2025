@@ -221,3 +221,87 @@ body {
         box-shadow: none !important; /* Quita el borde azul */
     }
 
+/* ===== MODAL PERSONALIZADO ===== */
+
+.modal-content {
+    border-radius: 20px;
+    background: var(--pastel-bg);
+    border: 2px solid var(--pastel-purple);
+    box-shadow: 0 0 25px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+    background: var(--pastel-purple);
+    color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 15px 20px;
+}
+
+.modal-title {
+    font-weight: 700;
+}
+
+.btn-close {
+    filter: brightness(0) invert(1); /* Cerrar en blanco */
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+/* Inputs del modal */
+#modalAgregarMaterial input[type="text"],
+#modalAgregarMaterial input[type="file"] {
+    border-radius: 12px;
+    border: 1px solid var(--pastel-purple);
+    padding: 10px 12px;
+    background: white;
+    transition: 0.2s;
+}
+
+    #modalAgregarMaterial input[type="text"]:focus,
+    #modalAgregarMaterial input[type="file"]:focus {
+        outline: none !important;
+        border-color: var(--pastel-blue);
+        box-shadow: 0 0 5px #c7b9ff80;
+    }
+
+/* Footer del modal */
+.modal-footer {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background: #f2ecff;
+    padding: 15px 20px;
+}
+
+    /* Botones del modal */
+    .modal-footer .btn-primary {
+        background: var(--pastel-purple);
+        border: none;
+        padding: 8px 18px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .modal-footer .btn-primary:hover {
+            background: var(--pastel-blue);
+            transform: translateY(-1px);
+        }
+
+    .modal-footer .btn-secondary {
+        background: #ddd;
+        border: none;
+        border-radius: 12px;
+    }
+
+        .modal-footer .btn-secondary:hover {
+            background: #ccc;
+        }
+
+
+
+.material-link {
+    cursor: pointer; 
+}

@@ -20,6 +20,19 @@ namespace NextLevel.AccesoDatos.EF
             throw new NotImplementedException();
         }
 
+        public void Eliminar(Material material)
+        {
+            try
+            {
+                _db.Materiales.Remove(material);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No fue posible eliminar el material");
+            }
+        }
+
         public IEnumerable<Material> FindAll()
         {
             throw new NotImplementedException();
@@ -28,6 +41,18 @@ namespace NextLevel.AccesoDatos.EF
         public Material FindById(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public Material FindByRuta(string rutaArchivo)
+        {
+            try
+            {
+                return _db.Materiales.Where(m => m.RutaArchivo == rutaArchivo).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el material.");
+            }
         }
 
         public void Remove(int id)

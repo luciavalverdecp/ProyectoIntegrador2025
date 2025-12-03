@@ -187,3 +187,48 @@ function mostrarTexto(item, texto) {
     contenedor.innerHTML = `<p class="p-2 rounded bg-light">${texto}</p>`;
     contenedor.style.display = "block";
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".agregar-material-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const semana = btn.dataset.semana;
+
+            document.getElementById("SemanaNumero").value = semana;
+
+            const modal = new bootstrap.Modal(document.getElementById("modalAgregarMaterial"));
+            modal.show();
+        });
+    });
+});
+document.addEventListener("DOMContentLoaded", () => {
+
+    const modalElement = document.getElementById("modalAgregarMaterial");
+    const form = document.getElementById("formAgregarMaterial");
+    const inputNombre = form.querySelector("input[name='Nombre']");
+    const inputArchivo = form.querySelector("input[name='Archivo']");
+
+    document.querySelectorAll(".agregar-material-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            inputNombre.value = "";
+            inputArchivo.value = "";
+
+            document.getElementById("SemanaNumero").value = btn.dataset.semana;
+
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        });
+    });
+
+    modalElement.addEventListener("hidden.bs.modal", () => {
+        inputNombre.value = "";
+        inputArchivo.value = "";
+    });
+});
+
+document.addEventListener('hidden.bs.modal', function () {
+    document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = "auto";
+});
