@@ -44,26 +44,15 @@
                     @Model.Duracion semanas
                 </div> 
                 <div class="col-md-6 mt-2"> 
-                    <strong>Fecha de inicio:</strong> 
-                    @{
-                    var primera = Model.Semanas?.FirstOrDefault();
-                } @if (primera != null)
-                {
-                    @primera.FechaInicio.ToString("dd/MM/yyyy")
-                }
-                else
-                {
-                    <span class="text-muted">Sin definir</span>
-                } </div> <div class="col-md-6 mt-2"> <strong>Fecha fin:</strong> @{
-                    var ultima = Model.Semanas?.LastOrDefault();
-                } @if (ultima != null)
-                {
-                    @ultima.FechaInicio.AddDays(7).ToString("dd/MM/yyyy")
-                }
-                else
-                {
-                    <span class="text-muted">Sin definir</span>
-                } </div> </div> </div>
+                    <strong>Fecha de inicio:</strong>
+                    @Model.FechaInico.ToString("dd/MM/yyyy")
+                </div>
+                <div class="col-md-6 mt-2">
+                    <strong>Fecha de fin:</strong>
+                    @Model.FechaFin.ToString("dd/MM/yyyy")
+                </div>
+            </div> 
+        </div>
 
     <!-- TABS -->
     <div class="tab-buttons">

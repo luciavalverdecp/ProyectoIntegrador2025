@@ -162,31 +162,35 @@ namespace WebMVC.Controllers
         [HttpPost]
         public IActionResult AgregarClase(AgendarClaseDTO claseAgendada)
         {
-            try
+            if (HttpContext.Session.GetString("rolLogueado") == "Docente")
             {
-                _agregarClase.Ejecutar(claseAgendada);
-                TempData["MensajeAgendaClase"] = "Se agrego correctamente la clase";
-                TempData["ErrorAgendarClase"] = false;
-                return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso  = claseAgendada.CursoNombre});
+                try
+                {
+                    _agregarClase.Ejecutar(claseAgendada);
+                    TempData["MensajeAgendaClase"] = "Se agrego correctamente la clase";
+                    TempData["ErrorAgendarClase"] = false;
+                    return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = claseAgendada.CursoNombre });
+                }
+                catch (CursoFechaException ex)
+                {
+                    TempData["MensajeAgendaClase"] = ex.Message;
+                    TempData["ErrorAgendarClase"] = true;
+                    return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = claseAgendada.CursoNombre });
+                }
+                catch (CursoException ex)
+                {
+                    TempData["MensajeAgendaClase"] = ex.Message;
+                    TempData["ErrorAgendarClase"] = true;
+                    return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = claseAgendada.CursoNombre });
+                }
+                catch (Exception ex)
+                {
+                    TempData["MensajeAgendaClase"] = ex.Message;
+                    TempData["ErrorAgendarClase"] = true;
+                    return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = claseAgendada.CursoNombre });
+                }
             }
-            catch(CursoFechaException ex)
-            {
-                TempData["MensajeAgendaClase"] = ex.Message;
-                TempData["ErrorAgendarClase"] = true;
-                return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = claseAgendada.CursoNombre });
-            }
-            catch (CursoException ex)
-            {
-                TempData["MensajeAgendaClase"] = ex.Message;
-                TempData["ErrorAgendarClase"] = true;
-                return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = claseAgendada.CursoNombre });
-            }
-            catch (Exception ex)
-            {
-                TempData["MensajeAgendaClase"] = ex.Message;
-                TempData["ErrorAgendarClase"] = true;
-                return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = claseAgendada.CursoNombre });
-            }
+            return RedirectToAction("Login", "Usuarios");
         }
     }
 }
