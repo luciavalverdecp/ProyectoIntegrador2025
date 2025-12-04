@@ -7,8 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.26.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NextLevel.AccesoDatos\NextLevel.AccesoDatos.csproj" />
     <ProjectReference Include="..\NextLevel.Compartidos\NextLevel.Compartidos.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ImplementacionesCU\Semanas\" />
+    <Folder Include="InterfacesCU\Semanas\" />
   </ItemGroup>
 
 </Project>

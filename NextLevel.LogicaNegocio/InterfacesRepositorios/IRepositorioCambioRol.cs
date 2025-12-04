@@ -10,5 +10,6 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
 {
     public interface IRepositorioCambioRol : IRepositorio<CambioRol>
     {
+        public CambioRol FindByEmail(string email);
     }
 }

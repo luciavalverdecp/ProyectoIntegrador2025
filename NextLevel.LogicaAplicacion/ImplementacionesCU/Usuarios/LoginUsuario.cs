@@ -14,16 +14,28 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Usuarios
 {
     public class LoginUsuario : ILoginUsuario
     {
-        private readonly IRepositorioUsuario _repositorioUsuario;
+        private readonly IRepositorioEstudiante _repositorioEstudiante;
+        private readonly IRepositorioDocente _repositorioDocente;
 
-        public LoginUsuario(IRepositorioUsuario repositorioUsuario)
+        public LoginUsuario(IRepositorioEstudiante repositorioEstudiante, IRepositorioDocente repositorioDocente)
         {
-            _repositorioUsuario = repositorioUsuario;
+            _repositorioEstudiante = repositorioEstudiante;
+            _repositorioDocente = repositorioDocente;
         }
 
         public UsuarioLoginVerificacionDTO Ejecutar(string email, string pwd)
         {
-            Usuario usu = _repositorioUsuario.FindByEmail(email);
+            int.TryParse(email, out int nroDocente);
+            Usuario usu = null;
+            if (nroDocente != 0)
+            {
+                usu = _repositorioDocente.GetDocenteByNroDocente(nroDocente);
+            }
+            else
+            {
+                usu = _repositorioEstudiante.FindByEmail(email);
+            }
+            
             if (usu != null && usu.Password == pwd)
             {
                 if (!usu.EstaVerificado) throw new UsuarioEstaVerificadoException("El usuario no se encuentra verificado.");

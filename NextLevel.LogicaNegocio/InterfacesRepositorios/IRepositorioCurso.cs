@@ -13,5 +13,6 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
         Curso FindByNombre(string nombre);
         IEnumerable<Curso> FindWithFilter(string filter, IEnumerable<Curso> lista);
         IEnumerable<Curso> FindWithCategory(string categoria, string? alfabetico, int? calificacion, string? docente, IEnumerable<Curso> lista);
+        IEnumerable<Curso> GetByDocente(Usuario usuario);
     }
 }

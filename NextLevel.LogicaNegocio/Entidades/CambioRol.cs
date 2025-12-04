@@ -15,11 +15,10 @@ namespace NextLevel.LogicaNegocio.Entidades
         public int EstudianteId { get; set; }
         public Estudiante Estudiante {  get; set; }
         [NotMapped]
-        public List<IFormFile> Archivos { get; set; }
-        public List<string> NombresArchivos { get; set; } = new List<string>();
+        public List<Archivo> Archivos { get; set; }
 
         public CambioRol() { }
-        public CambioRol(Estudiante estudiante, List<IFormFile> archivos)
+        public CambioRol(Estudiante estudiante, List<Archivo> archivos)
         {
             Estudiante = estudiante;
             Archivos = archivos;

@@ -9,5 +9,5 @@ using NextLevel.LogicaNegocio.Entidades;
 
 namespace NextLevel.Compartidos.DTOs.CambioRoles
 {
-    public record CambioRolDTO(EstudianteEmailDTO Estudiante, List<string> NombresArchivos);
+    public record CambioRolDTO(EstudianteEmailDTO Estudiante, List<Archivo> NombresArchivos);
 }

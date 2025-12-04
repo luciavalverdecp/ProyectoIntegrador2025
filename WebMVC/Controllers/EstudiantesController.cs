@@ -1,35 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NextLevel.Compartidos.DTOs.CambioRoles;
 using NextLevel.Compartidos.DTOs.Cursos;
+using NextLevel.LogicaAplicacion.InterfacesCU.CambiosDeRol;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
+using NextLevel.LogicaNegocio.Entidades;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.AltaCurso;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.CambioRol;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
 
 namespace WebMVC.Controllers
 {
     public class EstudiantesController : Controller
     {
-        private readonly IObtenerMisCursos obtenerMisCursos;
         private readonly IObtenerEstudiante obtenerEstudiante;
         private readonly ICursosTerminados cursosTerminados;
+        private readonly ICambioDeRol cambioDeRol;
 
-        public EstudiantesController(IObtenerMisCursos obtenerMisCursos, 
-            IObtenerEstudiante obtenerEstudiante, 
-            ICursosTerminados terminoCurso
+        public EstudiantesController(IObtenerEstudiante obtenerEstudiante, 
+            ICursosTerminados terminoCurso, 
+            ICambioDeRol cambioDeRol
             )
         {
-            this.obtenerMisCursos = obtenerMisCursos;
             this.obtenerEstudiante = obtenerEstudiante;
             this.cursosTerminados = terminoCurso;
+            this.cambioDeRol = cambioDeRol;
         }
 
-        public IActionResult MisCursos()
-        {
-            if(HttpContext.Session.GetString("rolLogueado") == "Estudiante")
-            {
-                var misCursos = obtenerMisCursos.Ejecutar(HttpContext.Session.GetString("emailLogueado"));
-                return View(misCursos);
-            }
-            return RedirectToAction("Login", "Usuarios");    
-        }
 
         public IActionResult Perfil()
         {
@@ -37,7 +33,7 @@ namespace WebMVC.Controllers
             {
                 try
                 {
-                    var estudiante = obtenerEstudiante.Ejectuar(HttpContext.Session.GetString("emailLogueado"));
+                    var estudiante = obtenerEstudiante.EjecutarEstudianteInfoDTO(HttpContext.Session.GetString("emailLogueado"));
                     ViewBag.CursosFinalizados = cursosTerminados.Ejecutar(estudiante);
                     return View(estudiante);
                 }
@@ -51,7 +47,52 @@ namespace WebMVC.Controllers
                 }
             }
             return RedirectToAction("Login", "Usuarios");
-            
+        }
+        [HttpPost]
+        public async Task<IActionResult> SolicitarCambioRol(List<IFormFile> Archivos)
+        {
+            if (HttpContext.Session.GetString("rolLogueado") == "Estudiante")
+            {
+                try
+                {
+                    var estudiante = obtenerEstudiante.EjecutarEstudianteEmailDTO(HttpContext.Session.GetString("emailLogueado"));
+                    CambioRolDTO cambioRol = new CambioRolDTO(estudiante, new List<Archivo>());
+                    await cambioDeRol.Ejecutar(cambioRol, Archivos);
+                    TempData["TabActivo"] = "cambioRol";
+                    TempData["MensajeCambioRol"] = "Solicitud de cambio de rol enviada exitosamenete.";
+                    TempData["ErrorCambioRol"] = false;
+                    return RedirectToAction("Perfil", "Estudiantes");
+                }
+                catch (CambioRolExistenteException ex)
+                {
+                    TempData["TabActivo"] = "cambioRol";
+                    TempData["MensajeCambioRol"] = ex.Message;
+                    TempData["ErrorCambioRol"] = true;
+                    return RedirectToAction("Perfil", "Estudiantes");
+                }
+                catch (CambioRolDocenteExistenteException ex)
+                {
+                    TempData["TabActivo"] = "cambioRol";
+                    TempData["MensajeCambioRol"] = ex.Message;
+                    TempData["ErrorCambioRol"] = true;
+                    return RedirectToAction("Perfil", "Estudiantes");
+                }
+                catch (AltaCursoArchivosException ex)
+                {
+                    TempData["TabActivo"] = "cambioRol";
+                    TempData["MensajeCambioRol"] = ex.Message;
+                    TempData["ErrorCambioRol"] = true;
+                    return RedirectToAction("Perfil", "Estudiantes");
+                }
+                catch (CambioRolException ex)
+                {
+                    TempData["TabActivo"] = "cambioRol";
+                    TempData["MensajeCambioRol"] = ex.Message;
+                    TempData["ErrorCambioRol"] = true;
+                    return RedirectToAction("Perfil", "Estudiantes");
+                }
+            }
+            return RedirectToAction("Login", "Usuarios");
         }
     }
 }

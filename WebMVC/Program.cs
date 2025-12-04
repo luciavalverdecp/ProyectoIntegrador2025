@@ -8,6 +8,13 @@ using NextLevel.LogicaNegocio.InterfacesRepositorios;
 using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
+using Azure.Storage.Blobs;
+using NextLevel.LogicaAplicacion.InterfacesCU.CambiosDeRol;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.CambiosDeRol;
+using NextLevel.LogicaAplicacion.InterfacesCU.Docentes;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Docentes;
+using NextLevel.LogicaAplicacion.InterfacesCU.Materiales;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Materiales;
 
 namespace WebMVC
 {
@@ -31,6 +38,29 @@ namespace WebMVC
             builder.Services.AddDbContext<NextLevelContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("ConexionNextLevel")));
 
+            builder.Services.AddSingleton(x =>
+            {
+                // Leer desde appsettings.json
+                string connectionString = builder.Configuration["Azure:BlobStorage"];
+
+                // Si está vacía, intentar desde variable de entorno
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    connectionString = Environment.GetEnvironmentVariable("AZURE_BLOB_STORAGE");
+                }
+
+                // Si sigue siendo nula, lanzar un error claro
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    throw new InvalidOperationException(
+                        "La cadena de conexión de Azure Blob Storage no está configurada. " +
+                        "Define AZURE_BLOB_STORAGE en tu entorno o en appsettings.json.");
+                }
+
+                return new BlobServiceClient(connectionString);
+            });
+
+
             //REPOSITORIOS
             builder.Services.AddScoped<IRepositorioAdministrador, RepositorioAdministrador>();
             builder.Services.AddScoped<IRepositorioCambioRol, RepositorioCambioRol>();
@@ -43,6 +73,7 @@ namespace WebMVC
             builder.Services.AddScoped<IRepositorioMensajeria, RepositorioMensajeria>();
             builder.Services.AddScoped<IRepositorioSemana, RepositorioSemana>();
             builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
+            builder.Services.AddScoped<IRepositorioAltaCurso, RepositorioAltaCurso>();
 
             //CASOS DE USO
             builder.Services.AddScoped<IRegistroEstudiante, RegistroEstudiante>();
@@ -52,6 +83,13 @@ namespace WebMVC
             builder.Services.AddScoped<IObtenerMisCursos, ObtenerMisCursos>();
             builder.Services.AddScoped<IObtenerEstudiante, ObtenerEstudiante>();
             builder.Services.AddScoped<ICursosTerminados, CursosTerminados>();
+            builder.Services.AddScoped<IObtenerCursosDocente, ObtenerCursosDocente>();
+            builder.Services.AddScoped<IObtenerCurso, ObtenerCurso>();
+            builder.Services.AddScoped<IAltaCurso, AltaCursoCU>();
+            builder.Services.AddScoped<ICambioDeRol, CambioDeRolCU>();
+            builder.Services.AddScoped<IObtenerDocente, ObtenerDocente>();
+            builder.Services.AddScoped<ICRUDMaterial, CRUDMaterial>();
+            builder.Services.AddScoped<IAgregarClase, AgregarClase>();
 
             var app = builder.Build();
 

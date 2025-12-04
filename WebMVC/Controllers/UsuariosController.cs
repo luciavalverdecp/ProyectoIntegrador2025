@@ -43,10 +43,11 @@ namespace WebMVC.Controllers
                 HttpContext.Session.SetString("emailLogueado", usuario.Email); //TODO hace falta
                 if (usuario.Rol.ToString() == "Estudiante")
                 {
-                    return RedirectToAction("ListadoCursos", "Cursos"); //TODO redireccionar a cursos estudiantes
-                }else if(usuario.Rol == Rol.Docente)
+                    return RedirectToAction("ListadoCursos", "Cursos");
+                }
+                else if(usuario.Rol == Rol.Docente)
                 {
-                    return RedirectToAction("Privacy", "Home");//TODO redireccionar a mis cursos del docente
+                    return RedirectToAction("ListadoCursosDocente", "Cursos");
                 }
                 else
                 {
@@ -205,8 +206,16 @@ namespace WebMVC.Controllers
 
             if (returnTo == "Perfil")
             {
-                TempData["TabActivo"] = "contra";
-                return RedirectToAction("Perfil", "Estudiantes");
+                if(HttpContext.Session.GetString("rolLogueado") == "Estudiante")
+                {
+                    TempData["TabActivo"] = "contra";
+                    return RedirectToAction("Perfil", "Estudiantes");
+                }
+                else if(HttpContext.Session.GetString("rolLogueado") == "Docenta")
+                {
+                    TempData["TabActivo"] = "contra";
+                    return RedirectToAction("Perfil", "Docentes");
+                }
             }
 
             return View("RecuperarContraseña");

@@ -21,7 +21,7 @@ namespace NextLevel.LogicaNegocio.Entidades
         public Foro Foro { get; set; }
         [NotMapped]
         public IFormFile Archivo { get; set; }//TODO Creo que esto no hace falta
-        public string RutaArchivo { get; set; }
+        public string Imagen { get; set; }
         public DateTime FechaInicio { get; set; }
         [AllowNull]
         public DateTime FechaFin { get; set; }
@@ -29,33 +29,59 @@ namespace NextLevel.LogicaNegocio.Entidades
         public string Descripcion { get; set; }
         public IEnumerable<Temario> Temarios { get; set; }
         public IEnumerable<Prueba> Pruebas { get; set; }
+        public List<DateTime> FechasClases { get; set; }
+        public int Duracion { get; set; }
+        public double Precio { get; set; }
+        public Dificultad Dificultad { get; set; }
 
         public Curso() { }
-        public Curso(Docente docente, string rutaArchivo, string descripcion)
+        public Curso(Docente docente, string imagen, string descripcion)
         {
             this.Docente = docente;
             Estudiantes = new List<Estudiante>();
             Semanas = new List<Semana>();
             Foro = new Foro();
             FechaInicio = DateTime.Now;
-            RutaArchivo = rutaArchivo;
+            Imagen = imagen;
             Calificacion = 0;
             Descripcion = descripcion;
             Pruebas = new List<Prueba>();
+            FechasClases = new List<DateTime>();
         }
 
-        public Curso(Docente docente, string rutaArchivo, string descripcion, IEnumerable<Temario> temarios)
+        public Curso(Docente docente, string imagen, string descripcion, IEnumerable<Temario> temarios)
         {
             this.Docente = docente;
             Estudiantes = new List<Estudiante>();
             Semanas = new List<Semana>();
             Foro = new Foro();
             FechaInicio = DateTime.Now;
-            RutaArchivo = rutaArchivo;
+            Imagen = imagen;
             Calificacion = 0;
             Descripcion = descripcion;
             Pruebas = new List<Prueba>();
             Temarios = temarios;
+            FechasClases = new List<DateTime>();
+        }
+
+        public Curso(string nombre, Docente docente, string imagen, DateTime fechaInicio, DateTime fachaFin, string descripcion, IEnumerable<Temario> temarios, double precio, Dificultad dificultad)
+        {
+            Nombre = nombre;
+            this.Docente = docente;
+            Estudiantes = new List<Estudiante>();
+            Semanas = new List<Semana>();
+            Foro = new Foro();
+            FechaInicio = fechaInicio;
+            FechaFin = fachaFin;
+            Imagen = imagen;
+            Calificacion = 0;
+            Descripcion = descripcion;
+            Pruebas = new List<Prueba>();
+            Temarios = temarios;
+            Precio = precio;
+            Dificultad = dificultad;
+            Duracion = CalcularDuracion();
+            FechasClases = new List<DateTime>();
         }
 
         #region Equals - CompareTo
@@ -70,18 +96,32 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         #endregion
 
-        #region Metodos
+            #region Metodos
         public void ActualizarSemanas()
         {
-            if (FechaInicio > DateTime.Now)
+            if (Semanas == null)
+                Semanas = new List<Semana>();
+
+            DateTime hoy = DateTime.Today;
+
+            if (FechaInicio > hoy)
                 return;
 
-            int semanasTranscurridas = (int)((DateTime.Now - FechaInicio).TotalDays / 7) + 1;
+            int semanasTranscurridas = (int)((hoy - FechaInicio.Date).TotalDays / 7) + 1;
+
+            if (Semanas.Count == 0)
+            {
+                Semanas.Add(new Semana
+                {
+                    Numero = 1,
+                    FechaInicio = FechaInicio.Date
+                });
+            }
 
             while (Semanas.Count < semanasTranscurridas)
             {
                 int numeroNueva = Semanas.Count + 1;
-                DateTime fechaInicioNueva = FechaInicio.AddDays((numeroNueva - 1) * 7);
+                DateTime fechaInicioNueva = FechaInicio.AddDays((numeroNueva - 1) * 7).Date;
 
                 Semanas.Add(new Semana
                 {
@@ -90,8 +130,24 @@ namespace NextLevel.LogicaNegocio.Entidades
                 });
             }
         }
+        private int CalcularDuracion()
+        {
+            int meses = (FechaFin.Year - FechaInicio.Year) * 12
+                + (FechaFin.Month - FechaInicio.Month);
+
+            int dias = FechaFin.Day - FechaInicio.Day;
+
+            if (dias < 0)
+            {
+                meses--;
+                dias += DateTime.DaysInMonth(FechaInicio.Year, FechaInicio.Month);
+            }
+
+            if (dias >= 15)
+                meses++;
+
+            return Math.Max(meses, 0);
+        }
         #endregion
-
-
     }
 }

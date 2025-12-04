@@ -37,7 +37,17 @@ namespace NextLevel.AccesoDatos.EF
 
         public void Update(Semana obj)
         {
-            throw new NotImplementedException();
+            Semana semana = _db.Semanas.Find(obj.Id);
+            try
+            {
+                semana.Materiales = obj.Materiales;
+                _db.Semanas.Update(semana);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al updatear la semana");
+            }
         }
     }
 }
