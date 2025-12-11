@@ -14,6 +14,8 @@
         const NOMBRE_CURSO = "@Model.Nombre";
         const FECHA_INICIO_CURSO = "@Model.FechaInico.ToString("yyyy-MM-dd")";
         const FECHA_FIN_CURSO    = "@Model.FechaFin.ToString("yyyy-MM-dd")";
+        const CLASES_AGENDADAS = @Html.Raw(Json.Serialize(ViewBag.ClasesAgendadas));
+        const ROL_USUARIO = "@Context.Session.GetString("rolLogueado")";
     </script>
     <script src="~/js/Cursos/VisualizacionCurso.js"></script>
 }
@@ -27,7 +29,7 @@
             <h1 class="curso-title">@Model.Nombre</h1>
             <p class="text-muted">@Model.DocenteNombreDTO?.NombreCompleto</p> 
         </div> 
-        </div> 
+     </div> 
         <!-- INFO DEL CURSO --> 
         <div class="mt-4 p-4 rounded" style="background: var(--pastel-bg)">
             <h4 class="fw-semibold">Descripción</h4> 
@@ -41,29 +43,18 @@
                  
                 <div class="col-md-6">
                     <strong>Duración:</strong> 
-                    @Model.Duracion semanas
+                    @Model.Duracion meses
                 </div> 
                 <div class="col-md-6 mt-2"> 
-                    <strong>Fecha de inicio:</strong> 
-                    @{
-                    var primera = Model.Semanas?.FirstOrDefault();
-                } @if (primera != null)
-                {
-                    @primera.FechaInicio.ToString("dd/MM/yyyy")
-                }
-                else
-                {
-                    <span class="text-muted">Sin definir</span>
-                } </div> <div class="col-md-6 mt-2"> <strong>Fecha fin:</strong> @{
-                    var ultima = Model.Semanas?.LastOrDefault();
-                } @if (ultima != null)
-                {
-                    @ultima.FechaInicio.AddDays(7).ToString("dd/MM/yyyy")
-                }
-                else
-                {
-                    <span class="text-muted">Sin definir</span>
-                } </div> </div> </div>
+                    <strong>Fecha de inicio:</strong>
+                    @Model.FechaInico.ToString("dd/MM/yyyy")
+                </div> 
+                <div class="col-md-6 mt-2">
+                    <strong>Fecha fin:</strong> 
+                    @Model.FechaFin.ToString("dd/MM/yyyy")
+                </div> 
+            </div> 
+        </div>
 
     <!-- TABS -->
     <div class="tab-buttons">

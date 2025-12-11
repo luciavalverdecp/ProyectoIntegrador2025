@@ -56,6 +56,8 @@ namespace WebMVC.Controllers
                 try
                 {
                     var cursosDTO = _obtenerCurso.Ejecturar(nombreCurso);
+                    ViewBag.ClasesAgendadas = cursosDTO.FechasClases
+                        .Select(c => new { Fecha = c.ToString("yyyy-MM-dd"), Hora = c.ToString("HH:mm") }).ToList();
                     return View(cursosDTO);
                 }
                 catch (CursoException ex)

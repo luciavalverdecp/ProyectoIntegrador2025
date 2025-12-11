@@ -146,7 +146,7 @@ namespace NextLevel.LogicaNegocio.Entidades
             if (dias >= 15)
                 meses++;
 
-            return Math.Max(meses, 0);
+            return Math.Max(meses, 0) - 2;
         }
         #endregion
     }
