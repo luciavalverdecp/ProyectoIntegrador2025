@@ -40,3 +40,34 @@
         }, 1000);
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const vista = document.getElementById("vistaDatos");
+    const form = document.getElementById("formEditar");
+    const btnEditar = document.getElementById("btnEditar");
+    const btnCancelar = document.getElementById("btnCancelar");
+
+    if (btnEditar) {
+        btnEditar.addEventListener("click", () => {
+            vista.style.display = "none";
+            form.style.display = "block";
+        });
+    }
+
+    if (btnCancelar) {
+        btnCancelar.addEventListener("click", () => {
+            form.style.display = "none";
+            vista.style.display = "block";
+        });
+    }
+
+});
+
+document.getElementById("btnCancelar").addEventListener("click", () => {
+    const form = document.getElementById("formEditar");
+    form.reset(); // ⬅️ Esto vuelve a los valores originales del HTML
+
+    document.getElementById("formEditar").style.display = "none";
+    document.getElementById("vistaDatos").style.display = "block";
+});

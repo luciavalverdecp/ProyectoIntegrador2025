@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NextLevel.Compartidos.DTOs.CambioRoles;
 using NextLevel.Compartidos.DTOs.Cursos;
+using NextLevel.Compartidos.DTOs.Estudiantes;
 using NextLevel.LogicaAplicacion.InterfacesCU.CambiosDeRol;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
 using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.AltaCurso;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.CambioRol;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 
 namespace WebMVC.Controllers
 {
@@ -15,15 +17,18 @@ namespace WebMVC.Controllers
         private readonly IObtenerEstudiante obtenerEstudiante;
         private readonly ICursosTerminados cursosTerminados;
         private readonly ICambioDeRol cambioDeRol;
+        private readonly IModificarEstudiante modificarEstudiante;
 
         public EstudiantesController(IObtenerEstudiante obtenerEstudiante, 
             ICursosTerminados terminoCurso, 
-            ICambioDeRol cambioDeRol
+            ICambioDeRol cambioDeRol,
+            IModificarEstudiante modificarEstudiante
             )
         {
             this.obtenerEstudiante = obtenerEstudiante;
             this.cursosTerminados = terminoCurso;
             this.cambioDeRol = cambioDeRol;
+            this.modificarEstudiante = modificarEstudiante;
         }
 
 
@@ -90,6 +95,46 @@ namespace WebMVC.Controllers
                     TempData["MensajeCambioRol"] = ex.Message;
                     TempData["ErrorCambioRol"] = true;
                     return RedirectToAction("Perfil", "Estudiantes");
+                }
+            }
+            return RedirectToAction("Login", "Usuarios");
+        }
+
+        [HttpPost]
+        public IActionResult ActualizarDatos(EstudianteInfoDTO estudianteInfoDTO)
+        {
+            if (HttpContext.Session.GetString("rolLogueado") == "Estudiante")
+            {
+                try
+                {
+                    modificarEstudiante.Ejecutar(estudianteInfoDTO);
+                    TempData["MensajeDatosPersonales"] = "Datos personales actualizados correctamente";
+                    TempData["ErrorDatosPersonales"] = false;
+                    return RedirectToAction("Perfil");
+                }
+                catch (UsuarioNombreCompletoException ex)
+                {
+                    TempData["MensajeDatosPersonales"] = ex.Message;
+                    TempData["ErrorDatosPersonales"] = true;
+                    return RedirectToAction("Perfil");
+                }
+                catch (UsuarioTelefonoException ex)
+                {
+                    TempData["MensajeDatosPersonales"] = ex.Message;
+                    TempData["ErrorDatosPersonales"] = true;
+                    return RedirectToAction("Perfil");
+                }
+                catch (EstudianteException ex)
+                {
+                    TempData["MensajeDatosPersonales"] = ex.Message;
+                    TempData["ErrorDatosPersonales"] = true;
+                    return RedirectToAction("Perfil");
+                }
+                catch (Exception ex)
+                {
+                    TempData["MensajeDatosPersonales"] = ex.Message;
+                    TempData["ErrorDatosPersonales"] = true;
+                    return RedirectToAction("Perfil");
                 }
             }
             return RedirectToAction("Login", "Usuarios");

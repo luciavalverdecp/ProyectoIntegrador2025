@@ -56,20 +56,89 @@
                     <h2 class="section-title">Datos personales</h2>
                     <hr />
 
-                    <dl class="row mt-4">
-                        <dt class="col-sm-4">Nombre completo</dt>
-                        <dd class="col-sm-8">@Model.NombreCompleto</dd>
+                    <!-- MENSAJES -->
+                    <div class="mensajes-form">
+                        @if (TempData["ErrorDatosPersonales"] != null && !(bool)TempData["ErrorDatosPersonales"])
+                        {
+                            <div class="alert alert-success text-center mb-2 mt-3">
+                                @TempData["MensajeDatosPersonales"]
+                            </div>
+                        }
 
-                        <dt class="col-sm-4">Teléfono</dt>
-                        <dd class="col-sm-8">@Model.Telefono</dd>
+                        @if (TempData["ErrorDatosPersonales"] != null && (bool)TempData["ErrorDatosPersonales"])
+                        {
+                            <div class="alert alert-danger text-center mb-2 mt-3">
+                                @TempData["MensajeDatosPersonales"]
+                            </div>
 
-                        <dt class="col-sm-4">Número de docente</dt>
-                        <dd class="col-sm-8">@Model.NroDocente</dd>
-                    </dl>
-
-                    <div class="text-center mt-4">
-                        <a asp-action="Edit" class="btn btn-pastel">Editar datos</a>
+                            <script>
+                                // Mantener modo edición si hubo error del servidor
+                                document.addEventListener("DOMContentLoaded", () => {
+                                    document.getElementById("vistaDatosDocente").style.display = "none";
+                                    document.getElementById("formEditarDocente").style.display = "block";
+                                });
+                            </script>
+                        }
                     </div>
+
+                    <!-- MODO LECTURA -->
+                    <div id="vistaDatosDocente">
+                        <dl class="row mt-4">
+
+                            <dt class="col-sm-4">Nombre completo</dt>
+                            <dd class="col-sm-8">@Model.NombreCompleto</dd>
+
+                            <dt class="col-sm-4">Teléfono</dt>
+                            <dd class="col-sm-8">@Model.Telefono</dd>
+
+                            <dt class="col-sm-4">Número de docente</dt>
+                            <dd class="col-sm-8">@Model.NroDocente</dd>
+
+                        </dl>
+
+                        <div class="text-center mt-4">
+                            <button id="btnEditarDocente" class="btn btn-pastel">Editar datos</button>
+                        </div>
+                    </div>
+
+                    <!-- MODO EDICIÓN -->
+                    <form id="formEditarDocente" asp-controller="Docentes" asp-action="ActualizarDatos"
+                          method="post" style="display:none;">
+
+                        <div class="mt-4">
+
+                            <div class="mb-3">
+                                <label class="fw-semibold">Nombre completo</label>
+                                <input class="form-control pastel-input" name="NombreCompleto"
+                                       value="@Model.NombreCompleto" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="fw-semibold">Teléfono</label>
+                                <input class="form-control pastel-input" name="Telefono"
+                                       value="@Model.Telefono" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="fw-semibold">Número de docente</label>
+
+                                <input class="form-control pastel-input"
+                                       value="@Model.NroDocente"
+                                       readonly
+                                       style="background-color:#f2f2f2; cursor:not-allowed;" />
+
+                                <input type="hidden" name="NroDocente.NroDeDocente" value="@Model.NroDocente.NroDeDocente" />
+                            </div>
+
+
+                        </div>
+
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <button type="submit" class="btn btn-pastel">Guardar</button>
+                            <button type="button" id="btnCancelarDocente" class="btn btn-danger">Cancelar</button>
+                        </div>
+
+                    </form>
                 </div>
 
             </div>

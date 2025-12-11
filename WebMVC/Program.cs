@@ -90,6 +90,8 @@ namespace WebMVC
             builder.Services.AddScoped<IObtenerDocente, ObtenerDocente>();
             builder.Services.AddScoped<ICRUDMaterial, CRUDMaterial>();
             builder.Services.AddScoped<IAgregarClase, AgregarClase>();
+            builder.Services.AddScoped<IModificarEstudiante, ModificarEstudiante>();
+            builder.Services.AddScoped<IModificarDocente, ModificarDocente>();
 
             var app = builder.Build();
 

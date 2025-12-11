@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NextLevel.LogicaNegocio.Entidades;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
 
@@ -56,7 +57,18 @@ namespace NextLevel.AccesoDatos.EF
 
         public void Update(Estudiante obj)
         {
-            throw new NotImplementedException();
+            var estudianteOriginal = FindByEmail(obj.Email);
+            try
+            {
+                estudianteOriginal.NombreCompleto = obj.NombreCompleto;
+                estudianteOriginal.Telefono = obj.Telefono;
+                _db.Estudiantes.Update(estudianteOriginal);
+                _db.SaveChanges();
+            }
+            catch (EstudianteException ex)
+            {
+                throw new EstudianteException("Error al actualizar el estudiante", ex);
+            }
         }
 
         public Estudiante FindByEmail(string email)
