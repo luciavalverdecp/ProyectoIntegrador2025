@@ -206,8 +206,16 @@ namespace WebMVC.Controllers
 
             if (returnTo == "Perfil")
             {
-                TempData["TabActivo"] = "contra";
-                return RedirectToAction("Perfil", "Estudiantes");
+                if(HttpContext.Session.GetString("rolLogueado") == "Estudiante")
+                {
+                    TempData["TabActivo"] = "contra";
+                    return RedirectToAction("Perfil", "Estudiantes");
+                }
+                else if(HttpContext.Session.GetString("rolLogueado") == "Docenta")
+                {
+                    TempData["TabActivo"] = "contra";
+                    return RedirectToAction("Perfil", "Docentes");
+                }
             }
 
             return View("RecuperarContraseña");
