@@ -237,8 +237,8 @@ document.addEventListener('hidden.bs.modal', function () {
 // -----------------------
 // VARIABLES QUE VIENEN DE RAZOR
 // -----------------------
-const fechaInicioCurso = new Date(FECHA_INICIO_CURSO);
-const fechaFinCurso = new Date(FECHA_FIN_CURSO);
+const fechaInicioCurso = new Date(`${FECHA_INICIO_CURSO}T00:00:00`);
+const fechaFinCurso = new Date(`${FECHA_FIN_CURSO}T00:00:00`);
 const nombreCurso = NOMBRE_CURSO;
 
 const calGrid = document.getElementById("calGrid");
@@ -280,7 +280,12 @@ function renderMes() {
     let hayDias = false;
 
     for (let dia = 1; dia <= totalDias; dia++) {
+
         const fechaDia = new Date(anio, mes, dia);
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        const esPasado = fechaDia < hoy;
 
         // si no entra en el rango del curso → no mostrar
         if (fechaDia < fechaInicioCurso || fechaDia > fechaFinCurso) continue;
@@ -293,51 +298,178 @@ function renderMes() {
         const fechaStr = `${anio}-${String(mes + 1).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
         cell.dataset.fecha = fechaStr;
 
-        cell.innerHTML = `
-            <div class="day-number">${dia}</div>
-            <div class="expand-content">
-                <input type="time" class="time-input" step="900" />
-                <button class="btn-agendar">Agendar clase</button>
-            </div>
-        `;
+        const claseDelDia = CLASES_AGENDADAS.find(c => c.fecha === fechaStr);
 
-        // expandir celda
+
+        // ===================================================================
+        //                       *** BLOQUE ESTUDIANTE ***
+        // ===================================================================
+        if (ROL_USUARIO === "Estudiante") {
+
+            if (!claseDelDia) {
+                // estudiante no ve agendar
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <div class="clase-pasada">No hay clase</div>
+                    </div>
+                `;
+            }
+            else {
+                const horaClase = claseDelDia.hora;
+                const inicioClase = new Date(`${fechaStr}T${horaClase}:00`);
+                const ahora = new Date();
+
+                const habilitado = ahora >= inicioClase; // puede entrar solo cuando empieza
+
+                if (esPasado) {
+                    cell.innerHTML = `
+                        <div class="day-number">${dia}</div>
+                        <div class="expand-content">
+                            <div class="hora-clase">${horaClase} hs</div>
+                            <div class="clase-pasada">Clase pasada</div>
+                        </div>
+                    `;
+                } else {
+                    cell.innerHTML = `
+                        <div class="day-number">${dia}</div>
+                        <div class="expand-content">
+                            <button class="btn-iniciar" ${habilitado ? "" : "disabled"}>
+                                Ingresar a la clase
+                            </button>
+                            <div class="hora-clase">${horaClase} hs</div>
+                        </div>
+                    `;
+
+                    const btnIngresar = cell.querySelector(".btn-iniciar");
+
+                    // actualizar cada 30s
+                    function actualizarIngreso() {
+                        btnIngresar.disabled = new Date() < inicioClase;
+                    }
+                    actualizarIngreso();
+                    setInterval(actualizarIngreso, 30000);
+
+                    // evento para abrir la sala
+                    btnIngresar.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        window.location.href = `/Cursos/VerClase?curso=${NOMBRE_CURSO}&fecha=${fechaStr}`;
+                    });
+                }
+            }
+
+            // expandir igual
+            cell.addEventListener("click", (e) => {
+                e.stopPropagation();
+                expandirCelda(cell);
+            });
+
+            calGrid.appendChild(cell);
+            continue; 
+        }
+
+        // ------------------------------ NO HAY CLASE ------------------------------
+        if (!claseDelDia) {
+            if (esPasado) {
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <div class="clase-pasada">No disponible</div>
+                    </div>
+                `;
+            } else {
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <input type="time" class="time-input" step="900" />
+                        <button class="btn-agendar">Agendar clase</button>
+                    </div>
+                `;
+            }
+        }
+
+        // ------------------------------ HAY CLASE ------------------------------
+        else {
+
+            const inicioClase = new Date(`${fechaStr}T${claseDelDia.hora}:00`);
+            const ahora = new Date();
+
+            const diffMs = inicioClase - ahora;
+
+            const puedeIniciar = diffMs <= 15 * 60 * 1000 && diffMs > -60 * 60 * 1000;
+
+            if (esPasado) {
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <div class="hora-clase">${claseDelDia.hora} hs</div>
+                        <div class="clase-pasada">Clase pasada</div>
+                    </div>
+                `;
+            } else {
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <button class="btn-iniciar" ${puedeIniciar ? "" : "disabled"}>
+                            Iniciar clase
+                        </button>
+                        <div class="hora-clase">${claseDelDia.hora} hs</div>
+                    </div>
+                `;
+
+                const btnIniciar = cell.querySelector(".btn-iniciar");
+
+                function actualizarHabilitacion() {
+                    const ahora = new Date();
+                    const diff = inicioClase - ahora;
+
+                    const puede = diff <= 15 * 60 * 1000 && diff > -60 * 60 * 1000;
+                    btnIniciar.disabled = !puede;
+                }
+
+                actualizarHabilitacion();
+                setInterval(actualizarHabilitacion, 30000);
+            }
+        }
+
+        // ------------------------------ EXPANDIR DOCENTE ------------------------------
         cell.addEventListener("click", (e) => {
             e.stopPropagation();
             expandirCelda(cell);
         });
 
-        // enviar al backend
-        cell.querySelector(".btn-agendar").addEventListener("click", (e) => {
-            e.stopPropagation();
-            const hora = cell.querySelector(".time-input").value;
-            if (!hora) return;
+        // ------------------------------ AGENDAR ------------------------------
+        const btnAgendar = cell.querySelector(".btn-agendar");
+        if (btnAgendar) {
+            btnAgendar.addEventListener("click", (e) => {
+                e.stopPropagation();
 
-            const fechaCompleta = `${fechaStr} ${hora}`;
+                const hora = cell.querySelector(".time-input")?.value;
+                if (!hora) return;
 
-            // --- crear form dinámico ---
-            const form = document.createElement("form");
-            form.method = "POST";
-            form.action = "/Cursos/AgregarClase";
+                const fechaCompleta = `${fechaStr} ${hora}`;
 
-            const inputFecha = document.createElement("input");
-            inputFecha.type = "hidden";
-            inputFecha.name = "fecha";
-            inputFecha.value = fechaCompleta;
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = "/Cursos/AgregarClase";
 
-            // 🔥 Enviar nombre del curso (desde Razor)
-            const inputCurso = document.createElement("input");
-            inputCurso.type = "hidden";
-            inputCurso.name = "CursoNombre";
-            inputCurso.value = NOMBRE_CURSO;
+                const inputFecha = document.createElement("input");
+                inputFecha.type = "hidden";
+                inputFecha.name = "fecha";
+                inputFecha.value = fechaCompleta;
 
-            form.appendChild(inputFecha);
-            form.appendChild(inputCurso);
+                const inputCurso = document.createElement("input");
+                inputCurso.type = "hidden";
+                inputCurso.name = "CursoNombre";
+                inputCurso.value = NOMBRE_CURSO;
 
-            document.body.appendChild(form);
-            form.submit();
-        });
+                form.appendChild(inputFecha);
+                form.appendChild(inputCurso);
 
+                document.body.appendChild(form);
+                form.submit();
+            });
+        }
 
         calGrid.appendChild(cell);
     }

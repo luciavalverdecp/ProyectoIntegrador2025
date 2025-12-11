@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using NextLevel.Compartidos.DTOs.Cursos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
+using NextLevel.LogicaNegocio.Entidades;
+using NextLevel.LogicaNegocio.EnvioDeEmails;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
 
@@ -29,6 +31,17 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
             if (Curso.FechasClases.Contains(claseAgregada.Fecha)) throw new CursoFechaException("Ya tienes registrada una clase para ese dia y fecha.");
             Curso.FechasClases.Add(claseAgregada.Fecha);
             repositorioCurso.Update(Curso);
+            avisarEstudiantes(Curso.Estudiantes, Curso);
+        }
+
+        private async void avisarEstudiantes(List<Estudiante> estudiantes, Curso curso)
+        {
+            if (!estudiantes.Any()) return;
+            foreach(var e in estudiantes)
+            {
+                AvisoNuevaClase enviarEmail = new AvisoNuevaClase();
+                Task.Run(() => enviarEmail.EnviarAvisoNuevaClaseAsync(e.Email, curso));
+            }
         }
     }
 }
