@@ -70,6 +70,18 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         {
             return cursos.Select(curso => new CursoNombreDTO(curso.Nombre));
         }
+        public static IEnumerable<Curso> FromListCursoNombreDTO(IEnumerable<CursoNombreDTO> cursos) 
+        {
+            if (cursos == null || cursos.Count() == 0)
+            {
+                return new List<Curso>();
+            } 
+                
+            return cursos.Select(curso => new Curso()
+            {
+                Nombre = curso.Nombre
+            });
+        }
 
         public static CursoNombreDTO ToCursoNombreDTO(Curso curso)
         {

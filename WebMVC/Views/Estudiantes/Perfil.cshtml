@@ -71,25 +71,98 @@
                     <h2 class="section-title">Datos personales</h2>
                     <hr />
 
-                    <dl class="row mt-4">
-                        <dt class="col-sm-4">Email</dt>
-                        <dd class="col-sm-8">@Model.Email</dd>
+                    <!-- MENSAJES -->
+                    <div class="mensajes-form">
+                        @if (TempData["ErrorDatosPersonales"] != null && !(bool)TempData["ErrorDatosPersonales"])
+                        {
+                            <div class="alert alert-success text-center mb-2 mt-3">
+                                @TempData["MensajeDatosPersonales"]
+                            </div>
+                        }
 
-                        <dt class="col-sm-4">Nombre completo</dt>
-                        <dd class="col-sm-8">@Model.NombreCompleto</dd>
-
-                        <dt class="col-sm-4">Cédula</dt>
-                        <dd class="col-sm-8">@Model.Cedula</dd>
-
-                        <dt class="col-sm-4">Teléfono</dt>
-                        <dd class="col-sm-8">@Model.Telefono</dd>
-                    </dl>
-
-                    <div class="text-center mt-4">
-                        <a asp-action="Edit" class="btn btn-pastel">Editar datos</a>
+                        @if (TempData["ErrorDatosPersonales"] != null && (bool)TempData["ErrorDatosPersonales"])
+                        {
+                            <div class="alert alert-danger text-center mb-2 mt-3">
+                                @TempData["MensajeDatosPersonales"]
+                            </div>
+                            <script>
+                                // Mantener modo edición si hubo error del servidor
+                                document.addEventListener("DOMContentLoaded", () => {
+                                    document.getElementById("vistaDatos").style.display = "none";
+                                    document.getElementById("formEditar").style.display = "block";
+                                });
+                            </script>
+                        }
                     </div>
+
+                    <!-- MODO LECTURA -->
+                    <div id="vistaDatos">
+                        <dl class="row mt-4">
+                            <dt class="col-sm-4">Email</dt>
+                            <dd class="col-sm-8">@Model.Email</dd>
+
+                            <dt class="col-sm-4">Nombre completo</dt>
+                            <dd class="col-sm-8">@Model.NombreCompleto</dd>
+
+                            <dt class="col-sm-4">Cédula</dt>
+                            <dd class="col-sm-8">@Model.Cedula</dd>
+
+                            <dt class="col-sm-4">Teléfono</dt>
+                            <dd class="col-sm-8">@Model.Telefono</dd>
+                        </dl>
+
+                        <div class="text-center mt-4">
+                            <button id="btnEditar" class="btn btn-pastel">Editar datos</button>
+                        </div>
+                    </div>
+
+                    <!-- MODO EDICIÓN -->
+                    <form id="formEditar" asp-controller="Estudiantes" asp-action="ActualizarDatos"
+                          method="post" style="display:none;">
+
+                        <div class="mt-4">
+
+                            <!-- EMAIL (NO EDITABLE) -->
+                            <div class="mb-3">
+                                <label class="fw-semibold">Email</label>
+                                <input class="form-control pastel-input" name="Email"
+                                       value="@Model.Email" readonly />
+                            </div>
+
+                            <!-- NOMBRE COMPLETO -->
+                            <div class="mb-3">
+                                <label class="fw-semibold">Nombre completo</label>
+                                <input class="form-control pastel-input" name="NombreCompleto"
+                                       value="@Model.NombreCompleto" required />
+                            </div>
+
+                            <!-- CÉDULA (NO EDITABLE) -->
+                            <div class="mb-3">
+                                <label class="fw-semibold">Cédula</label>
+                                <input class="form-control pastel-input" name="Cedula"
+                                       value="@Model.Cedula" readonly />
+                            </div>
+
+                            <!-- TELÉFONO -->
+                            <div class="mb-3">
+                                <label class="fw-semibold">Teléfono</label>
+                                <input class="form-control pastel-input" name="Telefono"
+                                       value="@Model.Telefono" required />
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <button type="submit" class="btn btn-pastel">Guardar</button>
+                            <button type="button" id="btnCancelar" class="btn btn-danger">Cancelar</button>
+                        </div>
+
+                    </form>
+
                 </div>
             </div>
+
+
 
 
 

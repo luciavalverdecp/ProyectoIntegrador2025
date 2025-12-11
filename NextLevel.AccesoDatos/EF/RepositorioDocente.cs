@@ -64,5 +64,21 @@ namespace NextLevel.AccesoDatos.EF
                 throw new DocenteException("Error al cambiar el rol del Usuario", ex);
             }
         }
+
+        public void UpdateDatosPersonales(Docente obj)
+        {
+            var docente = GetDocenteByNroDocente(obj.NroDocente.NroDeDocente);
+            try
+            {
+                docente.NombreCompleto = obj.NombreCompleto;
+                docente.Telefono = obj.Telefono;
+                _db.Docentes.Update(docente);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new DocenteException("Error al cambiar el rol del Usuario", ex);
+            }
+        }
     }
 }

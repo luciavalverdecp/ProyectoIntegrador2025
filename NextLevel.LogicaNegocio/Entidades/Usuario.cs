@@ -57,6 +57,11 @@ namespace NextLevel.LogicaNegocio.Entidades
             //validarTelefono(); TODO agregar uno qeu valide el telefono
         }
 
+        public virtual void ValidarDatosPersonales()
+        {
+            validarNombreCompleto();
+            validarTelefono();
+        }
         private void validarEmail()
         {
             if (string.IsNullOrWhiteSpace(Email))
