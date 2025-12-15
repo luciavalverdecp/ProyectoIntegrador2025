@@ -334,9 +334,12 @@ function renderMes() {
                     cell.innerHTML = `
                         <div class="day-number">${dia}</div>
                         <div class="expand-content">
-                            <button class="btn-iniciar" ${habilitado ? "" : "disabled"}>
+                            <a href="@(habilitado 
+                                ? Url.Action("ClasesEnVivo", "Cursos", new { nombreCurso = nombreCurso }) 
+                                : "#")"
+                               class="btn-iniciar @(habilitado ? "" : "disabled-link")">
                                 Ingresar a la clase
-                            </button>
+                            </a>
                             <div class="hora-clase">${horaClase} hs</div>
                         </div>
                     `;
@@ -410,9 +413,12 @@ function renderMes() {
                 cell.innerHTML = `
                     <div class="day-number">${dia}</div>
                     <div class="expand-content">
-                        <button class="btn-iniciar" ${puedeIniciar ? "" : "disabled"}>
+                        <a href="@(puedeIniciar 
+                            ? Url.Action("ClasesEnVivo", "Cursos", new { nombreCurso = nombreCurso }) 
+                            : "#")"
+                           class="btn-iniciar @(puedeIniciar ? "" : "disabled-link")">
                             Iniciar clase
-                        </button>
+                        </a>
                         <div class="hora-clase">${claseDelDia.hora} hs</div>
                     </div>
                 `;
