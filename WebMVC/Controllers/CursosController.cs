@@ -6,6 +6,10 @@ using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.AltaCurso;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Docentes;
+using NextLevel.LogicaAplicacion.InterfacesCU.Docentes;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Docente;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
 
 namespace WebMVC.Controllers
 {
@@ -17,12 +21,16 @@ namespace WebMVC.Controllers
         private readonly IObtenerMisCursos obtenerMisCursos;
         private readonly IAltaCurso _altaCurso;
         private readonly IAgregarClase _agregarClase;
+        private readonly IObtenerDocente _obtenerDocente;
+        private readonly IObtenerEstudiante _obtenerEstudiante;
         public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados,
             IObtenerCursosDocente obtenerCursosDocente,
              IObtenerCurso obtenerCurso,
              IObtenerMisCursos obtenerMisCursos,
              IAltaCurso altaCurso,
-             IAgregarClase agregarClase)
+             IAgregarClase agregarClase,
+             IObtenerDocente obtenerDocente,
+             IObtenerEstudiante obtenerEstudiante)
         {
             _obtenerCursosFiltrados = obtenerCursosFiltrados;
             _obtenerCursosDocente = obtenerCursosDocente;
@@ -30,6 +38,8 @@ namespace WebMVC.Controllers
             this.obtenerMisCursos = obtenerMisCursos;
             _altaCurso = altaCurso;
             _agregarClase = agregarClase;
+            _obtenerDocente = obtenerDocente;
+            _obtenerEstudiante = obtenerEstudiante;
         }
         public IActionResult ListadoCursos(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
@@ -191,6 +201,44 @@ namespace WebMVC.Controllers
                 }
             }
             return RedirectToAction("Login", "Usuarios");
+        }
+
+        public IActionResult ClasesEnVivo(string nombreCurso)
+        {
+            try
+            {
+                string? rol = HttpContext.Session.GetString("rolLogueado");
+                string? email = HttpContext.Session.GetString("emailLogueado");
+
+                if (rol != "Docente" && rol != "Estudiante")
+                    return RedirectToAction("Login", "Usuarios");
+
+                var curso = _obtenerCurso.Ejecturar(nombreCurso);
+
+                if (rol == "Docente")
+                {
+                    var docente = _obtenerDocente.Ejecutar(email);
+                    if (curso.DocenteNombreDTO.NroDocente != docente.NroDocente.NroDeDocente)
+                        return Unauthorized();
+                }
+
+                if (rol == "Estudiante" && !curso.Estudiantes.Any(a => a.Email == email))
+                    return Unauthorized();
+
+                ViewBag.RoomName = nombreCurso.Replace(" ", "_");
+                ViewBag.NombreUsuario = HttpContext.Session.GetString("nombreLogueado") ?? email;
+                ViewBag.EsDocente = rol == "Docente";
+
+                return View();
+            }
+            catch (DocenteException ex)
+            {
+                return Unauthorized();
+            }
+            catch (EstudianteException ex)
+            {
+                return Unauthorized();
+            }
         }
     }
 }
