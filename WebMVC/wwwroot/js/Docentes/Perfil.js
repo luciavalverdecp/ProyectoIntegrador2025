@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-document.getElementById("btnCancelar").addEventListener("click", () => {
+document.getElementById("btnCancelarDocente").addEventListener("click", () => {
     const form = document.getElementById("formEditar");
 form.reset(); // ⬅️ Esto vuelve a los valores originales del HTML
 

@@ -4,6 +4,7 @@ using NextLevel.Compartidos.DTOs.Estudiantes;
 using NextLevel.Compartidos.DTOs.Mappers;
 using NextLevel.LogicaAplicacion.InterfacesCU.Docentes;
 using NextLevel.LogicaNegocio.Entidades;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Docente;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
 using System;
@@ -29,9 +30,9 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Docentes
                 DocenteInfoDTO dto = DocenteMapper.ToDocenteInfoDTO(docente);
                 return dto;
             }
-            catch (Exception ex)
+            catch (DocenteException ex)
             {
-                throw new EstudianteException("Error al obtener al usuario docente.");
+                throw new DocenteException("Error al obtener al usuario docente.");
             }
         }
     }
