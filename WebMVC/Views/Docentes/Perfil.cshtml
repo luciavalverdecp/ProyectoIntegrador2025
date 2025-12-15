@@ -99,7 +99,7 @@
                         Por seguridad, te enviaremos un correo con un enlace para restablecer tu contraseña.
                     </div>
 
-                    <form id="formRecuperar" asp-controller="Docentes" asp-action="RecuperarCuenta" method="post">
+                    <form id="formRecuperar" asp-controller="Usuarios" asp-action="RecuperarCuenta" method="post">
                         <input hidden name="email" value="@Context.Session.GetString("emailLogueado")" />
                         <input hidden name="returnTo" value="Perfil" />
                         <button id="btnRecuperar" type="submit" class="btn btn-pastel">

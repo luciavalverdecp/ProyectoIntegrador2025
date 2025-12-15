@@ -41,30 +41,5 @@ namespace WebMVC.Controllers
             }
             return RedirectToAction("Login", "Usuarios");
         }
-
-        [HttpPost]
-        public IActionResult RecuperarCuenta(string email, string returnTo)
-        {
-            try
-            {
-                recuperarCuenta.Ejecutar(email);
-
-                TempData["MensajeRecuperarPassword"] = "Se le ha enviado un correo para continuar con la recuperación.";
-                TempData["MensajeErrorRecuperarPassword"] = false;
-            }
-            catch (UsuarioException ex)
-            {
-                TempData["MensajeRecuperarPassword"] = ex.Message;
-                TempData["MensajeErrorRecuperarPassword"] = true;
-            }
-
-            if (returnTo == "Perfil")
-            {
-                TempData["TabActivo"] = "contra";
-                return RedirectToAction("Perfil", "Docentes");
-            }
-
-            return View("RecuperarContraseña");
-        }
     }
 }
