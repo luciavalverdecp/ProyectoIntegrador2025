@@ -6,7 +6,7 @@
 }
 
 @section Styles {
-<link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css" />
+    <link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css?v=2" />
 }
 
 @section ScriptsJs {
@@ -16,8 +16,9 @@
         const FECHA_FIN_CURSO    = "@Model.FechaFin.ToString("yyyy-MM-dd")";
         const CLASES_AGENDADAS = @Html.Raw(Json.Serialize(ViewBag.ClasesAgendadas));
         const ROL_USUARIO = "@Context.Session.GetString("rolLogueado")";
+        const URL_CLASE = '@Url.Action("ClasesEnVivo", "Cursos")';
     </script>
-    <script src="~/js/Cursos/VisualizacionCurso.js"></script>
+    <script src="~/js/Cursos/VisualizacionCurso.js?v=2"></script>
 }
 
 <div class="curso-container">

@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector("#semana-" + ultima.dataset.semana).style.display = "block";
     }
 
-});    
+});
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     break;
 
                 case 3:
-                case 4: 
+                case 4:
                     window.location.href = ruta;
                     break;
 
@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     break;
 
                 case 6:
-                case 1: 
+                case 1:
                     mostrarTexto(item, texto);
                     break;
 
@@ -287,7 +287,7 @@ function renderMes() {
 
         const esPasado = fechaDia < hoy;
 
-        // si no entra en el rango del curso → no mostrar
+        // fuera del rango del curso
         if (fechaDia < fechaInicioCurso || fechaDia > fechaFinCurso) continue;
 
         hayDias = true;
@@ -300,78 +300,52 @@ function renderMes() {
 
         const claseDelDia = CLASES_AGENDADAS.find(c => c.fecha === fechaStr);
 
-
         // ===================================================================
-        //                       *** BLOQUE ESTUDIANTE ***
+        //                        BLOQUE ESTUDIANTE
         // ===================================================================
         if (ROL_USUARIO === "Estudiante") {
 
             if (!claseDelDia) {
-                // estudiante no ve agendar
                 cell.innerHTML = `
                     <div class="day-number">${dia}</div>
                     <div class="expand-content">
                         <div class="clase-pasada">No hay clase</div>
                     </div>
                 `;
-            }
-            else {
+            } else {
+
                 const horaClase = claseDelDia.hora;
                 const inicioClase = new Date(`${fechaStr}T${horaClase}:00`);
-                const ahora = new Date();
 
-                const habilitado = ahora >= inicioClase; // puede entrar solo cuando empieza
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <button class="btn-iniciar" disabled>Ingresar a la clase</button>
+                        <div class="hora-clase">${horaClase} hs</div>
+                    </div>
+                `;
 
-                if (esPasado) {
-                    cell.innerHTML = `
-                        <div class="day-number">${dia}</div>
-                        <div class="expand-content">
-                            <div class="hora-clase">${horaClase} hs</div>
-                            <div class="clase-pasada">Clase pasada</div>
-                        </div>
-                    `;
-                } else {
-                    cell.innerHTML = `
-                        <div class="day-number">${dia}</div>
-                        <div class="expand-content">
-                            <a href="@(habilitado 
-                                ? Url.Action("ClasesEnVivo", "Cursos", new { nombreCurso = nombreCurso }) 
-                                : "#")"
-                               class="btn-iniciar @(habilitado ? "" : "disabled-link")">
-                                Ingresar a la clase
-                            </a>
-                            <div class="hora-clase">${horaClase} hs</div>
-                        </div>
-                    `;
+                const btnIngresar = cell.querySelector(".btn-iniciar");
 
-                    const btnIngresar = cell.querySelector(".btn-iniciar");
-
-                    // actualizar cada 30s
-                    function actualizarIngreso() {
-                        btnIngresar.disabled = new Date() < inicioClase;
-                    }
-                    actualizarIngreso();
-                    setInterval(actualizarIngreso, 30000);
-
-                    // evento para abrir la sala
-                    btnIngresar.addEventListener("click", (e) => {
-                        e.stopPropagation();
-                        window.location.href = `/Cursos/VerClase?curso=${NOMBRE_CURSO}&fecha=${fechaStr}`;
-                    });
+                function actualizarEstado() {
+                    btnIngresar.disabled = new Date() < inicioClase;
                 }
+
+                actualizarEstado();
+                setInterval(actualizarEstado, 30000);
+
             }
 
-            // expandir igual
-            cell.addEventListener("click", (e) => {
-                e.stopPropagation();
-                expandirCelda(cell);
-            });
-
+            cell.addEventListener("click", () => expandirCelda(cell));
             calGrid.appendChild(cell);
-            continue; 
+            continue;
         }
 
-        // ------------------------------ NO HAY CLASE ------------------------------
+        // ===================================================================
+        //                        BLOQUE DOCENTE
+        // ===================================================================
+
+        // -------- NO HAY CLASE --------
         if (!claseDelDia) {
             if (esPasado) {
                 cell.innerHTML = `
@@ -391,60 +365,38 @@ function renderMes() {
             }
         }
 
-        // ------------------------------ HAY CLASE ------------------------------
+        // -------- HAY CLASE --------
         else {
 
             const inicioClase = new Date(`${fechaStr}T${claseDelDia.hora}:00`);
-            const ahora = new Date();
 
-            const diffMs = inicioClase - ahora;
+            cell.innerHTML = `
+                <div class="day-number">${dia}</div>
+                <div class="expand-content">
+                    <button class="btn-iniciar">Iniciar clase</button>
+                    <div class="hora-clase">${claseDelDia.hora} hs</div>
+                </div>
+            `;
 
-            const puedeIniciar = diffMs <= 15 * 60 * 1000 && diffMs > -60 * 60 * 1000;
+            const btnIniciar = cell.querySelector(".btn-iniciar");
 
-            if (esPasado) {
-                cell.innerHTML = `
-                    <div class="day-number">${dia}</div>
-                    <div class="expand-content">
-                        <div class="hora-clase">${claseDelDia.hora} hs</div>
-                        <div class="clase-pasada">Clase pasada</div>
-                    </div>
-                `;
-            } else {
-                cell.innerHTML = `
-                    <div class="day-number">${dia}</div>
-                    <div class="expand-content">
-                        <a href="@(puedeIniciar 
-                            ? Url.Action("ClasesEnVivo", "Cursos", new { nombreCurso = nombreCurso }) 
-                            : "#")"
-                           class="btn-iniciar @(puedeIniciar ? "" : "disabled-link")">
-                            Iniciar clase
-                        </a>
-                        <div class="hora-clase">${claseDelDia.hora} hs</div>
-                    </div>
-                `;
-
-                const btnIniciar = cell.querySelector(".btn-iniciar");
-
-                function actualizarHabilitacion() {
-                    const ahora = new Date();
-                    const diff = inicioClase - ahora;
-
-                    const puede = diff <= 15 * 60 * 1000 && diff > -60 * 60 * 1000;
-                    btnIniciar.disabled = !puede;
-                }
-
-                actualizarHabilitacion();
-                setInterval(actualizarHabilitacion, 30000);
+            function actualizarHabilitacion() {
+                const ahora = new Date();
+                const diff = inicioClase - ahora;
+                const puede = diff <= 15 * 60 * 1000 && diff > -60 * 60 * 1000;
+                btnIniciar.classList.toggle("btn-disabled", !puede);
             }
+
+            actualizarHabilitacion();
+            setInterval(actualizarHabilitacion, 30000);
+
         }
 
-        // ------------------------------ EXPANDIR DOCENTE ------------------------------
         cell.addEventListener("click", (e) => {
-            e.stopPropagation();
+            if (e.target.closest(".btn-iniciar") || e.target.closest(".btn-agendar")) return;
             expandirCelda(cell);
         });
 
-        // ------------------------------ AGENDAR ------------------------------
         const btnAgendar = cell.querySelector(".btn-agendar");
         if (btnAgendar) {
             btnAgendar.addEventListener("click", (e) => {
@@ -453,24 +405,14 @@ function renderMes() {
                 const hora = cell.querySelector(".time-input")?.value;
                 if (!hora) return;
 
-                const fechaCompleta = `${fechaStr} ${hora}`;
-
                 const form = document.createElement("form");
                 form.method = "POST";
                 form.action = "/Cursos/AgregarClase";
 
-                const inputFecha = document.createElement("input");
-                inputFecha.type = "hidden";
-                inputFecha.name = "fecha";
-                inputFecha.value = fechaCompleta;
-
-                const inputCurso = document.createElement("input");
-                inputCurso.type = "hidden";
-                inputCurso.name = "CursoNombre";
-                inputCurso.value = NOMBRE_CURSO;
-
-                form.appendChild(inputFecha);
-                form.appendChild(inputCurso);
+                form.innerHTML = `
+                    <input type="hidden" name="fecha" value="${fechaStr} ${hora}">
+                    <input type="hidden" name="CursoNombre" value="${NOMBRE_CURSO}">
+                `;
 
                 document.body.appendChild(form);
                 form.submit();
@@ -486,6 +428,7 @@ function renderMes() {
 
     actualizarFlechas();
 }
+
 
 
 // -----------------------
@@ -543,3 +486,23 @@ btnPrev.addEventListener("click", () => {
 // INICIO
 // -----------------------
 renderMes();
+
+// ===============================
+// CLICK DELEGADO PARA INICIAR CLASE
+// ===============================
+document.getElementById("calGrid").addEventListener("click", (e) => {
+    const btn = e.target.closest(".btn-iniciar");
+    if (!btn) return;
+
+    // si está deshabilitado por clase → no entra
+    if (btn.disabled) return;
+
+    const cell = btn.closest(".day-cell");
+    if (!cell) return;
+
+    const fecha = cell.dataset.fecha;
+
+    window.location.href =
+        `/Cursos/ClasesEnVivo?nombreCurso=${NOMBRE_CURSO}`;
+});
+

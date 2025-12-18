@@ -155,6 +155,11 @@ namespace NextLevel.AccesoDatos.EF
 
         public Curso FindByNombre(string nombre)
         {
+            if (string.IsNullOrWhiteSpace(nombre))
+                return null;
+
+            nombre = nombre.Replace("_", " ");
+
             var curso = _db.Cursos.Where(c => c.Nombre == nombre)
                 .Include(c => c.Pruebas)
                 .Include(c => c.Docente)
@@ -163,8 +168,13 @@ namespace NextLevel.AccesoDatos.EF
                 .Include(c => c.Foro)
                 .Include(c => c.Semanas)
                     .ThenInclude(s => s.Materiales).FirstOrDefault();
+
+            if (curso == null)
+                return null;
+
             curso.ActualizarSemanas();
             this.Update(curso);
+
             return curso;
         }
 
