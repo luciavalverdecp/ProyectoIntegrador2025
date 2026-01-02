@@ -1,0 +1,82 @@
+﻿@using NextLevel.Compartidos.DTOs.Cursos
+@model CursoDTO
+
+@{
+    ViewData["Title"] = Model.Nombre;
+}
+@section Header {
+    @await Html.PartialAsync("~/Views/Home/Header.cshtml")
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cursos/DetallesDeUnCurso.css?v=2" />
+}
+
+<div class="curso-wrapper">
+
+    <div class="curso-card">
+
+        <!-- TOP -->
+        <div class="curso-top">
+            <div class="curso-info">
+                <h1>@Model.Nombre</h1>
+
+                <p class="descripcion">
+                    @Model.Descripcion
+                </p>
+            </div>
+
+            <img src="@Model.RutaArchivo"
+                 alt="Imagen curso"
+                 class="curso-imagen" />
+        </div>
+
+        <!-- STATS -->
+        <div class="curso-stats">
+            <div>
+                <span>Docente</span>
+                <strong>@Model.DocenteNombreDTO.NombreCompleto</strong>
+            </div>
+            <div>
+                <span>Duración</span>
+                <strong>@Model.Duracion hs</strong>
+            </div>
+            <div>
+                <span>Dificultad</span>
+                <strong>@Model.Dificultad</strong>
+            </div>
+            <div>
+                <span>Calificación</span>
+                <strong>⭐ @Model.Calificacion</strong>
+            </div>
+        </div>
+
+        <!-- BOTTOM -->
+        <div class="curso-bottom">
+
+            <div class="curso-compra">
+                <p class="precio">$ @Model.Precio UYU</p>
+
+                <p class="cuotas">
+                    Hasta 12 cuotas sin interés
+                </p>
+
+                <a href="@Url.Action("Comprar","Cursos", new { nombreCurso = Model.Nombre })"
+                   class="btn-comprar">
+                    Comprar
+                </a>
+            </div>
+
+            <div class="curso-temario">
+                <h4>Temario</h4>
+                <ul>
+                    @foreach (var tema in Model.Temarios)
+                    {
+                        <li>@tema.Tema</li>
+                    }
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
