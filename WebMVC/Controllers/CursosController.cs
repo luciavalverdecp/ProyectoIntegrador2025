@@ -171,6 +171,20 @@ namespace WebMVC.Controllers
             return RedirectToAction("Login", "Usuarios");
         }
 
+        public IActionResult DetallesDeUnCurso(string nombreCurso)
+        {
+            try
+            {
+                var cursoDTO = _obtenerCurso.Ejecturar(nombreCurso);
+                return View(cursoDTO);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+            }
+            return View();
+        }
+
         [HttpPost]
         public IActionResult AgregarClase(AgendarClaseDTO claseAgendada)
         {

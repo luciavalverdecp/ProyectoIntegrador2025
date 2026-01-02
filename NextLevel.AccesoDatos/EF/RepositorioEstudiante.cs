@@ -62,6 +62,7 @@ namespace NextLevel.AccesoDatos.EF
             {
                 estudianteOriginal.NombreCompleto = obj.NombreCompleto;
                 estudianteOriginal.Telefono = obj.Telefono;
+                estudianteOriginal.Cursos = obj.Cursos;
                 _db.Estudiantes.Update(estudianteOriginal);
                 _db.SaveChanges();
             }

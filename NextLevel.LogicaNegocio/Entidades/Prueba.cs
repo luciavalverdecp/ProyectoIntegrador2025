@@ -13,7 +13,7 @@ namespace NextLevel.LogicaNegocio.Entidades
         public string Nombre { get; set; }
         public DateTime Fecha { get; set; }
         public IEnumerable<Calificacion> Calificaciones { get; set; }
-
+        public Prueba() { }
         public Prueba(string nombre, DateTime fecha)
         {
             Nombre = nombre;
