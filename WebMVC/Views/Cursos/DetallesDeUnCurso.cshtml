@@ -65,7 +65,7 @@
                     Hasta 12 cuotas sin interés
                 </p>
 
-                <button type="button" class="btn-comprar" onclick="abrirModalPago()">
+                <button type="button" class="btn-comprar" onclick="abrirModalPago(this)" data-logueado="@(Context.Session.GetString("rolLogueado") != null)">
                     Comprar
                 </button>
             </div>

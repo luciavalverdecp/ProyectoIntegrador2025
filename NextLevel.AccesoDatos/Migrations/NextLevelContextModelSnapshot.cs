@@ -314,9 +314,9 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Property<int>("MetodoPago")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Monto")
+                    b.Property<double>("Monto")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("float(18)");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");

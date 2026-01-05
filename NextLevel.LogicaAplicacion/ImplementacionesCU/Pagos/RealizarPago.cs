@@ -3,7 +3,9 @@ using NextLevel.Compartidos.DTOs.Mappers;
 using NextLevel.Compartidos.DTOs.Pagos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Pagos;
 using NextLevel.LogicaNegocio.Entidades;
+using NextLevel.LogicaNegocio.EnvioDeEmails;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
+using NextLevel.LogicaNegocio.SistemaAutenticacion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +57,8 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Pagos
 
             // 3️⃣ Crear pago (pendiente)
             var pago = new Pago(usuario, curso, dto.MetodoPago);
+            PagoConfirmado pagoConfirmado = new PagoConfirmado();
+            Task.Run(() => pagoConfirmado.EnviarAvisoPagoRealizadoAsync(dto.UsuarioEmail, dto.CursoNombre));
             repositorioPago.Add(pago);
 
             // 4️⃣ Simulación de pasarela

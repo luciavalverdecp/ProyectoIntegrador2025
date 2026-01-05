@@ -25,33 +25,41 @@ namespace WebMVC.Controllers
         [HttpPost]
         public IActionResult Crear(CrearPagoViewModel vm)
         {
-            try
+            if (HttpContext.Session.GetString("rolLogueado") == "Estudiante")
             {
-                var email = HttpContext.Session.GetString("emailLogueado");
+                try
+                {
+                    var email = HttpContext.Session.GetString("emailLogueado");
 
-                var dto = new CrearPagoDTO(
-                    email,
-                    vm.CursoNombre,
-                    MetodoPago.Tarjeta,
-                    new DatosTarjetaDTO(
-                        vm.Tarjeta.NumeroTarjeta,
-                        vm.Tarjeta.NombreTitular,
-                        vm.Tarjeta.MesVencimiento,
-                        vm.Tarjeta.AnioVencimiento,
-                        vm.Tarjeta.Cvv
-                    )
-                );
-                agregarCurso.Ejecutar(email, vm.CursoNombre);
+                    var dto = new CrearPagoDTO(
+                        email,
+                        vm.CursoNombre,
+                        MetodoPago.Tarjeta,
+                        new DatosTarjetaDTO(
+                            vm.Tarjeta.NumeroTarjeta,
+                            vm.Tarjeta.NombreTitular,
+                            vm.Tarjeta.MesVencimiento,
+                            vm.Tarjeta.AnioVencimiento,
+                            vm.Tarjeta.Cvv
+                        )
+                    );
+                    agregarCurso.Ejecutar(email, vm.CursoNombre);
 
-                var pagoId = realizarPago.ProcesarPagoSandbox(dto);
+                    var pagoId = realizarPago.ProcesarPagoSandbox(dto);
 
-                return Redirect("/Cursos/ListadoCursosEstudiante");
+                    return Redirect("/Cursos/ListadoCursosEstudiante");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    return RedirectToAction("DetallesDeUnCurso", "Cursos", new { nombre = vm.CursoNombre });
+                }
             }
-            catch (Exception ex)
+            else if (HttpContext.Session.GetString("rolLogueado") == "Docente")
             {
-                ModelState.AddModelError("", ex.Message);
-                return RedirectToAction("Detalles", "Cursos", new { nombre = vm.CursoNombre });
+                return Redirect("/Cursos/ListadoCursosDocente");
             }
+            return Redirect("/Usuarios/Login");
         }
     }
 }

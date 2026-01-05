@@ -57,7 +57,7 @@ namespace NextLevel.AccesoDatos.EF
 
         public void Update(Estudiante obj)
         {
-            var estudianteOriginal = FindByEmail(obj.Email);
+            var estudianteOriginal = _db.Estudiantes.Find(obj.Id);
             try
             {
                 estudianteOriginal.NombreCompleto = obj.NombreCompleto;
