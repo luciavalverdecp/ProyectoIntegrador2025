@@ -113,6 +113,7 @@
     .btn-comprar:hover {
         background: #584fe0;
         transform: translateY(-1px);
+        color:white;
     }
 
 /* TEMARIO */
