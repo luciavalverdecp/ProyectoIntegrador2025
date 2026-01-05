@@ -24,6 +24,7 @@ namespace NextLevel.AccesoDatos.EF
         public DbSet<Semana> Semanas { get; set; }
         public DbSet<AltaCurso> AltaCursos { get; set; }
         public DbSet<CambioRol> CambiosDeRol {  get; set; } 
+        public DbSet<Pago> Pagos { get; set; }
         //public DbSet<Prueba> Pruebas { get; set; }
         //public DbSet<Calificacion> Calificaciones { get; set; }
         //public DbSet<CambioRol> CambiosRol { get; set; }
@@ -111,7 +112,20 @@ namespace NextLevel.AccesoDatos.EF
                 .HasForeignKey(t => t.CursoId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // 👇 Siempre al final
+
+            mb.Entity<Pago>()
+                .HasOne(p => p.Usuario)
+                .WithMany()
+                .HasForeignKey(p => p.UsuarioId);
+
+            mb.Entity<Pago>()
+                .HasOne(p => p.Curso)
+                .WithMany()
+                .HasForeignKey(p => p.CursoId);
+
+            mb.Entity<Pago>()
+                .Property(p => p.Monto)
+                .HasPrecision(18, 2);
             base.OnModelCreating(mb);
         }
 

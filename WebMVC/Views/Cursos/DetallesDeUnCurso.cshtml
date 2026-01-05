@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="~/css/cursos/DetallesDeUnCurso.css?v=2" />
 }
 
+@section ScriptsJs {
+    <script src="~/js/Pagos/CrearPago.js?v=2"></script>
+}
+
 <div class="curso-wrapper">
 
     <div class="curso-card">
@@ -61,10 +65,9 @@
                     Hasta 12 cuotas sin interés
                 </p>
 
-                <a href="@Url.Action("Comprar","Cursos", new { nombreCurso = Model.Nombre })"
-                   class="btn-comprar">
+                <button type="button" class="btn-comprar" onclick="abrirModalPago(this)" data-logueado="@(Context.Session.GetString("rolLogueado") != null)">
                     Comprar
-                </a>
+                </button>
             </div>
 
             <div class="curso-temario">
@@ -80,3 +83,31 @@
         </div>
 
     </div>
+
+    <div id="modalPago" class="modal">
+        <div class="modal-content">
+            <h3>Pago con tarjeta</h3>
+
+            <form asp-controller="Pagos" asp-action="Crear" method="post">
+
+                <input type="hidden" name="CursoNombre" value="@Model.Nombre" />
+                <input type="hidden" name="Monto" value="@Model.Precio" />
+                <input type="hidden" name="MetodoPago" value="Tarjeta" />
+
+                <input type="text" name="Tarjeta.NumeroTarjeta" placeholder="Número de tarjeta" required />
+                <input type="text" name="Tarjeta.NombreTitular" placeholder="Titular" required />
+
+                <div class="fila">
+                    <input type="number" name="Tarjeta.MesVencimiento" placeholder="MM" min="1" max="12" required />
+                    <input type="number" name="Tarjeta.AnioVencimiento" placeholder="AAAA" required />
+                    <input type="text" name="Tarjeta.Cvv" placeholder="CVV" required />
+                </div>
+                    
+                <div class="acciones">
+                    <button type="submit">Pagar</button>
+                    <button type="button" onclick="cerrarModalPago()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+

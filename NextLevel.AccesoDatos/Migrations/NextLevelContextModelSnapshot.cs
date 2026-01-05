@@ -294,6 +294,42 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.ToTable("Mensajerias");
                 });
 
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Pago", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CursoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EstadoPago")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MetodoPago")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Monto")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CursoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Pagos");
+                });
+
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Prueba", b =>
                 {
                     b.Property<int>("Id")
@@ -577,6 +613,25 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Navigation("Emisor");
 
                     b.Navigation("Receptor");
+                });
+
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Pago", b =>
+                {
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Curso", "Curso")
+                        .WithMany()
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Curso");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Prueba", b =>

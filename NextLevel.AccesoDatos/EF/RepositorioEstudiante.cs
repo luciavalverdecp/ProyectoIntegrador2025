@@ -57,11 +57,12 @@ namespace NextLevel.AccesoDatos.EF
 
         public void Update(Estudiante obj)
         {
-            var estudianteOriginal = FindByEmail(obj.Email);
+            var estudianteOriginal = _db.Estudiantes.Find(obj.Id);
             try
             {
                 estudianteOriginal.NombreCompleto = obj.NombreCompleto;
                 estudianteOriginal.Telefono = obj.Telefono;
+                estudianteOriginal.Cursos = obj.Cursos;
                 _db.Estudiantes.Update(estudianteOriginal);
                 _db.SaveChanges();
             }

@@ -177,13 +177,14 @@ namespace WebMVC.Controllers
             {
                 var cursoDTO = _obtenerCurso.Ejecturar(nombreCurso);
                 return View(cursoDTO);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
             }
             return View();
         }
-        
+
         [HttpPost]
         public IActionResult AgregarClase(AgendarClaseDTO claseAgendada)
         {

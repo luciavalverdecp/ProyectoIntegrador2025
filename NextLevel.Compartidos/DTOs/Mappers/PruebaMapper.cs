@@ -15,5 +15,10 @@ namespace NextLevel.Compartidos.DTOs.Mappers
             if (pruebas == null || pruebas.Count() == 0) return new List<PruebaDTO>();
             return pruebas.Select(p => new PruebaDTO(p.Nombre, p.Fecha, CalificacionMapper.ToListCalificacionDTO(p.Calificaciones))).ToList();
         }
+        public static IEnumerable<Prueba> FromListPruebaDTO(IEnumerable<PruebaDTO> pruebas)
+        {
+            if (pruebas == null || pruebas.Count() == 0) return new List<Prueba>();
+            return pruebas.Select(p => new Prueba(p.Nombre, p.Fecha));
+        }
     }
 }
