@@ -9,15 +9,22 @@ namespace NextLevel.LogicaNegocio.Entidades
     public class Mensaje
     {
         public int Id { get; set; }
+        public int ConversacionId { get; set; }
+        public Conversacion Conversacion { get; set; }
+        public int UsuarioId { get; set; }
         public Usuario Usuario {  get; set; }
-        public string mensaje {  get; set; }
+        public string Contenido {  get; set; }
+        public DateTime FechaEnvio { get; set; }
+
         public bool EsDelEstudiante => Usuario != null && Usuario.Rol == Rol.Estudiante;
 
         public Mensaje() { }
-        public Mensaje(Usuario usuario, string mensaje)
+        public Mensaje(Conversacion conversacion, Usuario usuario, string mensaje)
         {
-            Usuario = usuario;
-            this.mensaje = mensaje;
+            this.Conversacion = conversacion;
+            this.Usuario = usuario;
+            this.Contenido = mensaje;
+            FechaEnvio = DateTime.Now;
         }
     }
 }

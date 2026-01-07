@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 using NextLevel.Compartidos.DTOs.Conversaciones;
 using NextLevel.Compartidos.DTOs.Mensajes;
 
-namespace NextLevel.Compartidos.DTOs.Foros
+namespace NextLevel.LogicaAplicacion.InterfacesCU.Mensajes
 {
-    public record ForoDTO(ConversacionDTO Conversacion);
+    public interface IObtenerMensajes
+    {
+        IEnumerable<MensajeDTO> Ejecutar(ConversacionDTO conversacion);
+    }
 }

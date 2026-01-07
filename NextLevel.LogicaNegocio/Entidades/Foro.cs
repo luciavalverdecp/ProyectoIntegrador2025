@@ -10,9 +10,13 @@ namespace NextLevel.LogicaNegocio.Entidades
     public class Foro 
     {
         public int Id { get; set; }
-        public List<Mensaje> Mensajes { get; set; }
+        public int ConversacionId { get; set; }
+        public Conversacion Conversacion { get; set; }
 
-        
+        public Foro()
+        {
+            Conversacion = new Conversacion(TipoConversacion.Foro);
+        }
 
     }
 }

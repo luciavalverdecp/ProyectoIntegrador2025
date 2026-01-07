@@ -10,5 +10,6 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
 {
     public interface IRepositorioMensaje : IRepositorio<Mensaje>
     {
+        List<Mensaje> GetByConversacion(Conversacion conversacion);
     }
 }

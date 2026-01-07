@@ -27,7 +27,10 @@ document.querySelectorAll(".semana-btn").forEach(btn => {
 
 // Activar semana 1 por defecto si existe
 const primera = document.querySelector(".semana-btn");
-if (primera) primera.click();
+if (primera && !window.location.hash && !document.querySelector(".tab-content.show")) {
+    primera.click();
+}
+
 
 // ----------------------
 // FORO MENSAJES
@@ -505,4 +508,22 @@ document.getElementById("calGrid").addEventListener("click", (e) => {
     window.location.href =
         `/Cursos/ClasesEnVivo?nombreCurso=${NOMBRE_CURSO}`;
 });
+
+window.addEventListener("load", () => {
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("show"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+
+    const tab = document.getElementById(hash);
+    const btn = document.querySelector(`.tab-btn[data-target="${hash}"]`);
+
+    if (tab && btn) {
+        tab.classList.add("show");
+        btn.classList.add("active");
+    }
+});
+
+
 

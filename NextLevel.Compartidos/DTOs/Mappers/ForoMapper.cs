@@ -12,7 +12,7 @@ namespace NextLevel.Compartidos.DTOs.Mappers
     {
         public static ForoDTO ToForoDTO(Foro foro)
         {
-            return new ForoDTO(MensajeMapper.ToListMensajesDTO(foro.Mensajes));
+            return new ForoDTO(ConversacionMapper.ToConversacionDTO(foro.Conversacion));
         }
     }
 }

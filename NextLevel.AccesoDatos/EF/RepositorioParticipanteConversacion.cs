@@ -9,45 +9,45 @@ using NextLevel.LogicaNegocio.InterfacesRepositorios;
 
 namespace NextLevel.AccesoDatos.EF
 {
-    public class RepositorioMensaje : IRepositorioMensaje
+    public class RepositorioParticipanteConversacion : IRepositorioParticiapanteConversacion
     {
         private NextLevelContext _db;
-        public RepositorioMensaje(NextLevelContext db)
+        public RepositorioParticipanteConversacion(NextLevelContext db)
         {
             _db = db;
         }
-        public void Add(Mensaje obj)
+        public void Add(ParticipanteConversacion obj)
         {
             try
             {
-                _db.Mensajes.Add(obj);
+                _db.ParticipanteConversaciones.Add(obj);
                 _db.SaveChanges();
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al enviar mensaje");
+                throw new Exception("Error al agregar un participante a una conversacion");
             }
         }
 
-        public IEnumerable<Mensaje> FindAll()
+        public IEnumerable<ParticipanteConversacion> FindAll()
         {
             throw new NotImplementedException();
         }
 
-        public Mensaje FindById(int id)
+        public ParticipanteConversacion FindById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public List<Mensaje> GetByConversacion(Conversacion conversacion)
+        public ParticipanteConversacion GetPartConv(Conversacion conversacion, Usuario usuario)
         {
             try
             {
-                return _db.Mensajes.Where(m => m.Conversacion.Id == conversacion.Id).ToList();
+                return _db.ParticipanteConversaciones.Where(pc => pc.ConversacionId == conversacion.Id && pc.UsuarioId == usuario.Id).FirstOrDefault();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception("Error al obtener los mensajes desde el servidor");
+                throw new Exception("No se pudo obtener al participante de una conversacion.");
             }
         }
 
@@ -56,7 +56,7 @@ namespace NextLevel.AccesoDatos.EF
             throw new NotImplementedException();
         }
 
-        public void Update(Mensaje obj)
+        public void Update(ParticipanteConversacion obj)
         {
             throw new NotImplementedException();
         }
