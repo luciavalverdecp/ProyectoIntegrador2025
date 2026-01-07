@@ -17,6 +17,8 @@ using NextLevel.LogicaAplicacion.InterfacesCU.Materiales;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Materiales;
 using NextLevel.LogicaAplicacion.InterfacesCU.Mensajes;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Mensajes;
+using NextLevel.LogicaAplicacion.InterfacesCU.Pagos;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Pagos;
 
 namespace WebMVC
 {
@@ -78,7 +80,7 @@ namespace WebMVC
             builder.Services.AddScoped<IRepositorioConversacion, RepositorioConversacion>(); 
             builder.Services.AddScoped<IRepositorioParticiapanteConversacion, RepositorioParticipanteConversacion>();
             builder.Services.AddScoped<IRepositorioPostulacion, RepositorioPostulacion>();
-
+            builder.Services.AddScoped<IRepositorioPago, RepositorioPago>();
 
             //CASOS DE USO
             builder.Services.AddScoped<IRegistroEstudiante, RegistroEstudiante>();
@@ -99,6 +101,8 @@ namespace WebMVC
             builder.Services.AddScoped<IModificarDocente, ModificarDocente>();
             builder.Services.AddScoped<IObtenerMensajes, ObtenerMensajes>();
             builder.Services.AddScoped<IEnviarMensaje, EnviarMensaje>();
+            builder.Services.AddScoped<IRealizarPago, RealizarPago>();
+            builder.Services.AddScoped<IAgregarCurso, AgregarCurso>();
 
             var app = builder.Build();
 

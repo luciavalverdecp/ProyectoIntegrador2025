@@ -65,5 +65,10 @@ namespace NextLevel.Compartidos.DTOs.Mappers
             if (estudiantes == null || estudiantes.Count() == 0) return new List<EstudianteEmailDTO>();
             return estudiantes.Select(e => new EstudianteEmailDTO(e.Email));
         }
+        public static IEnumerable<Estudiante> FromListEstudianteEmailDTO(IEnumerable<EstudianteEmailDTO> estudiantes)
+        {
+            if (estudiantes == null || estudiantes.Count() == 0) return new List<Estudiante>();
+            return estudiantes.Select(e => new Estudiante() { Email = e.Email});
+        }
     }
 }

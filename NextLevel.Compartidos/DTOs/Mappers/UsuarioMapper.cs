@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using NextLevel.Compartidos.DTOs.Usuarios;
 using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaAplicacion.InterfacesCU.Usuarios;
+using NextLevel.Compartidos.DTOs.Estudiantes;
 
 namespace NextLevel.Compartidos.DTOs.Mappers
 {
@@ -27,6 +28,13 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         public static UsuarioNombreEmailDTO ToUsuarioNombreEmailDTO(Usuario usuario)
         {
             return new UsuarioNombreEmailDTO(usuario.Email, usuario.NombreCompleto);
+        }
+      
+        public static Usuario FromUsuarioEmailDTO(UsuarioEmailDTO usuarioEmailDTO, IEnumerable<EstudianteEmailDTO> estudiantesEmailDTO)
+        {
+            var usuario = estudiantesEmailDTO.Where(u => u.Email == usuarioEmailDTO.email).FirstOrDefault();
+            if (usuario != null) return new Estudiante() { Email = usuarioEmailDTO.email };
+            return new Docente() { Email = usuarioEmailDTO.email };
         }
     }
 }

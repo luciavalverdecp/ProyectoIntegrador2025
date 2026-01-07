@@ -24,6 +24,10 @@ namespace NextLevel.LogicaNegocio.Entidades
         public DateTime TokenVencimiento { get; set; }
         public DateTime RecuperarCuentaVencimiento { get; set; }
         public Usuario() { }
+        public Usuario(string email)
+        {
+            Email = email;
+        }
 
         public Usuario (string email, string password, string nombreCompleto, string telefono)
         {

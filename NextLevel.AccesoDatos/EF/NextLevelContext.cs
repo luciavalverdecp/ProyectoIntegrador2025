@@ -23,7 +23,7 @@ namespace NextLevel.AccesoDatos.EF
         public DbSet<Postulacion> Postulaciones { get; set; }
         public DbSet<Conversacion> Conversaciones { get; set; }
         public DbSet<ParticipanteConversacion> ParticipanteConversaciones { get; set; }
-
+        public DbSet<Pago> Pagos { get; set; }
         //public DbSet<Prueba> Pruebas { get; set; }
         //public DbSet<Calificacion> Calificaciones { get; set; }
 
@@ -148,7 +148,19 @@ namespace NextLevel.AccesoDatos.EF
                 .OnDelete(DeleteBehavior.Cascade);
 
 
-            // 👇 Siempre al final
+            mb.Entity<Pago>()
+                .HasOne(p => p.Usuario)
+                .WithMany()
+                .HasForeignKey(p => p.UsuarioId);
+
+            mb.Entity<Pago>()
+                .HasOne(p => p.Curso)
+                .WithMany()
+                .HasForeignKey(p => p.CursoId);
+
+            mb.Entity<Pago>()
+                .Property(p => p.Monto)
+                .HasPrecision(18, 2);
             base.OnModelCreating(mb);
         }
 
