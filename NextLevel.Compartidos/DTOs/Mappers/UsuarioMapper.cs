@@ -23,5 +23,10 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         {
             return new UsuarioEmailDTO(usuario.Email);
         }
+
+        public static UsuarioNombreEmailDTO ToUsuarioNombreEmailDTO(Usuario usuario)
+        {
+            return new UsuarioNombreEmailDTO(usuario.Email, usuario.NombreCompleto);
+        }
     }
 }

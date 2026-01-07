@@ -10,5 +10,5 @@ using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 
 namespace NextLevel.Compartidos.DTOs.Mensajes
 {
-    public record MensajeDTO(ConversacionDTO Conversacion, UsuarioEmailDTO Usuario, string Contenido, DateTime FechaEnvio, bool EsDelEstudiante);
+    public record MensajeDTO(ConversacionDTO Conversacion, UsuarioNombreEmailDTO Usuario, string Contenido, DateTime FechaEnvio, bool EsDelEstudiante);
 }

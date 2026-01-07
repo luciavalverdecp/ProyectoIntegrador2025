@@ -136,6 +136,8 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             btn.classList.remove("active");
         }
+
+
     });
 
     // Si no encontró ninguna semana actual, marcar la última
@@ -144,10 +146,6 @@ document.addEventListener("DOMContentLoaded", function () {
         ultima.classList.add("active");
         document.querySelector("#semana-" + ultima.dataset.semana).style.display = "block";
     }
-
-});
-
-document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll(".material-link").forEach(item => {
         item.addEventListener("click", () => {
@@ -182,16 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-});
-
-function mostrarTexto(item, texto) {
-    const semanaContainer = item.closest(".semana-material");
-    const contenedor = semanaContainer.querySelector(".material-texto");
-    contenedor.innerHTML = `<p class="p-2 rounded bg-light">${texto}</p>`;
-    contenedor.style.display = "block";
-}
-
-document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".agregar-material-btn").forEach(btn => {
         btn.addEventListener("click", () => {
             const semana = btn.dataset.semana;
@@ -202,9 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
             modal.show();
         });
     });
-});
-document.addEventListener("DOMContentLoaded", () => {
-
     const modalElement = document.getElementById("modalAgregarMaterial");
     const form = document.getElementById("formAgregarMaterial");
     const inputNombre = form.querySelector("input[name='Nombre']");
@@ -227,7 +212,19 @@ document.addEventListener("DOMContentLoaded", () => {
         inputNombre.value = "";
         inputArchivo.value = "";
     });
+
+   
+
 });
+
+
+function mostrarTexto(item, texto) {
+    const semanaContainer = item.closest(".semana-material");
+    const contenedor = semanaContainer.querySelector(".material-texto");
+    contenedor.innerHTML = `<p class="p-2 rounded bg-light">${texto}</p>`;
+    contenedor.style.display = "block";
+}
+
 
 document.addEventListener('hidden.bs.modal', function () {
     document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
@@ -525,5 +522,51 @@ window.addEventListener("load", () => {
     }
 });
 
+function scrollForoAlFinal() {
+    const foro = document.getElementById("foroMensajes");
+    if (!foro) return;
+
+    foro.scrollTop = foro.scrollHeight;
+}
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+        document.querySelectorAll(".tab-btn")
+            .forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        document.querySelectorAll(".tab-content")
+            .forEach(c => c.classList.remove("show"));
+
+        const target = document.getElementById(btn.dataset.target);
+        target.classList.add("show");
+
+        if (btn.dataset.target === "foro") {
+            setTimeout(scrollForoAlFinal, 50);
+        }
+    });
+});
+
+window.addEventListener("load", () => {
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("show"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+
+    const tab = document.getElementById(hash);
+    const btn = document.querySelector(`.tab-btn[data-target="${hash}"]`);
+
+    if (tab && btn) {
+        tab.classList.add("show");
+        btn.classList.add("active");
+
+        // 👉 SI ES FORO → SCROLL
+        if (hash === "foro") {
+            setTimeout(scrollForoAlFinal, 100);
+        }
+    }
+});
 
 

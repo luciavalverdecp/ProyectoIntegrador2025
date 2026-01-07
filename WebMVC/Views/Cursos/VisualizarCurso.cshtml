@@ -7,7 +7,7 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css?v=2" />
+    <link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css?v=4" />
 }
 
 @section ScriptsJs {
@@ -19,7 +19,7 @@
         const ROL_USUARIO = "@Context.Session.GetString("rolLogueado")";
         const URL_CLASE = '@Url.Action("ClasesEnVivo", "Cursos")';
     </script>
-    <script src="~/js/Cursos/VisualizacionCurso.js?v=2"></script>
+    <script src="~/js/Cursos/VisualizacionCurso.js?v=4"></script>
 }
 
 <div class="curso-container">
@@ -61,7 +61,7 @@
     <!-- TABS -->
     <div class="tab-buttons">
         <button class="tab-btn" data-target="materiales">Materiales</button>
-        <button class="tab-btn" data-target="foro">Foro</button>
+        <button id="btnForo" class="tab-btn" data-target="foro">Foro</button>
         <button class="tab-btn" data-target="contacto">Contacto</button>
         <button class="tab-btn" data-target="clases">Clases</button>
     </div>
@@ -145,7 +145,15 @@
                 {
                     foreach (MensajeDTO msg in ViewBag.MensajesForo)
                     {
-                        <div class="msg @(msg.EsDelEstudiante ? "mine" : "")">@msg.Contenido</div>
+                        <div class="msg-wrapper @(msg.Usuario.Email == Context.Session.GetString("emailLogueado") ? "mine" : "")">
+
+                            <span class="msg-user">@msg.Usuario.NombreCompleto</span>
+
+                            <div class="msg">
+                                @msg.Contenido
+                            </div>
+
+                        </div>
                     }
                 }
             </div>
