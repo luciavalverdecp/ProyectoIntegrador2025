@@ -15,11 +15,11 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         {
             return new ForoDTO(ConversacionMapper.ToConversacionDTO(foro.Conversacion));
         }
-        public static Foro FromForoDTO(ForoDTO foro, IEnumerable<EstudianteEmailDTO> estudiantesEmailDTO)
+        public static Foro FromForoDTO(ForoDTO foro)
         {
             return new Foro()
             {
-                Mensajes = MensajeMapper.FromListMensajesDTO(foro.Mensajes, estudiantesEmailDTO).ToList()
+                Conversacion = ConversacionMapper.FromConversacionDTO(foro.Conversacion)
             };
         }
     }

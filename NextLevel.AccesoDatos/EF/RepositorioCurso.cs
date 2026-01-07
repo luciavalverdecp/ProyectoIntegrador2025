@@ -26,7 +26,9 @@ namespace NextLevel.AccesoDatos.EF
             }
             catch (Exception ex)
             {
-                throw new CursoException("Error al dar de alta el curso");
+                throw new CursoException(
+        "Error al dar de alta el curso: " + ex.InnerException?.Message ?? ex.Message
+    );
             }
         }
 
@@ -144,6 +146,7 @@ namespace NextLevel.AccesoDatos.EF
             {
                 curso.Temarios = obj.Temarios;
                 curso.FechasClases = obj.FechasClases;
+                curso.Foro = obj.Foro;
                 _db.Cursos.Update(curso);
                 _db.SaveChanges();
             }

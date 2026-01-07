@@ -29,7 +29,14 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         {
             return new UsuarioNombreEmailDTO(usuario.Email, usuario.NombreCompleto);
         }
-      
+
+        public static Usuario FromUsuarioNombreEmailDTO(UsuarioNombreEmailDTO usuarioDTO, IEnumerable<EstudianteEmailDTO> estudiantesEmailDTO)
+        {
+            var usuario = estudiantesEmailDTO.Where(u => u.Email == usuarioDTO.Email).FirstOrDefault();
+            if (usuario != null) return new Estudiante() { Email = usuarioDTO.Email };
+            return new Docente() { Email = usuarioDTO.Email };
+        }
+
         public static Usuario FromUsuarioEmailDTO(UsuarioEmailDTO usuarioEmailDTO, IEnumerable<EstudianteEmailDTO> estudiantesEmailDTO)
         {
             var usuario = estudiantesEmailDTO.Where(u => u.Email == usuarioEmailDTO.email).FirstOrDefault();

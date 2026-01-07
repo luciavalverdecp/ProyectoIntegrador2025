@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Http;
 using NextLevel.Compartidos.DTOs.Cursos;
 using NextLevel.Compartidos.DTOs.Mappers;
 using NextLevel.Compartidos.DTOs.Temarios;
@@ -7,12 +8,6 @@ using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.AltaCurso;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Azure.Storage.Blobs;
 
 namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
 {
@@ -21,18 +16,21 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
         private readonly IRepositorioCurso _repositorioCurso;
         private readonly IRepositorioDocente _repositorioDocente;
         private readonly IRepositorioAltaCurso _repositorioAltaCurso;
+        private readonly IRepositorioConversacion _repositorioConversacion;
         private readonly BlobServiceClient _blobServiceClient;
 
         public AltaCursoCU(
             IRepositorioCurso repositorioCurso,
             IRepositorioDocente repositorioDocente,
             IRepositorioAltaCurso repositorioAltaCurso,
-            BlobServiceClient blobServiceClient)
+            BlobServiceClient blobServiceClient,
+            IRepositorioConversacion repositorioConversacion)
         {
             _repositorioCurso = repositorioCurso;
             _repositorioDocente = repositorioDocente;
             _repositorioAltaCurso = repositorioAltaCurso;
             _blobServiceClient = blobServiceClient;
+            _repositorioConversacion = repositorioConversacion;
         }
 
         public async Task Ejecutar(CursoAltaDTO cursoAltaDTO, List<IFormFile> archivos, string email, IFormFile imagen)
@@ -89,11 +87,13 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
             nuevoCurso.Docente = docente;
             nuevoCurso.Imagen = "";
             nuevoCurso.DocenteId = docente.Id;
+            nuevoCurso.Foro = null;
 
             var temariosGuardados = nuevoCurso.Temarios;
             nuevoCurso.Temarios = new List<Temario>();
 
             _repositorioCurso.Add(nuevoCurso);
+
 
             foreach (var t in temariosGuardados)
             {
@@ -143,6 +143,14 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
                     archivosEntidad.Add(archivoEntidad);
                 }
             }
+
+            var conversacion1 = new Conversacion(
+                                    TipoConversacion.Foro,
+                                    nuevoCurso.Id
+                                );
+            conversacion1.Curso = nuevoCurso;
+            var foro = new Foro(conversacion1);
+            nuevoCurso.Foro = foro;
 
             _repositorioCurso.Update(nuevoCurso);
             AltaCurso altaCurso = new AltaCurso(nuevoCurso, archivosEntidad);

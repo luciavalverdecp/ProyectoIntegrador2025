@@ -1,5 +1,5 @@
 function abrirModalPago(btn) {
-    const estaLogueado = btn.dataset.logueado === "true";
+    const estaLogueado = btn.dataset.logueado.toLowerCase() === "true";
 
     if (!estaLogueado) {
         window.location.href = "/Usuarios/Login";
