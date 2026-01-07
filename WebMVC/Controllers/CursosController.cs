@@ -10,6 +10,7 @@ using NextLevel.LogicaAplicacion.ImplementacionesCU.Docentes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Docentes;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Docente;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
+using NextLevel.LogicaAplicacion.InterfacesCU.Mensajes;
 
 namespace WebMVC.Controllers
 {
@@ -18,11 +19,12 @@ namespace WebMVC.Controllers
         private readonly IObtenerCursosFiltrados _obtenerCursosFiltrados;
         private readonly IObtenerCursosDocente _obtenerCursosDocente;
         private readonly IObtenerCurso _obtenerCurso;
-        private readonly IObtenerMisCursos obtenerMisCursos;
+        private readonly IObtenerMisCursos _obtenerMisCursos;
         private readonly IAltaCurso _altaCurso;
         private readonly IAgregarClase _agregarClase;
         private readonly IObtenerDocente _obtenerDocente;
         private readonly IObtenerEstudiante _obtenerEstudiante;
+        private readonly IObtenerMensajes _obtenerMensajes;
         public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados,
             IObtenerCursosDocente obtenerCursosDocente,
              IObtenerCurso obtenerCurso,
@@ -30,16 +32,18 @@ namespace WebMVC.Controllers
              IAltaCurso altaCurso,
              IAgregarClase agregarClase,
              IObtenerDocente obtenerDocente,
-             IObtenerEstudiante obtenerEstudiante)
+             IObtenerEstudiante obtenerEstudiante, 
+             IObtenerMensajes obtenerMensajes)
         {
             _obtenerCursosFiltrados = obtenerCursosFiltrados;
             _obtenerCursosDocente = obtenerCursosDocente;
             _obtenerCurso = obtenerCurso;
-            this.obtenerMisCursos = obtenerMisCursos;
+            _obtenerMisCursos = obtenerMisCursos;
             _altaCurso = altaCurso;
             _agregarClase = agregarClase;
             _obtenerDocente = obtenerDocente;
             _obtenerEstudiante = obtenerEstudiante;
+            _obtenerMensajes = obtenerMensajes;
         }
         public IActionResult ListadoCursos(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
@@ -68,6 +72,7 @@ namespace WebMVC.Controllers
                     var cursosDTO = _obtenerCurso.Ejecturar(nombreCurso);
                     ViewBag.ClasesAgendadas = cursosDTO.FechasClases
                         .Select(c => new { Fecha = c.ToString("yyyy-MM-dd"), Hora = c.ToString("HH:mm") }).ToList();
+                    ViewBag.MensajesForo = _obtenerMensajes.Ejecutar(cursosDTO.Foro.Conversacion);
                     return View(cursosDTO);
                 }
                 catch (CursoException ex)
@@ -88,7 +93,7 @@ namespace WebMVC.Controllers
         {
             if (HttpContext.Session.GetString("rolLogueado") == "Estudiante")
             {
-                var misCursos = obtenerMisCursos.Ejecutar(HttpContext.Session.GetString("emailLogueado"));
+                var misCursos = _obtenerMisCursos.Ejecutar(HttpContext.Session.GetString("emailLogueado"));
                 return View(misCursos);
             }
             return RedirectToAction("Login", "Usuarios");

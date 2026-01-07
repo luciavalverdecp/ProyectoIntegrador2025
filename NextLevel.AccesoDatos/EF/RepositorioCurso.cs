@@ -166,6 +166,7 @@ namespace NextLevel.AccesoDatos.EF
                 .Include(c => c.Temarios)
                 .Include(c => c.Estudiantes)
                 .Include(c => c.Foro)
+                    .ThenInclude(f=> f.Conversacion)
                 .Include(c => c.Semanas)
                     .ThenInclude(s => s.Materiales).FirstOrDefault();
 
