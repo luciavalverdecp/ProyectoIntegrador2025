@@ -10,6 +10,7 @@ namespace NextLevel.LogicaAplicacion.InterfacesCU.ParticipantesConversacion
     public interface IObtenerPartiConversaciones
     {
         IEnumerable<ParticipanteConversacionDTO> Ejecutar(string nombreCurso, string emailLogueado);
-        ParticipanteConversacionDTO Ejecutar2(string nombreCurso, string emailLogueado);
+        ParticipanteConversacionDTO EjecutarEstudiante(string nombreCurso, string emailLogueado);
+        ParticipanteConversacionDTO EjecutarDocente(string nombreCurso, string emailLogueado);
     }
 }

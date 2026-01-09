@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NextLevel.Compartidos.DTOs.Mensajes;
+using NextLevel.Compartidos.DTOs.ParticipantesConversacion;
 using NextLevel.LogicaAplicacion.InterfacesCU.Conversaciones;
 using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Mensajes;
+using NextLevel.LogicaAplicacion.InterfacesCU.ParticipantesConversacion;
 using NextLevel.LogicaAplicacion.InterfacesCU.Usuarios;
 using NextLevel.LogicaNegocio.Entidades;
 
@@ -14,29 +16,35 @@ namespace WebMVC.Controllers
         private readonly IObtenerCurso _obtenerCurso;
         private readonly IObtenerMensajes _obtenerMensajes;
         private readonly IObtenerConversacion _obtenerConversacion;
+        private readonly IObtenerPartiConversaciones _obtpartiConversaciones;
         public MensajesController(IEnviarMensaje enviarMensaje, 
             IObtenerCurso obtenerCurso, 
             IObtenerMensajes obtenerMensajes, 
-            IObtenerConversacion obtenerConversacion)
+            IObtenerConversacion obtenerConversacion,
+            IObtenerPartiConversaciones obtpartiConversaciones)
         {
             _enviarMensaje = enviarMensaje;
             _obtenerCurso = obtenerCurso;
             _obtenerMensajes = obtenerMensajes;
             _obtenerConversacion = obtenerConversacion;
+            _obtpartiConversaciones = obtpartiConversaciones;
         }
 
         [HttpPost]
         public IActionResult EnviarMensaje(int idConversacion, string Contenido, string nombreCurso)
         {
             var cursoDTO = _obtenerCurso.Ejecturar(nombreCurso.ToString());
+            var usuario = new UsuarioEmailDTO(HttpContext.Session.GetString("emailLogueado"));
             _enviarMensaje.Ejecutar(
                 idConversacion,
-                new UsuarioEmailDTO(HttpContext.Session.GetString("emailLogueado")),
+                usuario,
                 Contenido,
                 cursoDTO
             );
             var conversacion = _obtenerConversacion.Ejecutar(idConversacion);
-            if(conversacion.TipoConversacion == TipoConversacion.Foro)
+            TempData["ConversacionActiva"] = idConversacion;
+            TempData["TabActivo"] = "contacto";
+            if (conversacion.TipoConversacion == TipoConversacion.Foro)
                 return Redirect("/Cursos/VisualizarCurso?nombreCurso=" + nombreCurso + "#foro");
             return Redirect("/Cursos/VisualizarCurso?nombreCurso=" + nombreCurso + "#contacto");
         }

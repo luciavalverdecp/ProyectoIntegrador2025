@@ -23,7 +23,11 @@
     <script src="~/js/Cursos/VisualizacionCurso.js?v=5"></script>
 }
 
-<div class="curso-container">
+@{
+    var convId = TempData["ConversacionActiva"];
+}
+
+<div class="curso-container" data-conversacion-id="@convId" id="divInicialVD">
 
     <!-- HEADER -->
     <div class="curso-header"> 

@@ -75,7 +75,10 @@ namespace NextLevel.AccesoDatos.EF
             try
             {
                 var conversaciones = _db.Conversaciones.Where(c => c.Curso.Nombre == curso.Nombre && c.TipoConversacion == TipoConversacion.Privada);
-                return _db.ParticipanteConversaciones.Where(pc => conversaciones.Contains(pc.Conversacion) &&  pc.UsuarioId != usuario.Id).ToList();
+                return _db.ParticipanteConversaciones.Where(pc => conversaciones.Contains(pc.Conversacion) &&  pc.UsuarioId != usuario.Id)
+                    .Include(pc => pc.Conversacion)
+                    .Include(pc => pc.Usuario)
+                    .ToList();
             }
             catch (Exception ex)
             {

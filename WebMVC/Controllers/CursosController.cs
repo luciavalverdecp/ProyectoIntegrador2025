@@ -86,7 +86,7 @@ namespace WebMVC.Controllers
                     }
                     else
                     {
-                        var partiConversacion = _obtpartiConversaciones.Ejecutar2(nombreCurso, HttpContext.Session.GetString("emailLogueado"));
+                        var partiConversacion = _obtpartiConversaciones.EjecutarEstudiante(nombreCurso, HttpContext.Session.GetString("emailLogueado"));
                         ConversacionDTO conversacion = null;
                         if(partiConversacion != null)
                         {

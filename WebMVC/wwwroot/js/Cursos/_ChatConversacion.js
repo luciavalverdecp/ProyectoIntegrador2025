@@ -2,12 +2,20 @@
     const chat = document.getElementById("chat-box");
     if (!chat) return;
 
-    chat.scrollTop = chat.scrollHeight;
+    // esperar a que el DOM pinte los mensajes
+    requestAnimationFrame(() => {
+        chat.scrollTop = chat.scrollHeight;
+        sessionStorage.removeItem("scrollChatToBottom");
+    });
 }
 
-fetch(url)
-    .then(r => r.text())
-    .then(html => {
-        document.getElementById("chatPanel").innerHTML = html;
-        scrollChatAlFinal(); 
-    });
+document.addEventListener("submit", e => {
+    if (e.target.closest("form")) {
+        sessionStorage.setItem("scrollChatToBottom", "true");
+    }
+});
+document.addEventListener("DOMContentLoaded", () => {
+    if (sessionStorage.getItem("scrollChatToBottom")) {
+        scrollChatAlFinal();
+    }
+});

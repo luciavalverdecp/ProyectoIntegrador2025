@@ -618,3 +618,17 @@ function cargarChat(conversacionId) {
         });
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+
+    const div = document.getElementById("divInicialVD");
+    const convId = div.dataset.conversacionId;
+
+    if (convId && convId !== "0") {
+        cargarChat(convId);
+
+        const item = document.querySelector(
+            `.conv-item[data-conversacion-id="${convId}"]`
+        );
+        if (item) item.classList.add("active");
+    }
+});

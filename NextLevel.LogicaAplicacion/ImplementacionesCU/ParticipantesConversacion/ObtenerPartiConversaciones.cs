@@ -43,14 +43,26 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.ParticipantesConversacio
                 usuario = repositorioEstudiante.FindByEmail(emailLogueado);
             }
             var listado = repositorioParticiapanteConversacion.GetPartConvCurso(curso, usuario);
-            if (listado != null) return new List<ParticipanteConversacionDTO>();
+            if (listado == null) return new List<ParticipanteConversacionDTO>();
             return ParticipanteConversacionMapper.ToListParticipanteConversacionDTO(listado);
         }
 
-        public ParticipanteConversacionDTO Ejecutar2(string nombreCurso, string emailLogueado)
+        public ParticipanteConversacionDTO EjecutarEstudiante(string nombreCurso, string emailLogueado)
         {
             var curso = repositorioCurso.FindByNombre(nombreCurso);
             Usuario usuario = repositorioEstudiante.FindByEmail(emailLogueado);
+            var participante = repositorioParticiapanteConversacion.GetPartConvEstudianteCurso(curso, usuario);
+
+            if (participante == null)
+                return null;
+
+            return ParticipanteConversacionMapper.ToParticipanteConversacionDTO(participante);
+        }
+
+        public ParticipanteConversacionDTO EjecutarDocente(string nombreCurso, string emailLogueado)
+        {
+            var curso = repositorioCurso.FindByNombre(nombreCurso);
+            Usuario usuario = repositorioDocente.FindByEmail(emailLogueado);
             var participante = repositorioParticiapanteConversacion.GetPartConvEstudianteCurso(curso, usuario);
 
             if (participante == null)
