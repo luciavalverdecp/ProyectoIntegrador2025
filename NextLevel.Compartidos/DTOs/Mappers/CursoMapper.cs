@@ -126,7 +126,7 @@ namespace NextLevel.Compartidos.DTOs.Mappers
                 FechasClases = cursoDTO.FechasClases,
                 Estudiantes = EstudianteMapper.FromListEstudianteEmailDTO(cursoDTO.Estudiantes).ToList(),
                 Duracion = cursoDTO.Duracion,
-                Foro = ForoMapper.FromForoDTO(cursoDTO.Foro, cursoDTO.Estudiantes),
+                Foro = ForoMapper.FromForoDTO(cursoDTO.Foro),
                 Dificultad = cursoDTO.Dificultad,
                 Precio = cursoDTO.Precio,
                 Semanas = SemanaMapper.FromListSemanaNumeroDTO(cursoDTO.Semanas).ToList(),

@@ -1,0 +1,38 @@
+﻿@using NextLevel.Compartidos.DTOs.Mensajes
+@model IEnumerable<MensajeDTO>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css?v=4" />
+}
+@section ScriptsJs {
+    <script src="~/js/Cursos/_ChatConversacion.js?v=2"></script>
+}
+
+<div class="chat-box" id="chat-box">
+    @if (!Model.Any())
+    {
+        <div class="empty-chat">
+            Todavía no hay mensajes. Escribí para iniciar la conversación.
+        </div>
+    }
+    else
+    {
+        foreach (var msg in Model)
+        {
+            <div class="msg-wrapper @(msg.Usuario.Email == Context.Session.GetString("emailLogueado") ? "mine" : "")">
+                <span class="msg-user">@msg.Usuario.NombreCompleto</span>
+                <div class="msg">@msg.Contenido</div>
+            </div>
+        }
+    }
+</div>
+
+<form asp-action="EnviarMensaje" asp-controller="Mensajes" method="post">
+    <div class="chat-input">
+        <input type="hidden" name="idConversacion" value="@ViewBag.CoversacionId" />
+        <input type="hidden" name="nombreCurso" value="@ViewBag.NombreCurso" />
+        <input type="text" id="Contenido" name="Contenido" placeholder="Escribe un mensaje...">
+        <button type="submit">Enviar</button>
+    </div>
+</form>
+

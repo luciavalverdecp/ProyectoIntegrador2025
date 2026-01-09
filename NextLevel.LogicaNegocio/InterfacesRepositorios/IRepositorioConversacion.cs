@@ -10,5 +10,6 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
 {
     public interface IRepositorioConversacion : IRepositorio<Conversacion>
     {
+        int Agregar(Conversacion conversacion);
     }
 }

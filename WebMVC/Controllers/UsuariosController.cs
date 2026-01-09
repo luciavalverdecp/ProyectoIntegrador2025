@@ -47,6 +47,7 @@ namespace WebMVC.Controllers
                 }
                 else if(usuario.Rol == Rol.Docente)
                 {
+                    HttpContext.Session.SetString("nroDocenteLogueado", dto.Email); //Email en este caso es el nroDocente
                     return RedirectToAction("ListadoCursosDocente", "Cursos");
                 }
                 else

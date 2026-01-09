@@ -19,7 +19,7 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         public static IEnumerable<Mensaje> FromListMensajesDTO(IEnumerable<MensajeDTO> mensajes, IEnumerable<EstudianteEmailDTO> estudiantesEmailDTO)
         {
             if (mensajes == null || mensajes.Count() == 0) return new List<Mensaje>();
-            return mensajes.Select(m => new Mensaje(UsuarioMapper.FromUsuarioEmailDTO(m.Usuario, estudiantesEmailDTO), m.mensaje));
+            return mensajes.Select(m => new Mensaje(ConversacionMapper.FromConversacionDTO(m.Conversacion), UsuarioMapper.FromUsuarioNombreEmailDTO(m.Usuario, estudiantesEmailDTO), m.Contenido));
         }
     }
 }

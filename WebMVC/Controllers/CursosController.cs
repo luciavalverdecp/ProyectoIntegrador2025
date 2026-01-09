@@ -11,6 +11,8 @@ using NextLevel.LogicaAplicacion.InterfacesCU.Docentes;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Docente;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
 using NextLevel.LogicaAplicacion.InterfacesCU.Mensajes;
+using NextLevel.LogicaAplicacion.InterfacesCU.ParticipantesConversacion;
+using NextLevel.Compartidos.DTOs.Conversaciones;
 
 namespace WebMVC.Controllers
 {
@@ -25,6 +27,7 @@ namespace WebMVC.Controllers
         private readonly IObtenerDocente _obtenerDocente;
         private readonly IObtenerEstudiante _obtenerEstudiante;
         private readonly IObtenerMensajes _obtenerMensajes;
+        private readonly IObtenerPartiConversaciones _obtpartiConversaciones;
         public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados,
             IObtenerCursosDocente obtenerCursosDocente,
              IObtenerCurso obtenerCurso,
@@ -33,7 +36,8 @@ namespace WebMVC.Controllers
              IAgregarClase agregarClase,
              IObtenerDocente obtenerDocente,
              IObtenerEstudiante obtenerEstudiante, 
-             IObtenerMensajes obtenerMensajes)
+             IObtenerMensajes obtenerMensajes,
+             IObtenerPartiConversaciones obtenerPartiConversaciones)
         {
             _obtenerCursosFiltrados = obtenerCursosFiltrados;
             _obtenerCursosDocente = obtenerCursosDocente;
@@ -44,6 +48,7 @@ namespace WebMVC.Controllers
             _obtenerDocente = obtenerDocente;
             _obtenerEstudiante = obtenerEstudiante;
             _obtenerMensajes = obtenerMensajes;
+            _obtpartiConversaciones = obtenerPartiConversaciones;
         }
         public IActionResult ListadoCursos(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
@@ -73,7 +78,27 @@ namespace WebMVC.Controllers
                     ViewBag.ClasesAgendadas = cursosDTO.FechasClases
                         .Select(c => new { Fecha = c.ToString("yyyy-MM-dd"), Hora = c.ToString("HH:mm") }).ToList();
                     ViewBag.MensajesForo = _obtenerMensajes.Ejecutar(cursosDTO.Foro.Conversacion);
-                    return View(cursosDTO);
+                    var nroDocente = HttpContext.Session.GetString("nroDocenteLogueado");
+                    if(nroDocente != null)
+                    {
+                        int.TryParse(nroDocente, out int numero);
+                        ViewBag.MensajesDocente = _obtpartiConversaciones.Ejecutar(nombreCurso, nroDocente);
+                    }
+                    else
+                    {
+                        var partiConversacion = _obtpartiConversaciones.EjecutarEstudiante(nombreCurso, HttpContext.Session.GetString("emailLogueado"));
+                        ConversacionDTO conversacion = null;
+                        if(partiConversacion != null)
+                        {
+                            conversacion = partiConversacion.Conversacion;
+                            ViewBag.ConversacionEstudiante = conversacion.Id;
+                        }
+                        else
+                        {
+                            ViewBag.ConversacionEstudiante = null;
+                        }
+                    }
+                        return View(cursosDTO);
                 }
                 catch (CursoException ex)
                 {

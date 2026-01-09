@@ -474,3 +474,48 @@ div.day-cell button.btn-iniciar {
     }
 }
 
+.tab-content {
+    display: none;
+}
+
+    .tab-content.show {
+        display: block;
+    }
+
+.lista-conversaciones {
+    background: #faf7ff;
+    border-right: 1px solid #e3d8ff;
+    padding: 10px;
+}
+
+/* ITEM DE CONVERSACIÓN */
+.conv-item {
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+    /* TEXTO */
+    .conv-item strong {
+        font-weight: 500;
+        color: #4b2a7a;
+    }
+
+    /* HOVER → VIOLETA CLARITO */
+    .conv-item:hover {
+        background-color: #efe7ff;
+        transform: translateX(3px);
+    }
+
+    /* ACTIVO (cuando está seleccionado) */
+    .conv-item.active {
+        background-color: #e0d0ff;
+        box-shadow: inset 3px 0 0 #7c3aed;
+    }
+
+    /* FEEDBACK DE CLICK */
+    .conv-item:active {
+        transform: scale(0.98);
+    }

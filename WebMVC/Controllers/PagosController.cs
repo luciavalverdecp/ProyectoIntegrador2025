@@ -52,7 +52,7 @@ namespace WebMVC.Controllers
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("", ex.Message);
-                    return RedirectToAction("DetallesDeUnCurso", "Cursos", new { nombre = vm.CursoNombre });
+                    return RedirectToAction("DetallesDeUnCurso", "Cursos", new { nombreCurso = vm.CursoNombre });
                 }
             }
             else if (HttpContext.Session.GetString("rolLogueado") == "Docente")

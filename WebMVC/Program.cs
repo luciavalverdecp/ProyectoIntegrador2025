@@ -19,6 +19,10 @@ using NextLevel.LogicaAplicacion.InterfacesCU.Mensajes;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Mensajes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Pagos;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Pagos;
+using NextLevel.LogicaAplicacion.InterfacesCU.ParticipantesConversacion;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.ParticipantesConversacion;
+using NextLevel.LogicaAplicacion.InterfacesCU.Conversaciones;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Conversaciones;
 
 namespace WebMVC
 {
@@ -103,6 +107,8 @@ namespace WebMVC
             builder.Services.AddScoped<IEnviarMensaje, EnviarMensaje>();
             builder.Services.AddScoped<IRealizarPago, RealizarPago>();
             builder.Services.AddScoped<IAgregarCurso, AgregarCurso>();
+            builder.Services.AddScoped<IObtenerPartiConversaciones, ObtenerPartiConversaciones>();
+            builder.Services.AddScoped<IObtenerConversacion, ObtenerConversacion>();
 
             var app = builder.Build();
 

@@ -18,7 +18,7 @@ namespace NextLevel.LogicaNegocio.Entidades
         public Docente Docente { get; set; }
         public List<Estudiante> Estudiantes { get; set; }
         public List<Semana> Semanas { get; set; }
-        public Foro Foro { get; set; }
+        public Foro? Foro { get; set; }
         [NotMapped]
         public IFormFile Archivo { get; set; }//TODO Creo que esto no hace falta
         public string Imagen { get; set; }
@@ -40,7 +40,6 @@ namespace NextLevel.LogicaNegocio.Entidades
             this.Docente = docente;
             Estudiantes = new List<Estudiante>();
             Semanas = new List<Semana>();
-            Foro = new Foro();
             FechaInicio = DateTime.Now;
             Imagen = imagen;
             Calificacion = 0;
@@ -54,7 +53,6 @@ namespace NextLevel.LogicaNegocio.Entidades
             this.Docente = docente;
             Estudiantes = new List<Estudiante>();
             Semanas = new List<Semana>();
-            Foro = new Foro();
             FechaInicio = DateTime.Now;
             Imagen = imagen;
             Calificacion = 0;
@@ -70,7 +68,6 @@ namespace NextLevel.LogicaNegocio.Entidades
             this.Docente = docente;
             Estudiantes = new List<Estudiante>();
             Semanas = new List<Semana>();
-            Foro = new Foro();
             FechaInicio = fechaInicio;
             FechaFin = fachaFin;
             Imagen = imagen;

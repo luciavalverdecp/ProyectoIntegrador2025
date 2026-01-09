@@ -100,20 +100,29 @@ namespace NextLevel.AccesoDatos.EF
                 .Property(c => c.FechaCreacion)
                 .IsRequired();
 
+            mb.Entity<Conversacion>()
+                .HasOne(c => c.Curso)
+                .WithMany()
+                .HasForeignKey(c => c.CursoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             mb.Entity<ParticipanteConversacion>()
             .HasKey(pc => new { pc.ConversacionId, pc.UsuarioId });
 
             mb.Entity<ParticipanteConversacion>()
                 .HasOne(pc => pc.Conversacion)
-                .WithMany()
+                .WithMany(c => c.Participantes)
                 .HasForeignKey(pc => pc.ConversacionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+
             mb.Entity<ParticipanteConversacion>()
-                .HasOne(pc => pc.Usuario)
-                .WithMany()
-                .HasForeignKey(pc => pc.UsuarioId)
-                .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(pc => pc.Usuario)
+            .WithMany()
+            .HasForeignKey(pc => pc.UsuarioId)
+            .OnDelete(DeleteBehavior.Restrict);
+
 
             mb.Entity<Mensaje>()
             .HasKey(m => m.Id);
@@ -124,19 +133,20 @@ namespace NextLevel.AccesoDatos.EF
 
             mb.Entity<Mensaje>()
                 .Property(m => m.FechaEnvio)
-                .IsRequired();
+            .IsRequired();
 
             mb.Entity<Mensaje>()
-                .HasOne(m => m.Conversacion)
-                .WithMany()
-                .HasForeignKey(m => m.ConversacionId)
-                .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(m => m.Conversacion)
+            .WithMany(c => c.Mensajes)
+            .HasForeignKey(m => m.ConversacionId)
+            .OnDelete(DeleteBehavior.Cascade);
 
             mb.Entity<Mensaje>()
-                .HasOne(m => m.Usuario)
-                .WithMany()
-                .HasForeignKey(m => m.UsuarioId)
-                .OnDelete(DeleteBehavior.Restrict);
+            .HasOne(m => m.Usuario)
+            .WithMany()
+            .HasForeignKey(m => m.UsuarioId)
+            .OnDelete(DeleteBehavior.Restrict);
+
 
             mb.Entity<Foro>()
             .HasKey(f => f.Id);

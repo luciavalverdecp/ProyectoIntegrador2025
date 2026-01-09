@@ -21,7 +21,7 @@ namespace NextLevel.Compartidos.DTOs.Mappers
 
         public static ConversacionDTO ToConversacionDTO(Conversacion conversacion)
         {
-            return new ConversacionDTO(conversacion.Id, conversacion.TipoConversacion, conversacion.FechaCreacion);
+            return new ConversacionDTO(conversacion.Id, CursoMapper.ToCursoNombreDTO(conversacion.Curso), conversacion.TipoConversacion, conversacion.FechaCreacion);
         }
     }
 }
