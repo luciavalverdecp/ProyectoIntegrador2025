@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NextLevel.LogicaAplicacion.InterfacesCU.Usuarios
+namespace NextLevel.Compartidos.DTOs.Usuarios
 {
-    public record UsuarioEmailDTO(string email);
+    public record UsuarioNombreEmailDTO(string Email, string NombreCompleto);
 }

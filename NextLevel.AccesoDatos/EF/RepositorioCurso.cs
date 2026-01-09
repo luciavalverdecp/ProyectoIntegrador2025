@@ -26,7 +26,9 @@ namespace NextLevel.AccesoDatos.EF
             }
             catch (Exception ex)
             {
-                throw new CursoException("Error al dar de alta el curso");
+                throw new CursoException(
+        "Error al dar de alta el curso: " + ex.InnerException?.Message ?? ex.Message
+    );
             }
         }
 
@@ -144,6 +146,7 @@ namespace NextLevel.AccesoDatos.EF
             {
                 curso.Temarios = obj.Temarios;
                 curso.FechasClases = obj.FechasClases;
+                curso.Foro = obj.Foro;
                 _db.Cursos.Update(curso);
                 _db.SaveChanges();
             }
@@ -155,16 +158,27 @@ namespace NextLevel.AccesoDatos.EF
 
         public Curso FindByNombre(string nombre)
         {
+            if (string.IsNullOrWhiteSpace(nombre))
+                return null;
+
+            nombre = nombre.Replace("_", " ");
+
             var curso = _db.Cursos.Where(c => c.Nombre == nombre)
                 .Include(c => c.Pruebas)
                 .Include(c => c.Docente)
                 .Include(c => c.Temarios)
                 .Include(c => c.Estudiantes)
                 .Include(c => c.Foro)
+                    .ThenInclude(f=> f.Conversacion)
                 .Include(c => c.Semanas)
                     .ThenInclude(s => s.Materiales).FirstOrDefault();
+
+            if (curso == null)
+                return null;
+
             curso.ActualizarSemanas();
             this.Update(curso);
+
             return curso;
         }
 

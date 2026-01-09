@@ -18,4 +18,10 @@
     <ProjectReference Include="..\NextLevel.LogicaAplicacion\NextLevel.LogicaAplicacion.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Materiales\" />
+    <Folder Include="wwwroot\js\Materiales\" />
+    <Folder Include="wwwroot\js\Pagos\" />
+  </ItemGroup>
+
 </Project>

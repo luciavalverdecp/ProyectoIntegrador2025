@@ -8,24 +8,19 @@ using NextLevel.LogicaNegocio.InterfacesRepositorios;
 
 namespace NextLevel.AccesoDatos.EF
 {
-    public class RepositorioMensajeria : IRepositorioMensajeria
+    public class RepositorioPostulacion : IRepositorioPostulacion
     {
-        private NextLevelContext _db;
-        public RepositorioMensajeria(NextLevelContext db)
-        {
-            _db = db;
-        }
-        public void Add(Mensajeria obj)
+        public void Add(Postulacion obj)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Mensajeria> FindAll()
+        public IEnumerable<Postulacion> FindAll()
         {
             throw new NotImplementedException();
         }
 
-        public Mensajeria FindById(int id)
+        public Postulacion FindById(int id)
         {
             throw new NotImplementedException();
         }
@@ -35,7 +30,7 @@ namespace NextLevel.AccesoDatos.EF
             throw new NotImplementedException();
         }
 
-        public void Update(Mensajeria obj)
+        public void Update(Postulacion obj)
         {
             throw new NotImplementedException();
         }

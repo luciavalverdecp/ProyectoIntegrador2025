@@ -24,6 +24,10 @@ namespace NextLevel.LogicaNegocio.Entidades
         public DateTime TokenVencimiento { get; set; }
         public DateTime RecuperarCuentaVencimiento { get; set; }
         public Usuario() { }
+        public Usuario(string email)
+        {
+            Email = email;
+        }
 
         public Usuario (string email, string password, string nombreCompleto, string telefono)
         {
@@ -57,6 +61,11 @@ namespace NextLevel.LogicaNegocio.Entidades
             //validarTelefono(); TODO agregar uno qeu valide el telefono
         }
 
+        public virtual void ValidarDatosPersonales()
+        {
+            validarNombreCompleto();
+            validarTelefono();
+        }
         private void validarEmail()
         {
             if (string.IsNullOrWhiteSpace(Email))

@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Clase en vivo";
+    Layout = "_LayoutClaseEnVivo";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Cursos/ClaseEnVivo.css?v=2" />
+}
+
+@section ScriptsJs {
+    <script src="https://meet.jit.si/external_api.js"></script>
+    <script>
+        const ROOM_NAME = "@ViewBag.RoomName";
+        const USER_NAME = "@ViewBag.NombreUsuario";
+        const ES_DOCENTE = @ViewBag.EsDocente.ToString().ToLower();
+    </script>
+    <script src="~/js/Cursos/ClasesEnVivo.js"></script>
+    <script>
+        const VOLVER_URL = "@Url.Action("VisualizarCurso", "Cursos", new { nombreCurso = ViewBag.RoomName })";
+    </script>
+}
+
+<div class="clase-en-vivo-container">
+    <div class="video-container">
+        <div id="jitsi-meet"></div>
+    </div>
+</div>

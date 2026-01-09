@@ -133,6 +133,30 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.ToTable("CambiosDeRol");
                 });
 
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Conversacion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CursoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TipoConversacion")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CursoId");
+
+                    b.ToTable("Conversaciones");
+                });
+
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Curso", b =>
                 {
                     b.Property<int>("Id")
@@ -167,7 +191,7 @@ namespace NextLevel.AccesoDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ForoId")
+                    b.Property<int?>("ForoId")
                         .HasColumnType("int");
 
                     b.Property<string>("Imagen")
@@ -198,7 +222,12 @@ namespace NextLevel.AccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ConversacionId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ConversacionId");
 
                     b.ToTable("Foros");
                 });
@@ -247,26 +276,29 @@ namespace NextLevel.AccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("MensajeriaId")
+                    b.Property<string>("Contenido")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ConversacionId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaEnvio")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
-                    b.Property<string>("mensaje")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("MensajeriaId");
+                    b.HasIndex("ConversacionId");
 
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Mensajes");
                 });
 
-            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Mensajeria", b =>
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Pago", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -277,21 +309,75 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Property<int>("CursoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmisorId")
+                    b.Property<int>("EstadoPago")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReceptorId")
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MetodoPago")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Monto")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
+
+                    b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CursoId");
 
-                    b.HasIndex("EmisorId");
+                    b.HasIndex("UsuarioId");
 
-                    b.HasIndex("ReceptorId");
+                    b.ToTable("Pagos");
+                });
 
-                    b.ToTable("Mensajerias");
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.ParticipanteConversacion", b =>
+                {
+                    b.Property<int>("ConversacionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaIngreso")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ConversacionId", "UsuarioId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("ParticipanteConversaciones");
+                });
+
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Postulacion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AdministradorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AltaCursoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CambioRolId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdministradorId");
+
+                    b.HasIndex("AltaCursoId");
+
+                    b.HasIndex("CambioRolId");
+
+                    b.ToTable("Postulaciones");
                 });
 
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Prueba", b =>
@@ -511,6 +597,16 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Navigation("Estudiante");
                 });
 
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Conversacion", b =>
+                {
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Curso", "Curso")
+                        .WithMany()
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Curso");
+                });
+
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Curso", b =>
                 {
                     b.HasOne("NextLevel.LogicaNegocio.Entidades.Docente", "Docente")
@@ -521,13 +617,22 @@ namespace NextLevel.AccesoDatos.Migrations
 
                     b.HasOne("NextLevel.LogicaNegocio.Entidades.Foro", "Foro")
                         .WithMany()
-                        .HasForeignKey("ForoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ForoId");
 
                     b.Navigation("Docente");
 
                     b.Navigation("Foro");
+                });
+
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Foro", b =>
+                {
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Conversacion", "Conversacion")
+                        .WithMany()
+                        .HasForeignKey("ConversacionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conversacion");
                 });
 
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Material", b =>
@@ -539,9 +644,30 @@ namespace NextLevel.AccesoDatos.Migrations
 
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Mensaje", b =>
                 {
-                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Mensajeria", null)
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Conversacion", "Conversacion")
                         .WithMany("Mensajes")
-                        .HasForeignKey("MensajeriaId");
+                        .HasForeignKey("ConversacionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Conversacion");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Pago", b =>
+                {
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Curso", "Curso")
+                        .WithMany()
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("NextLevel.LogicaNegocio.Entidades.Usuario", "Usuario")
                         .WithMany()
@@ -549,34 +675,55 @@ namespace NextLevel.AccesoDatos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Curso");
+
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Mensajeria", b =>
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.ParticipanteConversacion", b =>
                 {
-                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Curso", "Curso")
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Conversacion", "Conversacion")
+                        .WithMany("Participantes")
+                        .HasForeignKey("ConversacionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("CursoId")
+                        .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Usuario", "Emisor")
-                        .WithMany()
-                        .HasForeignKey("EmisorId")
+                    b.Navigation("Conversacion");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Postulacion", b =>
+                {
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Administrador", "Administrador")
+                        .WithMany("Postulaciones")
+                        .HasForeignKey("AdministradorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("NextLevel.LogicaNegocio.Entidades.Usuario", "Receptor")
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.AltaCurso", "AltaCurso")
                         .WithMany()
-                        .HasForeignKey("ReceptorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("AltaCursoId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Curso");
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.CambioRol", "CambioRol")
+                        .WithMany()
+                        .HasForeignKey("CambioRolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Emisor");
+                    b.Navigation("Administrador");
 
-                    b.Navigation("Receptor");
+                    b.Navigation("AltaCurso");
+
+                    b.Navigation("CambioRol");
                 });
 
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Prueba", b =>
@@ -609,6 +756,13 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Navigation("Archivos");
                 });
 
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Conversacion", b =>
+                {
+                    b.Navigation("Mensajes");
+
+                    b.Navigation("Participantes");
+                });
+
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Curso", b =>
                 {
                     b.Navigation("Pruebas");
@@ -616,11 +770,6 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Navigation("Semanas");
 
                     b.Navigation("Temarios");
-                });
-
-            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Mensajeria", b =>
-                {
-                    b.Navigation("Mensajes");
                 });
 
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Prueba", b =>
@@ -631,6 +780,11 @@ namespace NextLevel.AccesoDatos.Migrations
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Semana", b =>
                 {
                     b.Navigation("Materiales");
+                });
+
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Administrador", b =>
+                {
+                    b.Navigation("Postulaciones");
                 });
 
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Docente", b =>

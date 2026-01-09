@@ -70,6 +70,18 @@ namespace NextLevel.Compartidos.DTOs.Mappers
         {
             return cursos.Select(curso => new CursoNombreDTO(curso.Nombre));
         }
+        public static IEnumerable<Curso> FromListCursoNombreDTO(IEnumerable<CursoNombreDTO> cursos) 
+        {
+            if (cursos == null || cursos.Count() == 0)
+            {
+                return new List<Curso>();
+            } 
+                
+            return cursos.Select(curso => new Curso()
+            {
+                Nombre = curso.Nombre
+            });
+        }
 
         public static CursoNombreDTO ToCursoNombreDTO(Curso curso)
         {
@@ -100,6 +112,27 @@ namespace NextLevel.Compartidos.DTOs.Mappers
                 SemanaMapper.ToListSemanaNumeroDTO(curso.Semanas),
                 curso.FechaInicio, 
                 curso.FechaFin);
+        }
+        public static Curso FromCursoDTO(CursoDTO cursoDTO)
+        {
+            return new Curso()
+            {
+                Nombre = cursoDTO.Nombre,
+                Docente = DocenteMapper.FromDocenteNombreDTO(cursoDTO.DocenteNombreDTO),
+                Calificacion = cursoDTO.Calificacion,
+                Descripcion = cursoDTO.Descripcion,
+                Pruebas = PruebaMapper.FromListPruebaDTO(cursoDTO.Pruebas),
+                Temarios = TemarioMapper.FromListaDTO(cursoDTO.Temarios),
+                FechasClases = cursoDTO.FechasClases,
+                Estudiantes = EstudianteMapper.FromListEstudianteEmailDTO(cursoDTO.Estudiantes).ToList(),
+                Duracion = cursoDTO.Duracion,
+                Foro = ForoMapper.FromForoDTO(cursoDTO.Foro),
+                Dificultad = cursoDTO.Dificultad,
+                Precio = cursoDTO.Precio,
+                Semanas = SemanaMapper.FromListSemanaNumeroDTO(cursoDTO.Semanas).ToList(),
+                FechaInicio = cursoDTO.FechaInico,
+                FechaFin = cursoDTO.FechaFin,
+            };
         }
     }
 

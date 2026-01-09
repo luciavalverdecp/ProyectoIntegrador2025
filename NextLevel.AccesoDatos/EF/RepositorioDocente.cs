@@ -38,6 +38,18 @@ namespace NextLevel.AccesoDatos.EF
             throw new NotImplementedException();
         }
 
+        public Docente FindByNomreYCurso(string nombreCuros, string nombreDocente)
+        {
+            try
+            {
+                return _db.Docentes.Where(d => d.NombreCompleto == nombreDocente && d.Cursos.Any(c => c.Nombre == nombreCuros)).FirstOrDefault();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("No se pudo encontrar al docente de ese curso.");
+            }
+        }
+
         public Docente GetDocenteByNroDocente(int nroDocente)
         {
             var vo = new NroDocente(nroDocente);
@@ -56,6 +68,22 @@ namespace NextLevel.AccesoDatos.EF
             try
             {
                 docente.Rol = obj.Rol;
+                _db.Docentes.Update(docente);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new DocenteException("Error al cambiar el rol del Usuario", ex);
+            }
+        }
+
+        public void UpdateDatosPersonales(Docente obj)
+        {
+            var docente = GetDocenteByNroDocente(obj.NroDocente.NroDeDocente);
+            try
+            {
+                docente.NombreCompleto = obj.NombreCompleto;
+                docente.Telefono = obj.Telefono;
                 _db.Docentes.Update(docente);
                 _db.SaveChanges();
             }

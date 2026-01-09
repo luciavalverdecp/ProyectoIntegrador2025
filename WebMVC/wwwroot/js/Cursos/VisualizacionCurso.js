@@ -27,7 +27,10 @@ document.querySelectorAll(".semana-btn").forEach(btn => {
 
 // Activar semana 1 por defecto si existe
 const primera = document.querySelector(".semana-btn");
-if (primera) primera.click();
+if (primera && !window.location.hash && !document.querySelector(".tab-content.show")) {
+    primera.click();
+}
+
 
 // ----------------------
 // FORO MENSAJES
@@ -133,6 +136,8 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             btn.classList.remove("active");
         }
+
+
     });
 
     // Si no encontró ninguna semana actual, marcar la última
@@ -141,10 +146,6 @@ document.addEventListener("DOMContentLoaded", function () {
         ultima.classList.add("active");
         document.querySelector("#semana-" + ultima.dataset.semana).style.display = "block";
     }
-
-});    
-
-document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll(".material-link").forEach(item => {
         item.addEventListener("click", () => {
@@ -160,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     break;
 
                 case 3:
-                case 4: 
+                case 4:
                     window.location.href = ruta;
                     break;
 
@@ -169,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     break;
 
                 case 6:
-                case 1: 
+                case 1:
                     mostrarTexto(item, texto);
                     break;
 
@@ -179,16 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-});
-
-function mostrarTexto(item, texto) {
-    const semanaContainer = item.closest(".semana-material");
-    const contenedor = semanaContainer.querySelector(".material-texto");
-    contenedor.innerHTML = `<p class="p-2 rounded bg-light">${texto}</p>`;
-    contenedor.style.display = "block";
-}
-
-document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".agregar-material-btn").forEach(btn => {
         btn.addEventListener("click", () => {
             const semana = btn.dataset.semana;
@@ -199,9 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
             modal.show();
         });
     });
-});
-document.addEventListener("DOMContentLoaded", () => {
-
     const modalElement = document.getElementById("modalAgregarMaterial");
     const form = document.getElementById("formAgregarMaterial");
     const inputNombre = form.querySelector("input[name='Nombre']");
@@ -224,7 +212,19 @@ document.addEventListener("DOMContentLoaded", () => {
         inputNombre.value = "";
         inputArchivo.value = "";
     });
+
+   
+
 });
+
+
+function mostrarTexto(item, texto) {
+    const semanaContainer = item.closest(".semana-material");
+    const contenedor = semanaContainer.querySelector(".material-texto");
+    contenedor.innerHTML = `<p class="p-2 rounded bg-light">${texto}</p>`;
+    contenedor.style.display = "block";
+}
+
 
 document.addEventListener('hidden.bs.modal', function () {
     document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
@@ -237,8 +237,8 @@ document.addEventListener('hidden.bs.modal', function () {
 // -----------------------
 // VARIABLES QUE VIENEN DE RAZOR
 // -----------------------
-const fechaInicioCurso = new Date(FECHA_INICIO_CURSO);
-const fechaFinCurso = new Date(FECHA_FIN_CURSO);
+const fechaInicioCurso = new Date(`${FECHA_INICIO_CURSO}T00:00:00`);
+const fechaFinCurso = new Date(`${FECHA_FIN_CURSO}T00:00:00`);
 const nombreCurso = NOMBRE_CURSO;
 
 const calGrid = document.getElementById("calGrid");
@@ -280,9 +280,14 @@ function renderMes() {
     let hayDias = false;
 
     for (let dia = 1; dia <= totalDias; dia++) {
-        const fechaDia = new Date(anio, mes, dia);
 
-        // si no entra en el rango del curso → no mostrar
+        const fechaDia = new Date(anio, mes, dia);
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        const esPasado = fechaDia < hoy;
+
+        // fuera del rango del curso
         if (fechaDia < fechaInicioCurso || fechaDia > fechaFinCurso) continue;
 
         hayDias = true;
@@ -293,51 +298,126 @@ function renderMes() {
         const fechaStr = `${anio}-${String(mes + 1).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
         cell.dataset.fecha = fechaStr;
 
-        cell.innerHTML = `
-            <div class="day-number">${dia}</div>
-            <div class="expand-content">
-                <input type="time" class="time-input" step="900" />
-                <button class="btn-agendar">Agendar clase</button>
-            </div>
-        `;
+        const claseDelDia = CLASES_AGENDADAS.find(c => c.fecha === fechaStr);
 
-        // expandir celda
+        // ===================================================================
+        //                        BLOQUE ESTUDIANTE
+        // ===================================================================
+        if (ROL_USUARIO === "Estudiante") {
+
+            if (!claseDelDia) {
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <div class="clase-pasada">No hay clase</div>
+                    </div>
+                `;
+            } else {
+
+                const horaClase = claseDelDia.hora;
+                const inicioClase = new Date(`${fechaStr}T${horaClase}:00`);
+
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <button class="btn-iniciar" disabled>Ingresar a la clase</button>
+                        <div class="hora-clase">${horaClase} hs</div>
+                    </div>
+                `;
+
+                const btnIngresar = cell.querySelector(".btn-iniciar");
+
+                function actualizarEstado() {
+                    btnIngresar.disabled = new Date() < inicioClase;
+                }
+
+                actualizarEstado();
+                setInterval(actualizarEstado, 30000);
+
+            }
+
+            cell.addEventListener("click", () => expandirCelda(cell));
+            calGrid.appendChild(cell);
+            continue;
+        }
+
+        // ===================================================================
+        //                        BLOQUE DOCENTE
+        // ===================================================================
+
+        // -------- NO HAY CLASE --------
+        if (!claseDelDia) {
+            if (esPasado) {
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <div class="clase-pasada">No disponible</div>
+                    </div>
+                `;
+            } else {
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <input type="time" class="time-input" step="900" />
+                        <button class="btn-agendar">Agendar clase</button>
+                    </div>
+                `;
+            }
+        }
+
+        // -------- HAY CLASE --------
+        else {
+
+            const inicioClase = new Date(`${fechaStr}T${claseDelDia.hora}:00`);
+
+            cell.innerHTML = `
+                <div class="day-number">${dia}</div>
+                <div class="expand-content">
+                    <button class="btn-iniciar">Iniciar clase</button>
+                    <div class="hora-clase">${claseDelDia.hora} hs</div>
+                </div>
+            `;
+
+            const btnIniciar = cell.querySelector(".btn-iniciar");
+
+            function actualizarHabilitacion() {
+                const ahora = new Date();
+                const diff = inicioClase - ahora;
+                const puede = diff <= 15 * 60 * 1000 && diff > -60 * 60 * 1000;
+                btnIniciar.classList.toggle("btn-disabled", !puede);
+            }
+
+            actualizarHabilitacion();
+            setInterval(actualizarHabilitacion, 30000);
+
+        }
+
         cell.addEventListener("click", (e) => {
-            e.stopPropagation();
+            if (e.target.closest(".btn-iniciar") || e.target.closest(".btn-agendar")) return;
             expandirCelda(cell);
         });
 
-        // enviar al backend
-        cell.querySelector(".btn-agendar").addEventListener("click", (e) => {
-            e.stopPropagation();
-            const hora = cell.querySelector(".time-input").value;
-            if (!hora) return;
+        const btnAgendar = cell.querySelector(".btn-agendar");
+        if (btnAgendar) {
+            btnAgendar.addEventListener("click", (e) => {
+                e.stopPropagation();
 
-            const fechaCompleta = `${fechaStr} ${hora}`;
+                const hora = cell.querySelector(".time-input")?.value;
+                if (!hora) return;
 
-            // --- crear form dinámico ---
-            const form = document.createElement("form");
-            form.method = "POST";
-            form.action = "/Cursos/AgregarClase";
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = "/Cursos/AgregarClase";
 
-            const inputFecha = document.createElement("input");
-            inputFecha.type = "hidden";
-            inputFecha.name = "fecha";
-            inputFecha.value = fechaCompleta;
+                form.innerHTML = `
+                    <input type="hidden" name="fecha" value="${fechaStr} ${hora}">
+                    <input type="hidden" name="CursoNombre" value="${NOMBRE_CURSO}">
+                `;
 
-            // 🔥 Enviar nombre del curso (desde Razor)
-            const inputCurso = document.createElement("input");
-            inputCurso.type = "hidden";
-            inputCurso.name = "CursoNombre";
-            inputCurso.value = NOMBRE_CURSO;
-
-            form.appendChild(inputFecha);
-            form.appendChild(inputCurso);
-
-            document.body.appendChild(form);
-            form.submit();
-        });
-
+                document.body.appendChild(form);
+                form.submit();
+            });
+        }
 
         calGrid.appendChild(cell);
     }
@@ -348,6 +428,7 @@ function renderMes() {
 
     actualizarFlechas();
 }
+
 
 
 // -----------------------
@@ -405,3 +486,149 @@ btnPrev.addEventListener("click", () => {
 // INICIO
 // -----------------------
 renderMes();
+
+// ===============================
+// CLICK DELEGADO PARA INICIAR CLASE
+// ===============================
+document.getElementById("calGrid").addEventListener("click", (e) => {
+    const btn = e.target.closest(".btn-iniciar");
+    if (!btn) return;
+
+    // si está deshabilitado por clase → no entra
+    if (btn.disabled) return;
+
+    const cell = btn.closest(".day-cell");
+    if (!cell) return;
+
+    const fecha = cell.dataset.fecha;
+
+    window.location.href =
+        `/Cursos/ClasesEnVivo?nombreCurso=${NOMBRE_CURSO}`;
+});
+
+window.addEventListener("load", () => {
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("show"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+
+    const tab = document.getElementById(hash);
+    const btn = document.querySelector(`.tab-btn[data-target="${hash}"]`);
+
+    if (tab && btn) {
+        tab.classList.add("show");
+        btn.classList.add("active");
+    }
+});
+
+function scrollForoAlFinal() {
+    const foro = document.getElementById("foroMensajes");
+    if (!foro) return;
+
+    foro.scrollTop = foro.scrollHeight;
+}
+
+function scrollContactoAlFinal() {
+    const cont = document.getElementById("chat-box");
+    if (!cont) return;
+
+    cont.scrollTop = cont.scrollHeight;
+}
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+        document.querySelectorAll(".tab-btn")
+            .forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        document.querySelectorAll(".tab-content")
+            .forEach(c => c.classList.remove("show"));
+
+        const target = document.getElementById(btn.dataset.target);
+        target.classList.add("show");
+
+        if (btn.dataset.target === "foro") {
+            setTimeout(scrollForoAlFinal, 50);
+        } else if (btn.dataset.target === "contacto") {
+            setTimeout(scrollContactoAlFinal, 50);
+        }
+    });
+});
+
+window.addEventListener("load", () => {
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("show"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+
+    const tab = document.getElementById(hash);
+    const btn = document.querySelector(`.tab-btn[data-target="${hash}"]`);
+
+    if (tab && btn) {
+        tab.classList.add("show");
+        btn.classList.add("active");
+
+        // 👉 SI ES FORO → SCROLL
+        if (hash === "foro") {
+            setTimeout(scrollForoAlFinal, 100);
+        } else if (hash === "contacto") {
+            setTimeout(scrollContactoAlFinal, 50);
+        }
+    }
+});
+
+//CHAT
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const rol = document.body.dataset.rol;
+
+    // DOCENTE: click en bandeja
+    document.querySelectorAll(".conv-item").forEach(item => {
+        item.addEventListener("click", () => {
+            const convId = item.dataset.conversacionId;
+            cargarChat(convId);
+        });
+    });
+
+    // ESTUDIANTE: solo cargar si YA existe conversación
+    if (rol === "Estudiante") {
+        const contenedor = document.querySelector(".contacto-container.estudiante");
+        const convId = contenedor?.dataset.conversacionId || 0;
+
+        cargarChat(convId); 
+    }
+});
+
+function cargarChat(conversacionId) {
+
+    let url = `/Mensajes/ObtenerMensajesConversacion?nombreCurso=${encodeURIComponent(nombreCurso)}`;
+
+    if (conversacionId) {
+        url += `&conversacionId=${conversacionId}`;
+    }
+
+    fetch(url)
+        .then(r => r.text())
+        .then(html => {
+            document.getElementById("chatPanel").innerHTML = html;
+        });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const div = document.getElementById("divInicialVD");
+    const convId = div.dataset.conversacionId;
+
+    if (convId && convId !== "0") {
+        cargarChat(convId);
+
+        const item = document.querySelector(
+            `.conv-item[data-conversacion-id="${convId}"]`
+        );
+        if (item) item.classList.add("active");
+    }
+});

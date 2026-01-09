@@ -1,4 +1,6 @@
 ﻿@using NextLevel.Compartidos.DTOs.Cursos
+@using NextLevel.Compartidos.DTOs.Mensajes
+@using NextLevel.Compartidos.DTOs.ParticipantesConversacion
 @model CursoDTO
 
 @section Header {
@@ -6,7 +8,7 @@
 }
 
 @section Styles {
-<link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css" />
+    <link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css?v=4" />
 }
 
 @section ScriptsJs {
@@ -14,11 +16,18 @@
         const NOMBRE_CURSO = "@Model.Nombre";
         const FECHA_INICIO_CURSO = "@Model.FechaInico.ToString("yyyy-MM-dd")";
         const FECHA_FIN_CURSO    = "@Model.FechaFin.ToString("yyyy-MM-dd")";
+        const CLASES_AGENDADAS = @Html.Raw(Json.Serialize(ViewBag.ClasesAgendadas));
+        const ROL_USUARIO = "@Context.Session.GetString("rolLogueado")";
+        const URL_CLASE = '@Url.Action("ClasesEnVivo", "Cursos")';
     </script>
-    <script src="~/js/Cursos/VisualizacionCurso.js"></script>
+    <script src="~/js/Cursos/VisualizacionCurso.js?v=5"></script>
 }
 
-<div class="curso-container">
+@{
+    var convId = TempData["ConversacionActiva"];
+}
+
+<div class="curso-container" data-conversacion-id="@convId" id="divInicialVD">
 
     <!-- HEADER -->
     <div class="curso-header"> 
@@ -27,43 +36,43 @@
             <h1 class="curso-title">@Model.Nombre</h1>
             <p class="text-muted">@Model.DocenteNombreDTO?.NombreCompleto</p> 
         </div> 
-        </div> 
-        <!-- INFO DEL CURSO --> 
-        <div class="mt-4 p-4 rounded" style="background: var(--pastel-bg)">
-            <h4 class="fw-semibold">Descripción</h4> 
-            <p>@Model.Descripcion</p> 
-            <div class="row"> 
-                <div class="col-md-6">
-                    <strong>Dificultad:</strong> 
-                    @Model.Dificultad
-                 
-                </div>
-                 
-                <div class="col-md-6">
-                    <strong>Duración:</strong> 
-                    @Model.Duracion semanas
-                </div> 
-                <div class="col-md-6 mt-2"> 
-                    <strong>Fecha de inicio:</strong>
-                    @Model.FechaInico.ToString("dd/MM/yyyy")
-                </div>
-                <div class="col-md-6 mt-2">
-                    <strong>Fecha de fin:</strong>
-                    @Model.FechaFin.ToString("dd/MM/yyyy")
-                </div>
+    </div> 
+    <!-- INFO DEL CURSO --> 
+    <div class="mt-4 p-4 rounded" style="background: var(--pastel-bg)">
+        <h4 class="fw-semibold">Descripción</h4> 
+        <p>@Model.Descripcion</p> 
+        <div class="row"> 
+            <div class="col-md-6">
+                <strong>Dificultad:</strong> 
+                @Model.Dificultad
+
+            </div>
+
+            <div class="col-md-6">
+                <strong>Duración:</strong> 
+                @Model.Duracion meses
             </div> 
-        </div>
+            <div class="col-md-6 mt-2"> 
+                <strong>Fecha de inicio:</strong>
+                @Model.FechaInico.ToString("dd/MM/yyyy")
+            </div> 
+            <div class="col-md-6 mt-2">
+                <strong>Fecha fin:</strong> 
+                @Model.FechaFin.ToString("dd/MM/yyyy")
+            </div> 
+        </div> 
+    </div>
 
     <!-- TABS -->
     <div class="tab-buttons">
-        <button class="tab-btn active" data-target="materiales">Materiales</button>
-        <button class="tab-btn" data-target="foro">Foro</button>
+        <button class="tab-btn" data-target="materiales">Materiales</button>
+        <button id="btnForo" class="tab-btn" data-target="foro">Foro</button>
         <button class="tab-btn" data-target="contacto">Contacto</button>
         <button class="tab-btn" data-target="clases">Clases</button>
     </div>
 
     <!-- MATERIAL -->
-    <div id="materiales" class="tab-content show">
+    <div id="materiales" class="tab-content">
         <h4 class="fw-bold mb-3">📚 Materiales</h4>
 
         <div class="row mt-3">
@@ -100,10 +109,10 @@
                                         <div class="material-item d-flex justify-content-between align-items-center"> 
                                             <div> 
                                                 <span class="material-name material-link " 
-                                                    data-tipo="@((int)mat.TipoMaterial)" 
-                                                    data-ruta="@mat.RutaArchivo" 
-                                                    data-texto="@mat.Nombre"> 
-                                                        📄 @mat.Nombre 
+                                                data-tipo="@((int)mat.TipoMaterial)" 
+                                                data-ruta="@mat.RutaArchivo" 
+                                                data-texto="@mat.Nombre"> 
+                                                    📄 @mat.Nombre 
                                                 </span> 
                                             </div> 
                                             @if (Context.Session.GetString("rolLogueado") == "Docente")
@@ -114,7 +123,7 @@
                                                     <input type="hidden" name="RutaArchivo" value="@mat.RutaArchivo" /> 
                                                     <input type="hidden" name="Nombre" value="@mat.Nombre" /> 
                                                     <input type="hidden" name="TipoMaterial" value="@((int)mat.TipoMaterial)" /> 
-                                                    
+
                                                     <button type="submit" class="btn btn-link text-danger p-0 fs-4" title="Eliminar material" style="text-decoration:none;"> 🗑 </button> 
                                                 </form>
                                             } </div>
@@ -137,32 +146,78 @@
         <h4 class="fw-bold mb-3">💬 Foro</h4>
 
         <div class="chat-box" id="foroMensajes">
-            @if (Model.Foro?.Mensajes != null)
+            @if (ViewBag.MensajesForo != null)
             {
-                foreach (var msg in Model.Foro.Mensajes)
+                foreach (MensajeDTO msg in ViewBag.MensajesForo)
                 {
-                    <div class="msg @(msg.EsDelEstudiante ? "mine" : "")">@msg.mensaje</div>
+                    <div class="msg-wrapper @(msg.Usuario.Email == Context.Session.GetString("emailLogueado") ? "mine" : "")">
+
+                        <span class="msg-user">@msg.Usuario.NombreCompleto</span>
+
+                        <div class="msg">
+                            @msg.Contenido
+                        </div>
+
+                    </div>
                 }
             }
         </div>
 
-        <div class="chat-input">
-            <input type="text" id="foroInput" placeholder="Escribe un mensaje...">
-            <button onclick="EnviarForo()">Enviar</button>
-        </div>
+        <form asp-action="EnviarMensaje" asp-controller="Mensajes" method="post">
+            <div class="chat-input">
+                <input type="hidden" name="idConversacion" value="@Model.Foro.Conversacion.Id" />
+                <input type="hidden" name="nombreCurso" value="@Model.Nombre" />
+                <input type="text" id="Contenido" name="Contenido" placeholder="Escribe un mensaje...">
+                <button type="submit">Enviar</button>
+            </div>
+        </form>
+
     </div>
 
     <!-- CONTACTO -->
     <div id="contacto" class="tab-content">
-        <h4 class="fw-bold mb-3">📨 Contacto con el docente</h4>
 
-        <div class="chat-box" id="contactoMensajes"></div>
+        <!-- SOLO DOCENTE -->
+        @if (Context.Session.GetString("rolLogueado") == "Docente")
+        {
+            <div id="bandeja-docente" class="contacto-container docente">
+                <div class="lista-conversaciones">
+                    <h5>📥 Mensajes</h5>
 
-        <div class="chat-input">
-            <input type="text" id="contactoInput" placeholder="Escribe un mensaje...">
-            <button onclick="EnviarContacto()">Enviar</button>
-        </div>
+                    @foreach (ParticipanteConversacionDTO pc in ViewBag.MensajesDocente)
+                    {
+                        <div class="conv-item"
+                             data-conversacion-id="@pc.Conversacion.Id">
+                            <strong>@pc.Usuario.NombreCompleto</strong>
+                        </div>
+                    }
+                </div>
+
+                <div class="chat-panel" id="chatPanel">
+                    <div class="placeholder-chat">
+                        Seleccioná una conversación
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- SOLO ESTUDIANTE -->
+        @if (Context.Session.GetString("rolLogueado") == "Estudiante")
+        {
+            <div class="contacto-container estudiante"
+                 data-conversacion-id="@ViewBag.ConversacionEstudiante">
+
+                <div id="chatPanel">
+                    <div class="placeholder-chat">
+                        Todavía no hay mensajes. Escribí para iniciar la conversación.
+                    </div>
+                </div>
+            </div>
+        }
+
+
     </div>
+
 
     <!-- CALENDARIO -->
     <div id="clases" class="tab-content">

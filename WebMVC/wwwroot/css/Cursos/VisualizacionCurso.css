@@ -87,20 +87,48 @@ body {
 
 /* CHAT (FORO Y CONTACTO) */
 .chat-box {
-    height: 350px;
+    max-height: 320px;
     overflow-y: auto;
-    background: var(--pastel-bg);
-    padding: 15px;
-    border-radius: 15px;
-    border: 1px solid #ddd;
+
+    padding: 10px;     
+    margin: 0;          
+    
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    background: #f6f3ff; 
+    border-radius: 12px;
 }
+.msg-user {
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+    margin-bottom: 4px;
+}
+.msg-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+    .msg-wrapper.mine {
+        align-items: flex-end;
+    }
+
+        .msg-wrapper.mine .msg {
+            background: #d1f7c4;
+            color: #1f5f2c;
+        }
 
 .msg {
     max-width: 70%;
-    padding: 10px 15px;
-    background: white;
-    border-radius: 15px;
-    margin-bottom: 10px;
+    padding: 10px 20px;
+    border-radius: 14px;
+    background: #ffffff;
+    font-size:18px;
+    color: #333;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
     .msg.mine {
@@ -150,8 +178,9 @@ body {
     background: var(--pastel-bg);
     border-radius: 10px;
 }
+
 .semanas-scroll {
-    max-height: 350px; 
+    max-height: 350px;
     overflow-y: auto;
     padding-right: 5px;
 }
@@ -166,9 +195,10 @@ body {
     }
 
     .semanas-scroll::-webkit-scrollbar-thumb {
-        background: #b9b9ff; 
+        background: #b9b9ff;
         border-radius: 10px;
     }
+
 .semana-btn.active {
     background-color: #c7b9ff !important;
     color: white;
@@ -301,7 +331,7 @@ body {
         }
 
 .material-link {
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 
@@ -383,3 +413,109 @@ body {
         background: #692bc7;
     }
 
+div.day-cell button.btn-iniciar {
+    background-color: #28a745; /* verde */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+    div.day-cell button.btn-iniciar:hover:not(:disabled) {
+        background-color: #218838;
+        transform: scale(1.03);
+    }
+
+    div.day-cell button.btn-iniciar:disabled {
+        background-color: #94d3a2;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+.btn-iniciar {
+    position: relative;
+    z-index: 1000;
+    pointer-events: auto;
+}
+
+.day-cell,
+.expand-content {
+    pointer-events: auto;
+}
+
+.btn-iniciar,
+.btn-agendar {
+    position: relative;
+    z-index: 1000;
+}
+
+.btn-disabled {
+    pointer-events: auto !important;
+}
+
+.msg {
+    animation: fadeInUp 0.2s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-content {
+    display: none;
+}
+
+    .tab-content.show {
+        display: block;
+    }
+
+.lista-conversaciones {
+    background: #faf7ff;
+    border-right: 1px solid #e3d8ff;
+    padding: 10px;
+}
+
+/* ITEM DE CONVERSACIÓN */
+.conv-item {
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+    /* TEXTO */
+    .conv-item strong {
+        font-weight: 500;
+        color: #4b2a7a;
+    }
+
+    /* HOVER → VIOLETA CLARITO */
+    .conv-item:hover {
+        background-color: #efe7ff;
+        transform: translateX(3px);
+    }
+
+    /* ACTIVO (cuando está seleccionado) */
+    .conv-item.active {
+        background-color: #e0d0ff;
+        box-shadow: inset 3px 0 0 #7c3aed;
+    }
+
+    /* FEEDBACK DE CLICK */
+    .conv-item:active {
+        transform: scale(0.98);
+    }

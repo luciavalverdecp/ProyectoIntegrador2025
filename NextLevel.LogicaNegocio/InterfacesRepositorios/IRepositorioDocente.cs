@@ -12,5 +12,7 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
     {
         Usuario FindByEmail(string email);
         Docente GetDocenteByNroDocente(int nroDocente);
+        void UpdateDatosPersonales(Docente docente);
+        Docente FindByNomreYCurso(string nombreCuros, string nombreDocente);
     }
 }

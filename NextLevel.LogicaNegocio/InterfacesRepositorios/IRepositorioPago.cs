@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NextLevel.LogicaNegocio.InterfacesRepositorios
 {
-    public interface IRepositorioMensajeria : IRepositorio<Mensajeria>
+    public interface IRepositorioPago : IRepositorio<Pago>
     {
     }
 }
