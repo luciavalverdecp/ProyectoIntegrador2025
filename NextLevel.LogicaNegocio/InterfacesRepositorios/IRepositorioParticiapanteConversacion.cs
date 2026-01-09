@@ -11,5 +11,9 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
     public interface IRepositorioParticiapanteConversacion:IRepositorio<ParticipanteConversacion>
     {
         ParticipanteConversacion GetPartConv(Conversacion conversacion, Usuario usuario);
+
+        IEnumerable<ParticipanteConversacion> GetPartConvCurso(Curso curso, Usuario usuario);
+
+        ParticipanteConversacion GetPartConvEstudianteCurso(Curso curso, Usuario usuario);
     }
 }

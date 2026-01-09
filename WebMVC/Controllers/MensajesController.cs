@@ -1,27 +1,60 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NextLevel.Compartidos.DTOs.Mensajes;
+using NextLevel.LogicaAplicacion.InterfacesCU.Conversaciones;
+using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Mensajes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Usuarios;
+using NextLevel.LogicaNegocio.Entidades;
 
 namespace WebMVC.Controllers
 {
     public class MensajesController : Controller
     {
         private readonly IEnviarMensaje _enviarMensaje;
-        public MensajesController(IEnviarMensaje enviarMensaje)
+        private readonly IObtenerCurso _obtenerCurso;
+        private readonly IObtenerMensajes _obtenerMensajes;
+        private readonly IObtenerConversacion _obtenerConversacion;
+        public MensajesController(IEnviarMensaje enviarMensaje, 
+            IObtenerCurso obtenerCurso, 
+            IObtenerMensajes obtenerMensajes, 
+            IObtenerConversacion obtenerConversacion)
         {
             _enviarMensaje = enviarMensaje;
+            _obtenerCurso = obtenerCurso;
+            _obtenerMensajes = obtenerMensajes;
+            _obtenerConversacion = obtenerConversacion;
         }
 
         [HttpPost]
         public IActionResult EnviarMensaje(int idConversacion, string Contenido, string nombreCurso)
         {
+            var cursoDTO = _obtenerCurso.Ejecturar(nombreCurso.ToString());
             _enviarMensaje.Ejecutar(
                 idConversacion,
                 new UsuarioEmailDTO(HttpContext.Session.GetString("emailLogueado")),
-                Contenido
+                Contenido,
+                cursoDTO
             );
+            var conversacion = _obtenerConversacion.Ejecutar(idConversacion);
+            if(conversacion.TipoConversacion == TipoConversacion.Foro)
+                return Redirect("/Cursos/VisualizarCurso?nombreCurso=" + nombreCurso + "#foro");
+            return Redirect("/Cursos/VisualizarCurso?nombreCurso=" + nombreCurso + "#contacto");
+        }
 
-            return Redirect("/Cursos/VisualizarCurso?nombreCurso=" + nombreCurso + "#foro");
+        [HttpGet]
+        public IActionResult ObtenerMensajesConversacion(string nombreCurso, int conversacionId)
+        {
+            if (conversacionId == 0)
+            {
+                ViewBag.CoversacionId = -1;
+                ViewBag.NombreCurso = nombreCurso;
+                return PartialView("~/Views/Cursos/_ChatConversacion.cshtml", new List<MensajeDTO>());
+            }
+            var conversacion = _obtenerConversacion.Ejecutar(conversacionId);
+            var mensajes = _obtenerMensajes.Ejecutar(conversacion);
+            ViewBag.CoversacionId = conversacion.Id;
+            ViewBag.NombreCurso = conversacion.CursoNombre.Nombre;
+            return PartialView("~/Views/Cursos/_ChatConversacion.cshtml", mensajes);
         }
     }
 }

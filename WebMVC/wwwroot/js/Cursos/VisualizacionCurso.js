@@ -529,6 +529,13 @@ function scrollForoAlFinal() {
     foro.scrollTop = foro.scrollHeight;
 }
 
+function scrollContactoAlFinal() {
+    const cont = document.getElementById("chat-box");
+    if (!cont) return;
+
+    cont.scrollTop = cont.scrollHeight;
+}
+
 document.querySelectorAll(".tab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
 
@@ -544,6 +551,8 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
 
         if (btn.dataset.target === "foro") {
             setTimeout(scrollForoAlFinal, 50);
+        } else if (btn.dataset.target === "contacto") {
+            setTimeout(scrollContactoAlFinal, 50);
         }
     });
 });
@@ -565,8 +574,47 @@ window.addEventListener("load", () => {
         // 👉 SI ES FORO → SCROLL
         if (hash === "foro") {
             setTimeout(scrollForoAlFinal, 100);
+        } else if (hash === "contacto") {
+            setTimeout(scrollContactoAlFinal, 50);
         }
     }
 });
 
+//CHAT
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const rol = document.body.dataset.rol;
+
+    // DOCENTE: click en bandeja
+    document.querySelectorAll(".conv-item").forEach(item => {
+        item.addEventListener("click", () => {
+            const convId = item.dataset.conversacionId;
+            cargarChat(convId);
+        });
+    });
+
+    // ESTUDIANTE: solo cargar si YA existe conversación
+    if (rol === "Estudiante") {
+        const contenedor = document.querySelector(".contacto-container.estudiante");
+        const convId = contenedor?.dataset.conversacionId || 0;
+
+        cargarChat(convId); 
+    }
+});
+
+function cargarChat(conversacionId) {
+
+    let url = `/Mensajes/ObtenerMensajesConversacion?nombreCurso=${encodeURIComponent(nombreCurso)}`;
+
+    if (conversacionId) {
+        url += `&conversacionId=${conversacionId}`;
+    }
+
+    fetch(url)
+        .then(r => r.text())
+        .then(html => {
+            document.getElementById("chatPanel").innerHTML = html;
+        });
+}
 

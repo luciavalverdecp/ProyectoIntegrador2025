@@ -474,3 +474,10 @@ div.day-cell button.btn-iniciar {
     }
 }
 
+.tab-content {
+    display: none;
+}
+
+    .tab-content.show {
+        display: block;
+    }

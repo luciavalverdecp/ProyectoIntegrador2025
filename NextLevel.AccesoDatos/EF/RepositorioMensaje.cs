@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
@@ -43,7 +44,9 @@ namespace NextLevel.AccesoDatos.EF
         {
             try
             {
-                return _db.Mensajes.Where(m => m.Conversacion.Id == conversacion.Id).ToList();
+                return _db.Mensajes.Where(m => m.Conversacion.Id == conversacion.Id)
+                    .Include(m => m.Usuario)
+                    .Include(m => m.Conversacion).ToList();
             }
             catch (Exception e)
             {

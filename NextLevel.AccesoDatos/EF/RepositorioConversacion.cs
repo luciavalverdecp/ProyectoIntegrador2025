@@ -18,7 +18,29 @@ namespace NextLevel.AccesoDatos.EF
         }
         public void Add(Conversacion obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _db.Conversaciones.Add(obj);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al crear una conversacion");
+            }
+        }
+
+        public int Agregar(Conversacion conversacion)
+        {
+            try
+            {
+                _db.Conversaciones.Add(conversacion);
+                _db.SaveChanges();
+                return conversacion.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al crear una conversacion");
+            }
         }
 
         public IEnumerable<Conversacion> FindAll()
@@ -28,7 +50,7 @@ namespace NextLevel.AccesoDatos.EF
 
         public Conversacion FindById(int id)
         {
-            return _db.Conversaciones.Where(c => c.Id == id).FirstOrDefault();
+            return _db.Conversaciones.Where(c => c.Id == id).Include(c => c.Curso).Include(c => c.Participantes).Include(c => c.Mensajes).FirstOrDefault();
         }
 
         public void Remove(int id)
