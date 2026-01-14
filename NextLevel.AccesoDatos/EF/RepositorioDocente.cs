@@ -28,7 +28,7 @@ namespace NextLevel.AccesoDatos.EF
             throw new NotImplementedException();
         }
 
-        public Usuario FindByEmail(string email)
+        public Docente FindByEmail(string email)
         {
             return _db.Docentes.Where(e => e.Email == email).Include(e => e.Cursos).FirstOrDefault();
         }
