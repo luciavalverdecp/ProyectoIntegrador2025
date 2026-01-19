@@ -27,8 +27,8 @@ namespace NextLevel.LogicaNegocio.Entidades
         public DateTime FechaFin { get; set; }
         public double Calificacion { get; set; }
         public string Descripcion { get; set; }
-        public IEnumerable<Temario> Temarios { get; set; }
-        public IEnumerable<Prueba> Pruebas { get; set; }
+        public List<Temario> Temarios { get; set; }
+        public List<Prueba> Pruebas { get; set; }
         public List<DateTime> FechasClases { get; set; }
         public int Duracion { get; set; }
         public double Precio { get; set; }
@@ -58,7 +58,7 @@ namespace NextLevel.LogicaNegocio.Entidades
             Calificacion = 0;
             Descripcion = descripcion;
             Pruebas = new List<Prueba>();
-            Temarios = temarios;
+            Temarios = temarios.ToList();
             FechasClases = new List<DateTime>();
         }
 
@@ -74,7 +74,7 @@ namespace NextLevel.LogicaNegocio.Entidades
             Calificacion = 0;
             Descripcion = descripcion;
             Pruebas = new List<Prueba>();
-            Temarios = temarios;
+            Temarios = temarios.ToList();
             Precio = precio;
             Dificultad = dificultad;
             Duracion = CalcularDuracion();
@@ -143,7 +143,7 @@ namespace NextLevel.LogicaNegocio.Entidades
             if (dias >= 15)
                 meses++;
 
-            return Math.Max(meses, 0) - 2;
+            return Math.Max(meses, 0);
         }
         #endregion
     }

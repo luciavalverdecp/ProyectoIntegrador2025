@@ -59,7 +59,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
             if (imagen == null)
                 throw new CursoException("Debe ingresar una imagen para el curso.");
 
-            Docente docente = (Docente)_repositorioDocente.FindByEmail(email);
+            Docente docente = _repositorioDocente.FindByEmail(email);
 
             CursoAltaDTO altaDTO = new CursoAltaDTO(
                 cursoAltaDTO.Id,
@@ -94,11 +94,10 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
 
             _repositorioCurso.Add(nuevoCurso);
 
-
             foreach (var t in temariosGuardados)
             {
-                t.Curso = nuevoCurso;
-                nuevoCurso.Temarios.ToList().Add(t);
+                t.Curso = _repositorioCurso.FindByNombre(nuevoCurso.Nombre);
+                nuevoCurso.Temarios.Add(t);
             }
 
             var contenedor = _blobServiceClient.GetBlobContainerClient("altacursos");
