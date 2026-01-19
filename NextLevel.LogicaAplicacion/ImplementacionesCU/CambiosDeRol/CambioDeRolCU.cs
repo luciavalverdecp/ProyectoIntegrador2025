@@ -22,16 +22,23 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.CambiosDeRol
 		private readonly IRepositorioEstudiante _repositorioEstudiante;
 		private readonly IRepositorioDocente _repositorioDocente;
 		private readonly BlobServiceClient _blobServiceClient;
+        private readonly IRepositorioPostulacion _repositorioPostulacion;
+        private readonly IRepositorioAdministrador _repositorioAdministrador;
 
-		public CambioDeRolCU (IRepositorioCambioRol repositorioCambioRol, 
+
+        public CambioDeRolCU (IRepositorioCambioRol repositorioCambioRol, 
 			BlobServiceClient blobServiceClient,
 			IRepositorioEstudiante repositorioEstudiante,
-			IRepositorioDocente repositorioDocente)
+			IRepositorioDocente repositorioDocente,
+            IRepositorioPostulacion repositorioPostulacion,
+            IRepositorioAdministrador repositorioAdministrador)
 		{
 			_repositorioCambioRol = repositorioCambioRol;
 			_blobServiceClient = blobServiceClient;
 			_repositorioEstudiante = repositorioEstudiante;
 			_repositorioDocente = repositorioDocente;
+			_repositorioPostulacion = repositorioPostulacion;
+			_repositorioAdministrador = repositorioAdministrador;
 		}
 
 		public async Task Ejecutar(CambioRolDTO cambioRolDTO, List<IFormFile> archivos)
@@ -82,6 +89,9 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.CambiosDeRol
 
 			nuevoCambioRol.Archivos = archivosEntidad;
 			_repositorioCambioRol.Add(nuevoCambioRol);
+			Administrador administrador = _repositorioAdministrador.ObtenerAdminMenosPostu();
+			Postulacion postulacion = new Postulacion(administrador, nuevoCambioRol);
+			_repositorioPostulacion.Add(postulacion);
         }
 	}
 }
