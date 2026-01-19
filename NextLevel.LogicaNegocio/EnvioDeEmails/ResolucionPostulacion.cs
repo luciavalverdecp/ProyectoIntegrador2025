@@ -20,7 +20,7 @@ namespace NextLevel.LogicaNegocio.EnvioDeEmails
             _password = "qvjj rqic fgsn jsou";
         }
 
-        public async Task EnviarResolucionCambioRolAsync(string emailDestino, string motivo, string resolucion)
+        public async Task EnviarResolucionCambioRolAsync(string emailDestino, string motivo, string resolucion, int nroDocente)
         {
             string subject = resolucion == "Aprobada"
                             ? "Tu solicitud de cambio de rol fue aprobada 🎉"
@@ -74,6 +74,40 @@ namespace NextLevel.LogicaNegocio.EnvioDeEmails
                                         <p style='margin-top:8px; color:#555;'>{motivo}</p>
                                     </div>
 
+                                    <div style='
+                                        background:#ffffff;
+                                        padding:15px;
+                                        border-radius:12px;
+                                        margin-top:20px;
+                                        border-left:5px solid #4CAF50;
+                                        text-align:left;
+                                    '>
+                                        <strong>📘 Información de acceso como docente</strong>
+                                        <p style='margin-top:10px; color:#555; line-height:1.6;'>
+                                            Se te ha asignado el siguiente <strong>número de docente</strong>:
+                                            <br><br>
+                                            <span style='
+                                                display:inline-block;
+                                                background:#f0f4ff;
+                                                padding:8px 14px;
+                                                border-radius:8px;
+                                                font-size:16px;
+                                                font-weight:bold;
+                                                color:#2c3e50;
+                                            '>
+                                                {nroDocente}
+                                            </span>
+                                            <br><br>
+                                            A partir de ahora, podrás ingresar al sistema utilizando este número de docente
+                                            junto con la <strong>contraseña actual de tu cuenta de estudiante</strong>.
+                                        </p>
+
+                                        <p style='margin-top:12px; color:#777; font-size:14px;'>
+                                            🔐 Por razones de seguridad, te recomendamos cambiar tu contraseña desde tu perfil
+                                            una vez que ingreses al sistema.
+                                        </p>
+                                    </div>
+
                                     <p style='color:#666; font-size:14px; margin-top:25px;'>
                                         Si tenés alguna consulta, podés comunicarte con el equipo de soporte.
                                     </p>
@@ -85,6 +119,7 @@ namespace NextLevel.LogicaNegocio.EnvioDeEmails
                                         Este correo fue enviado automáticamente.
                                     </p>
                                 </div>";
+
 
 
             AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);

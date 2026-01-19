@@ -39,6 +39,10 @@ namespace NextLevel.AccesoDatos.EF
         {
             return _db.Postulaciones.Where(p => p.Id == id)
                      .Include(p => p.CambioRol)
+                     .Include(p => p.CambioRol)
+                        .ThenInclude(cr => cr.Estudiante)
+                     .Include(p => p.CambioRol)
+                        .ThenInclude(cr => cr.Archivos)
                      .Include(p => p.AltaCurso)
                         .ThenInclude(a => a.Curso)
                      .Include(p => p.AltaCurso)
