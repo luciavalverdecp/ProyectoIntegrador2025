@@ -112,6 +112,8 @@ namespace WebMVC
             builder.Services.AddScoped<IObtenerPartiConversaciones, ObtenerPartiConversaciones>();
             builder.Services.AddScoped<IObtenerConversacion, ObtenerConversacion>();
             builder.Services.AddScoped<IObtenerPostulacionesAdmin, ObtenerPostulacionesAdmin>();
+            builder.Services.AddScoped<IObtenerPostulacion, ObtenerPostulacion>();
+            builder.Services.AddScoped<IResolverPostulacion, ResolverPostulacion>();
 
             var app = builder.Build();
 

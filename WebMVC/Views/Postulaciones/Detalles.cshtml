@@ -1,0 +1,144 @@
+﻿@section Header {
+@await Html.PartialAsync("~/Views/Home/Header.cshtml")
+}
+
+@section Styles {
+<link rel="stylesheet" href="~/css/Postulaciones/Detalles.css" />
+}
+
+<div class="page-wrapper">
+
+    <div class="postulacion-detalle-container">
+
+        <div class="postulacion-detalle-grid">
+
+            <!-- COLUMNA IZQUIERDA -->
+            <div class="detalle-info">
+
+                @if (ViewBag.Postulacion.CursoAltaDTO != null)
+                {
+                    <h4 class="section-title">Alta de curso</h4>
+
+                    <div class="info-item">
+                        <label>Nombre del curso</label>
+                        <p>@ViewBag.Postulacion.CursoAltaDTO.AltaDTO.Nombre</p>
+                    </div>
+
+                    <div class="info-item">
+                        <label>Docente</label>
+                        <p>@ViewBag.Postulacion.CursoAltaDTO.AltaDTO.DocenteNombreDTO.NombreCompleto</p>
+                    </div>
+
+                    <div class="info-item">
+                        <label>Descripción</label>
+                        <p>@ViewBag.Postulacion.CursoAltaDTO.AltaDTO.Descripcion</p>
+                    </div>
+
+                    <div class="info-item">
+                        <label>Dificultad</label>
+                        <p>@ViewBag.Postulacion.CursoAltaDTO.AltaDTO.Dificultad</p>
+                    </div>
+
+                    <div class="info-item">
+                        <label>Precio</label>
+                        <p>$ @ViewBag.Postulacion.CursoAltaDTO.AltaDTO.Precio</p>
+                    </div>
+
+                    <div class="info-item">
+                        <label>Fechas</label>
+                        <p>
+                            @ViewBag.Postulacion.CursoAltaDTO.AltaDTO.FechaInicio.ToShortDateString()
+                            -
+                            @ViewBag.Postulacion.CursoAltaDTO.AltaDTO.FechaFin.ToShortDateString()
+                        </p>
+                    </div>
+
+                    <div class="info-item">
+                        <label>Temario</label>
+                        <ul class="temario-list">
+                            @foreach (var t in ViewBag.Postulacion.CursoAltaDTO.AltaDTO.Temarios)
+                            {
+                                <li>@t.Tema</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (ViewBag.Postulacion.CambioRolDTO != null)
+                {
+                    <h4 class="section-title">Cambio de rol</h4>
+
+                    <div class="info-item">
+                        <label>Estudiante</label>
+                        <p>@ViewBag.Postulacion.CambioRolDTO.Estudiante.Email</p>
+                    </div>
+                }
+
+            </div>
+
+            <!-- COLUMNA DERECHA -->
+            <div class="detalle-accion">
+
+                <h5 class="section-title">Documentación adjunta</h5>
+
+                <ul class="archivos-list">
+                    @if (ViewBag.Postulacion.CursoAltaDTO != null)
+                    {
+                        foreach (var a in ViewBag.Postulacion.CursoAltaDTO.Archivos)
+                        {
+                            <li>
+                                <a href="@a.Ruta" target="_blank">
+                                    📄 @a.NombreArchivo
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (ViewBag.Postulacion.CambioRolDTO != null)
+                    {
+                        foreach (var a in ViewBag.Postulacion.CambioRolDTO.NombresArchivos)
+                        {
+                            <li>
+                                <a href="@a.Ruta" target="_blank">
+                                    📄 @a.NombreArchivo
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+                @if (ViewBag.Postulacion.Estado == "Pendiente")
+                {
+                    <form asp-action="ResolverPostulacion" method="post" class="decision-form">
+
+                        <input type="hidden" name="id" value="@ViewBag.Postulacion.Id" />
+
+                        <label>Motivo de la decisión</label>
+                        <textarea name="motivo"
+                                  placeholder="Ingrese el motivo de la aprobación o rechazo..."></textarea>
+
+                        <div class="decision-buttons">
+                            <button type="submit"
+                                    name="accion"
+                                    value="Aprobada"
+                                    class="btn-aprobar">
+                                Aprobar
+                            </button>
+
+                            <button type="submit"
+                                    name="accion"
+                                    value="Rechazada"
+                                    class="btn-rechazar">
+                                Rechazar
+                            </button>
+                        </div>
+
+                    </form>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

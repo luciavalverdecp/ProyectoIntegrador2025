@@ -15,5 +15,10 @@ namespace NextLevel.Compartidos.DTOs.Mappers
             if (postulaciones == null) return new List<PostulacionDTO>();
             return postulaciones.Select(p => new PostulacionDTO(p.Id, CambioRolesMapper.ToCambioRolDTO(p.CambioRol), AltaCursoMapper.ToAltaCursoDTO(p.AltaCurso), p.Estado));
         }
+
+        public static PostulacionDTO ToPostulacionDTO(Postulacion p)
+        {
+            return new PostulacionDTO(p.Id, CambioRolesMapper.ToCambioRolDTO(p.CambioRol), AltaCursoMapper.ToAltaCursoDTO(p.AltaCurso), p.Estado);
+        }
     }
 }

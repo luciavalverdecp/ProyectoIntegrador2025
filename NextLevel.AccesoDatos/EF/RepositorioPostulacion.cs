@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NextLevel.LogicaNegocio.Entidades;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
 
 namespace NextLevel.AccesoDatos.EF
@@ -35,7 +37,19 @@ namespace NextLevel.AccesoDatos.EF
 
         public Postulacion FindById(int id)
         {
-            throw new NotImplementedException();
+            return _db.Postulaciones.Where(p => p.Id == id)
+                     .Include(p => p.CambioRol)
+                     .Include(p => p.AltaCurso)
+                        .ThenInclude(a => a.Curso)
+                     .Include(p => p.AltaCurso)
+                        .ThenInclude(a => a.Curso)
+                            .ThenInclude(c => c.Docente)
+                     .Include(p => p.AltaCurso)
+                        .ThenInclude(a => a.Curso)
+                            .ThenInclude(c => c.Temarios)
+                     .Include(p => p.AltaCurso)
+                        .ThenInclude(a => a.Archivos)
+                 .FirstOrDefault();
         }
 
         public void Remove(int id)
@@ -45,7 +59,17 @@ namespace NextLevel.AccesoDatos.EF
 
         public void Update(Postulacion obj)
         {
-            throw new NotImplementedException();
+            var post = _db.Postulaciones.Find(obj.Id);
+            try
+            {
+                post.Estado = obj.Estado;
+                _db.Postulaciones.Update(post);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new CursoException("Error al actualizar la postulacion");
+            }
         }
     }
 }
