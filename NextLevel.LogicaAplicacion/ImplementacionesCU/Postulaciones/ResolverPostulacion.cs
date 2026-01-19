@@ -13,9 +13,12 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Postulaciones
     public class ResolverPostulacion : IResolverPostulacion
     {
         private readonly IRepositorioPostulacion _repositorioPostulacion;
-        public ResolverPostulacion(IRepositorioPostulacion repositorioPostulacion)
+        private readonly IRepositorioDocente _repositorioDocente;
+        public ResolverPostulacion(IRepositorioPostulacion repositorioPostulacion,
+            IRepositorioDocente repositorioDocente)
         {
             _repositorioPostulacion = repositorioPostulacion;
+            _repositorioDocente = repositorioDocente;
         }
 
         public void Ejecutar(int id, string motivo, string resolucion)
@@ -31,7 +34,19 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Postulaciones
             {
                 Estudiante estudiante = postulacion.CambioRol.Estudiante;
                 ResolucionPostulacion resolucionPost = new ResolucionPostulacion();
-                resolucionPost.EnviarResolucionCambioRolAsync(estudiante.Email, motivo, resolucion);
+                int nroDocente = 0;
+                bool valido = false;
+                while (!valido)
+                {
+                    nroDocente = Docente.GenerarNroDocente();
+                    if (_repositorioDocente.GetDocenteByNroDocente(nroDocente) == null)
+                    {
+                        valido = true;
+                    }
+                }
+                resolucionPost.EnviarResolucionCambioRolAsync(estudiante.Email, motivo, resolucion, nroDocente);
+                Docente docente = new Docente(estudiante.Email, estudiante.Password, estudiante.NombreCompleto, estudiante.Telefono, nroDocente);
+                _repositorioDocente.Add(docente);
             }
             postulacion.Estado = resolucion.ToString();
             _repositorioPostulacion.Update(postulacion);
