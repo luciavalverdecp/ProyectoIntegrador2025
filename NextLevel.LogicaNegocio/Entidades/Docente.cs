@@ -36,6 +36,13 @@ namespace NextLevel.LogicaNegocio.Entidades
         }
         #endregion
 
+        #region Metodos
+        public static int GenerarNroDocente()
+        {
+            return Random.Shared.Next(100000, 1_000_000);
+        }
+        #endregion
+
         #region Equals - CompareTo
         public override bool Equals(object? obj)
         {
