@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NextLevel.Compartidos.DTOs.Calificaciones;
+using NextLevel.Compartidos.DTOs.Pruebas;
 using NextLevel.LogicaNegocio.Entidades;
 
 namespace NextLevel.Compartidos.DTOs.Mappers
@@ -17,6 +18,7 @@ namespace NextLevel.Compartidos.DTOs.Mappers
 
         public static IEnumerable<CalificacionDTO> ToListCalificacionDTO(IEnumerable<Calificacion> calificaciones)
         {
+            if (calificaciones == null || calificaciones.Count() == 0) return new List<CalificacionDTO>();
             return calificaciones.Select(c => new CalificacionDTO(c.Puntaje, EstudianteMapper.ToEstudianteEmailDTO(c.Estudiante))).ToList();
         }
     }

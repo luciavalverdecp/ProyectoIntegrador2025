@@ -109,6 +109,7 @@ namespace WebMVC
             builder.Services.AddScoped<IAgregarCurso, AgregarCurso>();
             builder.Services.AddScoped<IObtenerPartiConversaciones, ObtenerPartiConversaciones>();
             builder.Services.AddScoped<IObtenerConversacion, ObtenerConversacion>();
+            builder.Services.AddScoped<IAgregarCalificacion, AgregarCalificacion>();
 
             var app = builder.Build();
 

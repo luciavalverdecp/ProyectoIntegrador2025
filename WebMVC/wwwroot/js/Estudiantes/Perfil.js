@@ -64,10 +64,62 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-document.getElementById("btnCancelar").addEventListener("click", () => {
-    const form = document.getElementById("formEditar");
-    form.reset(); // ⬅️ Esto vuelve a los valores originales del HTML
+//document.getElementById("btnCancelar").addEventListener("click", () => {
+//    const form = document.getElementById("formEditar");
+//    form.reset(); // ⬅️ Esto vuelve a los valores originales del HTML
 
-    document.getElementById("formEditar").style.display = "none";
-    document.getElementById("vistaDatos").style.display = "block";
+//    document.getElementById("formEditar").style.display = "none";
+//    document.getElementById("vistaDatos").style.display = "block";
+//});
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const modalElement = document.getElementById("modalCalificarCurso");
+    if (!modalElement || typeof bootstrap === "undefined") return;
+
+    const modal = new bootstrap.Modal(modalElement);
+
+    const estrellas = document.querySelectorAll(".estrella");
+    const puntajeInput = document.getElementById("puntajeInput");
+    const nombreCursoInput = document.getElementById("nombreCursoInput");
+    const nombreCursoTexto = document.getElementById("nombreCurso");
+    const btnEnviar = document.getElementById("btnEnviarCalificacion");
+
+    document.querySelectorAll(".btn-calificar").forEach(btn => {
+        btn.addEventListener("click", function () {
+
+            const nombreCurso = this.dataset.cursoNombre;
+
+            nombreCursoInput.value = nombreCurso;
+            nombreCursoTexto.textContent = nombreCurso;
+
+            puntajeInput.value = "";
+            btnEnviar.disabled = true;
+
+            resetEstrellas();
+            modal.show();
+        });
+    });
+
+    estrellas.forEach(estrella => {
+        estrella.addEventListener("click", function () {
+            const valor = this.dataset.value;
+
+            puntajeInput.value = valor;
+            btnEnviar.disabled = false;
+
+            pintarEstrellas(valor);
+        });
+    });
+
+    function pintarEstrellas(valor) {
+        estrellas.forEach(e => {
+            e.classList.toggle("activa", e.dataset.value <= valor);
+        });
+    }
+
+    function resetEstrellas() {
+        estrellas.forEach(e => e.classList.remove("activa"));
+    }
 });
+
