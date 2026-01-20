@@ -205,6 +205,10 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Property<double>("Precio")
                         .HasColumnType("float");
 
+                    b.Property<string>("TotalCalificaciones")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DocenteId");
@@ -363,11 +367,15 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Property<int>("AdministradorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AltaCursoId")
+                    b.Property<int?>("AltaCursoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CambioRolId")
+                    b.Property<int?>("CambioRolId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -709,15 +717,11 @@ namespace NextLevel.AccesoDatos.Migrations
 
                     b.HasOne("NextLevel.LogicaNegocio.Entidades.AltaCurso", "AltaCurso")
                         .WithMany()
-                        .HasForeignKey("AltaCursoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AltaCursoId");
 
                     b.HasOne("NextLevel.LogicaNegocio.Entidades.CambioRol", "CambioRol")
                         .WithMany()
-                        .HasForeignKey("CambioRolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CambioRolId");
 
                     b.Navigation("Administrador");
 

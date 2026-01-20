@@ -10,5 +10,7 @@ namespace NextLevel.LogicaNegocio.InterfacesRepositorios
 {
     public interface IRepositorioAdministrador : IRepositorio<Administrador>
     {
+        Administrador ObtenerAdminMenosPostu();
+        Administrador FindByEmail(string email);
     }
 }

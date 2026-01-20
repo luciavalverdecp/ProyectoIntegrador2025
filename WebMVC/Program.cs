@@ -23,6 +23,8 @@ using NextLevel.LogicaAplicacion.InterfacesCU.ParticipantesConversacion;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.ParticipantesConversacion;
 using NextLevel.LogicaAplicacion.InterfacesCU.Conversaciones;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Conversaciones;
+using NextLevel.LogicaAplicacion.InterfacesCU.Postulaciones;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Postulaciones;
 
 namespace WebMVC
 {
@@ -110,6 +112,9 @@ namespace WebMVC
             builder.Services.AddScoped<IObtenerPartiConversaciones, ObtenerPartiConversaciones>();
             builder.Services.AddScoped<IObtenerConversacion, ObtenerConversacion>();
             builder.Services.AddScoped<IAgregarCalificacion, AgregarCalificacion>();
+            builder.Services.AddScoped<IObtenerPostulacionesAdmin, ObtenerPostulacionesAdmin>();
+            builder.Services.AddScoped<IObtenerPostulacion, ObtenerPostulacion>();
+            builder.Services.AddScoped<IResolverPostulacion, ResolverPostulacion>();
 
             var app = builder.Build();
 
