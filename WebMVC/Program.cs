@@ -111,6 +111,7 @@ namespace WebMVC
             builder.Services.AddScoped<IAgregarCurso, AgregarCurso>();
             builder.Services.AddScoped<IObtenerPartiConversaciones, ObtenerPartiConversaciones>();
             builder.Services.AddScoped<IObtenerConversacion, ObtenerConversacion>();
+            builder.Services.AddScoped<IAgregarCalificacion, AgregarCalificacion>();
             builder.Services.AddScoped<IObtenerPostulacionesAdmin, ObtenerPostulacionesAdmin>();
             builder.Services.AddScoped<IObtenerPostulacion, ObtenerPostulacion>();
             builder.Services.AddScoped<IResolverPostulacion, ResolverPostulacion>();

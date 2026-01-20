@@ -147,6 +147,7 @@ namespace NextLevel.AccesoDatos.EF
                 curso.Temarios = obj.Temarios;
                 curso.FechasClases = obj.FechasClases;
                 curso.Foro = obj.Foro;
+                curso.TotalCalificaciones = obj.TotalCalificaciones;
                 _db.Cursos.Update(curso);
                 _db.SaveChanges();
             }

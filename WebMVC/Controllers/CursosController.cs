@@ -13,6 +13,7 @@ using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
 using NextLevel.LogicaAplicacion.InterfacesCU.Mensajes;
 using NextLevel.LogicaAplicacion.InterfacesCU.ParticipantesConversacion;
 using NextLevel.Compartidos.DTOs.Conversaciones;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos;
 
 namespace WebMVC.Controllers
 {
@@ -28,6 +29,7 @@ namespace WebMVC.Controllers
         private readonly IObtenerEstudiante _obtenerEstudiante;
         private readonly IObtenerMensajes _obtenerMensajes;
         private readonly IObtenerPartiConversaciones _obtpartiConversaciones;
+        private readonly IAgregarCalificacion _agregarCalificacion;
         public CursosController(IObtenerCursosFiltrados obtenerCursosFiltrados,
             IObtenerCursosDocente obtenerCursosDocente,
              IObtenerCurso obtenerCurso,
@@ -37,7 +39,8 @@ namespace WebMVC.Controllers
              IObtenerDocente obtenerDocente,
              IObtenerEstudiante obtenerEstudiante, 
              IObtenerMensajes obtenerMensajes,
-             IObtenerPartiConversaciones obtenerPartiConversaciones)
+             IObtenerPartiConversaciones obtenerPartiConversaciones,
+             IAgregarCalificacion agregarCalificacion)
         {
             _obtenerCursosFiltrados = obtenerCursosFiltrados;
             _obtenerCursosDocente = obtenerCursosDocente;
@@ -49,6 +52,7 @@ namespace WebMVC.Controllers
             _obtenerEstudiante = obtenerEstudiante;
             _obtenerMensajes = obtenerMensajes;
             _obtpartiConversaciones = obtenerPartiConversaciones;
+            _agregarCalificacion = agregarCalificacion;
         }
         public IActionResult ListadoCursos(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
@@ -110,7 +114,7 @@ namespace WebMVC.Controllers
                 }
                 return View();
             }
-            return Redirect("/Usuarios/Loguin");
+            return Redirect("/Usuarios/Login");
         }
 
 
@@ -285,6 +289,18 @@ namespace WebMVC.Controllers
             {
                 return Unauthorized();
             }
+        }
+
+        [HttpPost]
+        public IActionResult Calificar(string nombreCurso, double puntaje)
+        {
+            if (HttpContext.Session.GetString("rolLogueado") == "Estudiante")
+            {
+                var cursosDTO = _obtenerCurso.Ejecturar(nombreCurso);
+                _agregarCalificacion.Ejecutar(cursosDTO, puntaje);
+                return RedirectToAction("Perfil", "Estudiantes", new { tabActivo = "cursos" });
+            }
+            return RedirectToAction("Login", "Usuarios");
         }
     }
 }

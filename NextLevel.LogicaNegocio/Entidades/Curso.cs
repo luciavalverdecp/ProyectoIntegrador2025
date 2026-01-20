@@ -97,7 +97,7 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         #endregion
 
-            #region Metodos
+        #region Metodos
         public void ActualizarSemanas()
         {
             if (Semanas == null)
@@ -148,6 +148,18 @@ namespace NextLevel.LogicaNegocio.Entidades
                 meses++;
 
             return Math.Max(meses, 0);
+        }
+
+        public void CalcularCalificacion()
+        {
+            double total = 0;
+
+            foreach(double c in TotalCalificaciones)
+            {
+                total += c;
+            }
+
+            Calificacion = total / TotalCalificaciones.Count;
         }
         #endregion
     }

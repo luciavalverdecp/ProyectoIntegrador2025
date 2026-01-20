@@ -206,3 +206,16 @@ dt {
     margin-right: 10px;
 }
 
+.rating {
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.estrella {
+    color: #ccc;
+    margin: 0 4px;
+}
+
+    .estrella.activa {
+        color: #ffc107;
+    }
