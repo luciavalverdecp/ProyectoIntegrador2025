@@ -40,7 +40,7 @@ namespace WebMVC.Controllers
                 ViewBag.ErrorLoginBool = false;
                 var usuario = _loginUsuario.Ejecutar(dto.Email, dto.Password);
                 HttpContext.Session.SetString("rolLogueado", usuario.Rol.ToString());
-                HttpContext.Session.SetString("emailLogueado", usuario.Email); //TODO hace falta
+                HttpContext.Session.SetString("emailLogueado", usuario.Email); 
                 if (usuario.Rol.ToString() == "Estudiante")
                 {
                     return RedirectToAction("ListadoCursos", "Cursos");
@@ -52,7 +52,7 @@ namespace WebMVC.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Privacy", "Home");//TODO redireccionar a la pagina principal de administradores
+                    return RedirectToAction("PostulacionesAdministrador", "Postulaciones");//TODO redireccionar a la pagina principal de administradores
                 }
             }
             catch (UsuarioEstaVerificadoException ex)

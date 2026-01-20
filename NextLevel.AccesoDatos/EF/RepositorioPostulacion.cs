@@ -10,9 +10,22 @@ namespace NextLevel.AccesoDatos.EF
 {
     public class RepositorioPostulacion : IRepositorioPostulacion
     {
+        private NextLevelContext _db;
+        public RepositorioPostulacion(NextLevelContext db)
+        {
+            _db = db;
+        }
         public void Add(Postulacion obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _db.Postulaciones.Add(obj);
+                _db.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error al dar de alta una postulacion");
+            }
         }
 
         public IEnumerable<Postulacion> FindAll()

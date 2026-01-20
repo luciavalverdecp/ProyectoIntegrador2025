@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Http;
+using NextLevel.AccesoDatos.EF;
 using NextLevel.Compartidos.DTOs.Cursos;
 using NextLevel.Compartidos.DTOs.Mappers;
 using NextLevel.Compartidos.DTOs.Temarios;
@@ -17,20 +18,26 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
         private readonly IRepositorioDocente _repositorioDocente;
         private readonly IRepositorioAltaCurso _repositorioAltaCurso;
         private readonly IRepositorioConversacion _repositorioConversacion;
+        private readonly IRepositorioPostulacion _repositorioPostulacion;
         private readonly BlobServiceClient _blobServiceClient;
+        private readonly IRepositorioAdministrador _repositorioAdministrador;
 
         public AltaCursoCU(
             IRepositorioCurso repositorioCurso,
             IRepositorioDocente repositorioDocente,
             IRepositorioAltaCurso repositorioAltaCurso,
             BlobServiceClient blobServiceClient,
-            IRepositorioConversacion repositorioConversacion)
+            IRepositorioConversacion repositorioConversacion,
+            IRepositorioPostulacion repositorioPostulacion,
+            IRepositorioAdministrador repositorioAdministrador)
         {
             _repositorioCurso = repositorioCurso;
             _repositorioDocente = repositorioDocente;
             _repositorioAltaCurso = repositorioAltaCurso;
             _blobServiceClient = blobServiceClient;
             _repositorioConversacion = repositorioConversacion;
+            _repositorioPostulacion = repositorioPostulacion;
+            _repositorioAdministrador = repositorioAdministrador;
         }
 
         public async Task Ejecutar(CursoAltaDTO cursoAltaDTO, List<IFormFile> archivos, string email, IFormFile imagen)
@@ -154,6 +161,9 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
             _repositorioCurso.Update(nuevoCurso);
             AltaCurso altaCurso = new AltaCurso(nuevoCurso, archivosEntidad);
             _repositorioAltaCurso.Add(altaCurso);
+            Administrador administrador = _repositorioAdministrador.ObtenerAdminMenosPostu();
+            Postulacion postulacion = new Postulacion(administrador, altaCurso);
+            _repositorioPostulacion.Add(postulacion);
         }
     }
 }

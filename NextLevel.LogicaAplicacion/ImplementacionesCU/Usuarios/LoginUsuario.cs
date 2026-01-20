@@ -9,6 +9,7 @@ using NextLevel.LogicaAplicacion.InterfacesCU.Usuarios;
 using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
+using Olimpiadas.LogicaNegocio.InterfacesRepositorios;
 
 namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Usuarios
 {
@@ -16,11 +17,15 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Usuarios
     {
         private readonly IRepositorioEstudiante _repositorioEstudiante;
         private readonly IRepositorioDocente _repositorioDocente;
+        private readonly IRepositorioAdministrador _repositorioAdmin;
 
-        public LoginUsuario(IRepositorioEstudiante repositorioEstudiante, IRepositorioDocente repositorioDocente)
+        public LoginUsuario(IRepositorioEstudiante repositorioEstudiante, 
+            IRepositorioDocente repositorioDocente,
+            IRepositorioAdministrador repositorioAdmin)
         {
             _repositorioEstudiante = repositorioEstudiante;
             _repositorioDocente = repositorioDocente;
+            _repositorioAdmin = repositorioAdmin;
         }
 
         public UsuarioLoginVerificacionDTO Ejecutar(string email, string pwd)
@@ -34,6 +39,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Usuarios
             else
             {
                 usu = _repositorioEstudiante.FindByEmail(email);
+                if(usu == null) usu = _repositorioAdmin.FindByEmail(email);
             }
             
             if (usu != null && usu.Password == pwd)

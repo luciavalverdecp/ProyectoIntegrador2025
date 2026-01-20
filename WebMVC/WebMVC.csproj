@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Materiales\**" />
+    <Content Remove="Views\Materiales\**" />
+    <EmbeddedResource Remove="Views\Materiales\**" />
+    <None Remove="Views\Materiales\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.21">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -19,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Materiales\" />
     <Folder Include="wwwroot\js\Materiales\" />
     <Folder Include="wwwroot\js\Pagos\" />
   </ItemGroup>
