@@ -186,5 +186,34 @@ namespace NextLevel.AccesoDatos.EF
         {
             return _db.Cursos.Where(c => c.Docente.Email == usuario.Email).ToList();
         }
+
+        public IEnumerable<Curso> Buscar(string? categoria, string? dificultad, int? duracionMax)
+        {
+            IQueryable<Curso> query = _db.Cursos;
+
+
+            if (!string.IsNullOrWhiteSpace(categoria))
+            {
+                query = query.Where(c =>
+                c.Nombre.ToLower().Contains(categoria.ToLower()) || c.Descripcion.ToLower().Contains(categoria.ToLower()));
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(dificultad))
+            {
+                query = query.Where(c =>
+                c.Dificultad.ToString().ToLower() == dificultad.ToLower());
+            }
+
+
+            if (duracionMax.HasValue)
+            {
+                query = query.Where(c =>
+                c.Duracion <= duracionMax.Value);
+            }
+
+
+            return query.ToList();
+        }
     }
 }

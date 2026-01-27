@@ -15,6 +15,7 @@
 
 @section ScriptsJs {
     <script src="~/js/Cursos/Buscador.js"></script>
+    <script src="~/js/Cursos/ChatIA.js"></script>
 }
 
 <div class="cursos-section py-5">
@@ -121,5 +122,31 @@
                 }
             </div>
         }
+    </div>
+</div>
+
+<!-- BOTÓN FLOTANTE CHAT IA -->
+<div id="chat-ia-button">
+    <i class="fa-solid fa-comments"></i>
+</div>
+
+<!-- MINI CHAT -->
+<div id="chat-ia-container" class="chat-container chat-hidden">
+    <div class="chat-header">
+        <span>🤖 Asistente IA</span>
+        <button id="close-chat" type="button">✖</button>
+    </div>
+
+    <div class="chat-body" id="chat-body">
+        <div class="mensaje ia">
+            ¡Hola! 👋 ¿En qué te puedo ayudar sobre nuestros cursos?
+        </div>
+    </div>
+
+    <div class="chat-footer">
+        <input type="text" id="chat-input" placeholder="Escribí tu pregunta..." />
+        <button id="send-chat">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
     </div>
 </div>
