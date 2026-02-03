@@ -45,7 +45,7 @@ body {
     border: 1px solid transparent;
 }
 
-    .nav-link i {
+    .nav-link .bi {
         font-size: 1.3rem;
     }
 
@@ -200,7 +200,7 @@ dt {
     }
 
 /* Título dentro del card */
-.cambio-rol-title i {
+.cambio-rol-title .bi {
     color: var(--pastel-purple);
     font-size: 1.6rem;
     margin-right: 10px;
@@ -219,3 +219,10 @@ dt {
     .estrella.activa {
         color: #ffc107;
     }
+
+.bi {
+    font-family: "bootstrap-icons" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    line-height: 1;
+}

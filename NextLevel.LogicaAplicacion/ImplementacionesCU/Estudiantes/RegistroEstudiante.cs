@@ -1,4 +1,5 @@
-﻿using NextLevel.AccesoDatos.EF;
+﻿using BCrypt.Net;
+using NextLevel.AccesoDatos.EF;
 using NextLevel.Compartidos.DTOs.Estudiantes;
 using NextLevel.Compartidos.DTOs.Mappers;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiante;
@@ -33,6 +34,8 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
                 VerificacionEmail enviarmail =  new VerificacionEmail();
                 estudiante.TokenVerificacion = token;
                 Task.Run(() => enviarmail.EnviarCorreoVerificacionAsync(estudiante.Email, estudiante.TokenVerificacion));
+                string hash = BCrypt.Net.BCrypt.HashPassword(estudiante.Password);
+                estudiante.Password = hash;
                 _repositorioEstudiante.Add(estudiante);
             }
             else if (estudianteDTO.Password.Length < 8)
