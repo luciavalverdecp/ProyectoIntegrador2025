@@ -25,10 +25,14 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.IA
         {
             var criterios = await _openAI.InterpretarPregunta(mensaje);
 
-            var cursos = _cursoRepo.Buscar(
+                var cursos = _cursoRepo.Buscar(
                 criterios.Categoria,
                 criterios.Dificultad,
-                criterios.DuracionMax
+                criterios.DuracionMax,
+                criterios.NombreDocente,
+                criterios.FechaInicio,
+                criterios.Calificacion,
+                criterios.Precio
             ).ToList();
 
             return await _openAI.GenerarRespuesta(mensaje, cursos);

@@ -11,5 +11,9 @@ namespace NextLevel.LogicaNegocio.Entidades
         public string? Categoria { get; set; }
         public string? Dificultad { get; set; }
         public int? DuracionMax { get; set; }
+        public string? NombreDocente { get; set; }
+        public DateTime? FechaInicio { get; set; }
+        public double? Calificacion {  get; set; }
+        public double? Precio {  get; set; }
     }
 }

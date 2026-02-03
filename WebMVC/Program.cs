@@ -124,6 +124,14 @@ namespace WebMVC
             builder.Services.AddScoped<IOpenAIService, OpenAIService>();
             builder.Services.AddScoped<IConsultarConIA, ConsultarConIA>();
 
+            //Hace que no se generen bucles infinitos
+            builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler =
+                    System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+            });
+
 
             var app = builder.Build();
 

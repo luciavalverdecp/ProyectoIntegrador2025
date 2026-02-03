@@ -39,7 +39,7 @@ function enviarMensaje() {
             agregarMensaje(data.respuesta, "ia");
         })
         .catch(err => {
-            agregarMensaje("Ocurrió un error 😕", "ia");
+            agregarMensaje("Ocurrió un error", "ia");
             console.error(err);
         });
 }
@@ -60,12 +60,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     chatBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-        chatContainer.style.display = "flex"; // abrir
+        chatContainer.style.display = "flex"; 
     });
 
 
     closeChat.addEventListener("click", (e) => {
         e.stopPropagation();
-        chatContainer.style.display = "none"; // 🔥 cerrar forzado
+        chatContainer.style.display = "none"; 
     });
 });
