@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
+using EfCore = Microsoft.EntityFrameworkCore.EF;
 
 namespace NextLevel.AccesoDatos.EF
 {
@@ -186,6 +187,71 @@ namespace NextLevel.AccesoDatos.EF
         public IEnumerable<Curso> GetByDocente(Usuario usuario)
         {
             return _db.Cursos.Where(c => c.Docente.Email == usuario.Email).ToList();
+        }
+
+        public IEnumerable<Curso> Buscar(string? categoria, string? dificultad, int? duracionMax, string? NombreDocente, DateTime? FechaInicio, double? Calificacion, double? Precio)
+        {
+            IQueryable<Curso> query = _db.Cursos;
+
+
+            if (!string.IsNullOrWhiteSpace(categoria))
+            {
+                query = query.Where(c =>
+                c.Nombre.ToLower().Contains(categoria.ToLower()) || c.Descripcion.ToLower().Contains(categoria.ToLower()));
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(dificultad) &&
+                Enum.TryParse<Dificultad>(dificultad, true, out var dif))
+            {
+                query = query.Where(c => c.Dificultad == dif);
+            }
+
+
+
+            if (duracionMax.HasValue)
+            {
+                query = query.Where(c =>
+                c.Duracion <= duracionMax.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(NombreDocente))
+            {
+                query = query.Where(c =>
+                EfCore.Functions.Collate(
+                    c.Docente.NombreCompleto.ToLower(),
+                    "Latin1_General_CI_AI"
+                ).Contains(NombreDocente.ToLower()));
+            }
+
+
+            if (FechaInicio.HasValue)
+            {
+                var desde = FechaInicio.Value.Date;
+                var hasta = desde.AddDays(14);
+
+                query = query.Where(c =>
+                    c.FechaInicio >= desde &&
+                    c.FechaInicio <= hasta);
+            }
+
+
+            if (Calificacion.HasValue)
+            {
+                query = query.OrderByDescending(c => c.Calificacion);
+            }
+
+            if (Precio.HasValue)
+            {
+                var tolerancia = Precio.Value * 0.15;
+                var min = Precio.Value - tolerancia;
+                var max = Precio.Value + tolerancia;
+
+                query = query.Where(c =>
+                    c.Precio >= min && c.Precio <= max);
+            }
+
+            return query.Include(c => c.Docente).ToList();
         }
     }
 }
