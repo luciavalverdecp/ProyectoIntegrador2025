@@ -10,6 +10,6 @@ namespace NextLevel.LogicaAplicacion.InterfacesCU.Mensajes
 {
     public interface IEnviarMensaje
     {
-        void Ejecutar(int idConversacion, UsuarioEmailDTO usuarioDTO, string Contenido, CursoDTO cursoDTO);
+        int Ejecutar(int idConversacion, UsuarioEmailDTO usuarioDTO, string Contenido, CursoDTO cursoDTO);
     }
 }

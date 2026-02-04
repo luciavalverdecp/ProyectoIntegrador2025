@@ -4,10 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NextLevel.LogicaNegocio.InterfacesEntidades;
 
 namespace NextLevel.LogicaNegocio.Entidades
 {
-    public class Postulacion
+    public class Postulacion : IEntity
     {
         public int Id { get; set; }
         public int AdministradorId { get; set; }

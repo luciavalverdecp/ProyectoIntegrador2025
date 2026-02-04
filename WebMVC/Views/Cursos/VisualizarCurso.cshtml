@@ -165,7 +165,7 @@
 
         <form asp-action="EnviarMensaje" asp-controller="Mensajes" method="post">
             <div class="chat-input">
-                <input type="hidden" name="idConversacion" value="@Model.Foro.Conversacion.Id" />
+                <input type="hidden" name="conversacionId" value="@Model.Foro.Conversacion.Id" />
                 <input type="hidden" name="nombreCurso" value="@Model.Nombre" />
                 <input type="text" id="Contenido" name="Contenido" placeholder="Escribe un mensaje...">
                 <button type="submit">Enviar</button>

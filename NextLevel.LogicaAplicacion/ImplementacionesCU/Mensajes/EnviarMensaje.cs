@@ -34,7 +34,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Mensajes
             this.repositorioCurso = repositorioCurso;
         }
 
-        public void Ejecutar(int idConversacion, UsuarioEmailDTO usuarioDTO, string Contenido, CursoDTO cursoDTO)
+        public int Ejecutar(int idConversacion, UsuarioEmailDTO usuarioDTO, string Contenido, CursoDTO cursoDTO)
         {
             if (idConversacion == -1) 
             {
@@ -63,6 +63,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Mensajes
 
             Mensaje mensajeNuevo = new Mensaje(conversacion, usuario, Contenido);
             repositorioMensaje.Add(mensajeNuevo);
+            return idConversacion;
         }
     }
 }
