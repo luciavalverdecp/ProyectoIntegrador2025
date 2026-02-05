@@ -10,9 +10,13 @@ Plataforma educativa desarrollada en **ASP.NET MVC** para la gestión de cursos,
 ## 📽️ Evidencias en video
 En este apartado se incluirán los enlaces correspondientes a las evidencias audiovisuales de cada incremento del proyecto:
 
-- [Ver evidencia Incremento 2](https://youtu.be/038gV0ecL-8)
+- [Ver evidencia Incremento 2](https://www.youtube.com/watch?v=038gV0ecL-8)
 - [Ver evidencia Incremento 3](https://www.youtube.com/watch?v=5CFyaG80NPA)
 - [Ver evidencia Incremento 4](https://www.youtube.com/watch?v=f0Q6EnC8zJI)
+- [Ver evidencia Incremento 5](https://www.youtube.com/watch?v=AsbgqFpICNQ)
+- [Ver evidencia Incremento 6](https://www.youtube.com/watch?v=W3bnNk2G3u8)
+- [Ver evidencia Incremento 7]()
+- [Ver evidencia Incremento 8]()
 
 ## 📐 Diagramas de Clases (ASTAH)
 Los diagramas de clases del sistema fueron diseñados utilizando **ASTAH**, contemplando la separación por capas de la solución.
