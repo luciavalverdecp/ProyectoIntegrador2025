@@ -405,6 +405,12 @@ function renderMes() {
                 const hora = cell.querySelector(".time-input")?.value;
                 if (!hora) return;
 
+                const minutos = parseInt(hora.split(":")[1]);
+                if (![0, 15, 30, 45].includes(minutos)) {
+                    alert("La hora debe ser en intervalos de 15 minutos (00, 15, 30, 45)");
+                    return;
+                }
+
                 const form = document.createElement("form");
                 form.method = "POST";
                 form.action = "/Cursos/AgregarClase";

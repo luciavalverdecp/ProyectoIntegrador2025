@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NextLevel.Compartidos.DTOs.Estudiantes;
+﻿using NextLevel.Compartidos.DTOs.Estudiantes;
 using NextLevel.Compartidos.DTOs.Mappers;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
@@ -36,16 +31,10 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
 
         public EstudianteInfoDTO EjecutarEstudianteInfoDTO(string email)
         {
-            try
-            {
-                var estudiante = _repoitorioEstudiante.FindByEmail(email);
-                EstudianteInfoDTO dto = EstudianteMapper.ToEstudianteInfoDTO(estudiante);
-                return dto;
-            }
-            catch (Exception ex)
-            {
-                throw new EstudianteException("Error al obtener al usuario estudiante.");
-            }
+            var estudiante = _repoitorioEstudiante.FindByEmail(email);
+            if(estudiante != null) throw new EstudianteNoEncontradoException("Error al obtener al usuario estudiante.");
+            EstudianteInfoDTO dto = EstudianteMapper.ToEstudianteInfoDTO(estudiante);
+            return dto;
         }
     }
 }

@@ -43,6 +43,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Mensajes
                 repositorioConversacion.Add(nuevaConversacion);
                 idConversacion = nuevaConversacion.Id;
             }
+            if (Contenido == null || Contenido == "") return idConversacion;
             Conversacion conversacion = repositorioConversacion.FindById(idConversacion);
             if (conversacion == null) throw new Exception("No se pudo obtener la conversacion");
             Usuario usuario = repositorioUsuario.FindByEmail(usuarioDTO.email);

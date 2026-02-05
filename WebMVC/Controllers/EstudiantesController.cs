@@ -46,14 +46,19 @@ namespace WebMVC.Controllers
                     ViewBag.CursosFinalizados = cursosTerminados.Ejecutar(estudiante);
                     return View(estudiante);
                 }
+                catch (EstudianteNoEncontradoException ex)
+                {
+                    ViewBag.Error = ex.Message;
+                }
                 catch (EstudianteException ex)
                 {
-                    return Redirect("Usuarios/Login");
+                    ViewBag.Error = ex.Message;
                 }
                 catch (Exception ex)
                 {
-                    return Redirect("Usuarios/Login");
+                    ViewBag.Error = ex.Message;
                 }
+                return View(null);
             }
             return RedirectToAction("Login", "Usuarios");
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NextLevel.LogicaNegocio.Entidades;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Semana;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
 
 namespace NextLevel.AccesoDatos.EF
@@ -46,7 +47,7 @@ namespace NextLevel.AccesoDatos.EF
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al updatear la semana");
+                throw new SemanaException("Error al updatear la semana");
             }
         }
     }

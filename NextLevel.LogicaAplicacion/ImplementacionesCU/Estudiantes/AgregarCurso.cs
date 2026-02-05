@@ -31,11 +31,11 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
 
             if (estudianteExistente == null)
             {
-                throw new EstudianteException("El estudiante ingresado no existe.");
+                throw new EstudianteNoEncontradoException("El estudiante ingresado no existe.");
             }
             if (curso == null)
             {
-                throw new CursoException("El curso ingresado no existe.");
+                throw new CursoNoEncontradoException("El curso ingresado no existe.");
             }
 
             estudianteExistente.Cursos.Add(curso);

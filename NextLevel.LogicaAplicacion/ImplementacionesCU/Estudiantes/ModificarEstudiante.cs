@@ -28,6 +28,8 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
                 throw new UsuarioEmailException("No existe un usuario");
             }
             Estudiante est = EstudianteMapper.FromEstudianteInfoDTO(estudiante);
+            Estudiante estudianteBD = _repositorioEstudiante.FindByEmail(estudiante.Email);
+            est.Id = estudianteBD.Id;
             est.ValidarDatosPersonales();
             _repositorioEstudiante.Update(est);
         }

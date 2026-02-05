@@ -79,6 +79,11 @@ namespace WebMVC.Controllers
                 try
                 {
                     var cursosDTO = _obtenerCurso.Ejecturar(nombreCurso);
+                    if(!cursosDTO.Estudiantes.Any(e => e.Email == HttpContext.Session.GetString("emailLogueado"))
+                        && HttpContext.Session.GetString("nroDocenteLogueado") == null)
+                    {
+                        return Redirect("/Usuarios/Login");
+                    }
                     ViewBag.ClasesAgendadas = cursosDTO.FechasClases
                         .Select(c => new { Fecha = c.ToString("yyyy-MM-dd"), Hora = c.ToString("HH:mm") }).ToList();
                     ViewBag.MensajesForo = _obtenerMensajes.Ejecutar(cursosDTO.Foro.Conversacion);
@@ -102,7 +107,15 @@ namespace WebMVC.Controllers
                             ViewBag.ConversacionEstudiante = null;
                         }
                     }
-                        return View(cursosDTO);
+                    return View(cursosDTO);
+                }
+                catch (CursoNombreException ex)
+                {
+                    ViewBag.Error = ex.Message;
+                }
+                catch (CursoNoEncontradoException ex)
+                {
+                    ViewBag.Error = ex.Message;
                 }
                 catch (CursoException ex)
                 {
@@ -177,6 +190,12 @@ namespace WebMVC.Controllers
                     TempData["ErrorAlta"] = true;
                     return View(curso);
                 }
+                catch (CursoExistenteException ex)
+                {
+                    TempData["MensajeAlta"] = ex.Message;
+                    TempData["ErrorAlta"] = true;
+                    return View(curso);
+                }
                 catch (CursoTemarioException ex)
                 {
                     TempData["MensajeAlta"] = ex.Message;
@@ -212,6 +231,18 @@ namespace WebMVC.Controllers
                 var cursoDTO = _obtenerCurso.Ejecturar(nombreCurso);
                 return View(cursoDTO);
             }
+            catch (CursoNombreException ex)
+            {
+                ViewBag.Error = ex.Message;
+            }
+            catch (CursoNoEncontradoException ex)
+            {
+                ViewBag.Error = ex.Message;
+            }
+            catch (CursoException ex)
+            {
+                ViewBag.Error = ex.Message;
+            }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
@@ -232,6 +263,12 @@ namespace WebMVC.Controllers
                     return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = claseAgendada.CursoNombre });
                 }
                 catch (CursoFechaException ex)
+                {
+                    TempData["MensajeAgendaClase"] = ex.Message;
+                    TempData["ErrorAgendarClase"] = true;
+                    return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = claseAgendada.CursoNombre });
+                }
+                catch (CursoNoEncontradoException ex)
                 {
                     TempData["MensajeAgendaClase"] = ex.Message;
                     TempData["ErrorAgendarClase"] = true;
@@ -281,6 +318,22 @@ namespace WebMVC.Controllers
 
                 return View();
             }
+            catch (CursoNombreException ex)
+            {
+                return Unauthorized();
+            }
+            catch (CursoNoEncontradoException ex)
+            {
+                return Unauthorized();
+            }
+            catch (CursoException ex)
+            {
+                return Unauthorized();
+            }
+            catch (DocenteNoEncontradoException ex)
+            {
+                return Unauthorized();
+            }
             catch (DocenteException ex)
             {
                 return Unauthorized();
@@ -296,9 +349,32 @@ namespace WebMVC.Controllers
         {
             if (HttpContext.Session.GetString("rolLogueado") == "Estudiante")
             {
-                var cursosDTO = _obtenerCurso.Ejecturar(nombreCurso);
-                _agregarCalificacion.Ejecutar(cursosDTO, puntaje);
-                return RedirectToAction("Perfil", "Estudiantes", new { tabActivo = "cursos" });
+                try
+                {
+                    var cursosDTO = _obtenerCurso.Ejecturar(nombreCurso);
+                    _agregarCalificacion.Ejecutar(cursosDTO, puntaje);
+                    TempData["MensajeCalificar"] = "Se califico correctamente el curso";
+                    TempData["ErrorCalificar"] = false;
+                    return RedirectToAction("Perfil", "Estudiantes", new { tabActivo = "cursos" });
+                }
+                catch (CursoNombreException ex)
+                {
+                    TempData["MensajeCalificar"] = ex.Message;
+                    TempData["ErrorCalificar"] = true;
+                    return RedirectToAction("Perfil", "Estudiantes", new { tabActivo = "cursos" });
+                }
+                catch (CursoNoEncontradoException ex)
+                {
+                    TempData["MensajeCalificar"] = ex.Message;
+                    TempData["ErrorCalificar"] = true;
+                    return RedirectToAction("Perfil", "Estudiantes", new { tabActivo = "cursos" });
+                }
+                catch (CursoException ex)
+                {
+                    TempData["MensajeCalificar"] = ex.Message;
+                    TempData["ErrorCalificar"] = true;
+                    return RedirectToAction("Perfil", "Estudiantes", new { tabActivo = "cursos" });
+                }
             }
             return RedirectToAction("Login", "Usuarios");
         }

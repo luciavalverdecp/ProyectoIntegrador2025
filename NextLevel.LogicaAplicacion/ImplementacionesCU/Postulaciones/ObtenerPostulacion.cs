@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using NextLevel.Compartidos.DTOs.Mappers;
 using NextLevel.Compartidos.DTOs.Postulaciones;
 using NextLevel.LogicaAplicacion.InterfacesCU.Postulaciones;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Postulacion;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
 using Olimpiadas.LogicaNegocio.InterfacesRepositorios;
 
@@ -21,8 +22,8 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Postulaciones
 
         public PostulacionDTO Ejecutar(int id)
         {
-            //TODO validacion de id?
             var postulacion = _repositorioPostulacion.FindById(id);
+            if (postulacion == null) throw new PostulacionNoEncontradaException("No se pudo obtener la postulacion");
             return PostulacionMapper.ToPostulacionDTO(postulacion);
         }
     }

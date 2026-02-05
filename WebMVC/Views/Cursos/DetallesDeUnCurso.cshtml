@@ -16,98 +16,103 @@
     <script src="~/js/Pagos/CrearPago.js?v=3"></script>
 }
 
-<div class="curso-wrapper">
+@if (ViewBag.Error != null && ViewBag.Error != "")
+{
+    <div class="curso-wrapper">
 
-    <div class="curso-card">
+        <div class="curso-card">
 
-        <!-- TOP -->
-        <div class="curso-top">
-            <div class="curso-info">
-                <h1>@Model.Nombre</h1>
+            <!-- TOP -->
+            <div class="curso-top">
+                <div class="curso-info">
+                    <h1>@Model.Nombre</h1>
 
-                <p class="descripcion">
-                    @Model.Descripcion
-                </p>
-            </div>
-
-            <img src="@Model.RutaArchivo"
-                 alt="Imagen curso"
-                 class="curso-imagen" />
-        </div>
-
-        <!-- STATS -->
-        <div class="curso-stats">
-            <div>
-                <span>Docente</span>
-                <strong>@Model.DocenteNombreDTO.NombreCompleto</strong>
-            </div>
-            <div>
-                <span>Duración</span>
-                <strong>@Model.Duracion mes/es</strong>
-            </div>
-            <div>
-                <span>Dificultad</span>
-                <strong>@Model.Dificultad</strong>
-            </div>
-            <div>
-                <span>Calificación</span>
-                <strong>⭐ @Model.Calificacion</strong>
-            </div>
-        </div>
-
-        <!-- BOTTOM -->
-        <div class="curso-bottom">
-
-            <div class="curso-compra">
-                <p class="precio">$ @Model.Precio UYU</p>
-
-                <p class="cuotas">
-                    Hasta 12 cuotas sin interés
-                </p>
-
-                <button type="button" class="btn-comprar" onclick="abrirModalPago(this)" data-logueado="@(Context.Session.GetString("rolLogueado") != null)">
-                    Comprar
-                </button>
-            </div>
-
-            <div class="curso-temario">
-                <h4>Temario</h4>
-                <ul>
-                    @foreach (var tema in Model.Temarios)
-                    {
-                        <li>@tema.Tema</li>
-                    }
-                </ul>
-            </div>
-
-        </div>
-
-    </div>
-
-    <div id="modalPago" class="modal">
-        <div class="modal-content">
-            <h3>Pago con tarjeta</h3>
-
-            <form asp-controller="Pagos" asp-action="Crear" method="post">
-
-                <input type="hidden" name="CursoNombre" value="@Model.Nombre" />
-                <input type="hidden" name="Monto" value="@Model.Precio" />
-                <input type="hidden" name="MetodoPago" value="Tarjeta" />
-
-                <input type="text" name="Tarjeta.NumeroTarjeta" placeholder="Número de tarjeta" required />
-                <input type="text" name="Tarjeta.NombreTitular" placeholder="Titular" required />
-
-                <div class="fila">
-                    <input type="number" name="Tarjeta.MesVencimiento" placeholder="MM" min="1" max="12" required />
-                    <input type="number" name="Tarjeta.AnioVencimiento" placeholder="AAAA" required />
-                    <input type="text" name="Tarjeta.Cvv" placeholder="CVV" required />
+                    <p class="descripcion">
+                        @Model.Descripcion
+                    </p>
                 </div>
+
+                <img src="@Model.RutaArchivo"
+                     alt="Imagen curso"
+                     class="curso-imagen" />
+            </div>
+
+            <!-- STATS -->
+            <div class="curso-stats">
+                <div>
+                    <span>Docente</span>
+                    <strong>@Model.DocenteNombreDTO.NombreCompleto</strong>
+                </div>
+                <div>
+                    <span>Duración</span>
+                    <strong>@Model.Duracion mes/es</strong>
+                </div>
+                <div>
+                    <span>Dificultad</span>
+                    <strong>@Model.Dificultad</strong>
+                </div>
+                <div>
+                    <span>Calificación</span>
+                    <strong>⭐ @Model.Calificacion</strong>
+                </div>
+            </div>
+
+            <!-- BOTTOM -->
+            <div class="curso-bottom">
+
+                <div class="curso-compra">
+                    <p class="precio">$ @Model.Precio UYU</p>
+
+                    <p class="cuotas">
+                        Hasta 12 cuotas sin interés
+                    </p>
+
+                    <button type="button" class="btn-comprar" onclick="abrirModalPago(this)" data-logueado="@(Context.Session.GetString("rolLogueado") != null)">
+                        Comprar
+                    </button>
+                </div>
+
+                <div class="curso-temario">
+                    <h4>Temario</h4>
+                    <ul>
+                        @foreach (var tema in Model.Temarios)
+                        {
+                            <li>@tema.Tema</li>
+                        }
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="modalPago" class="modal">
+            <div class="modal-content">
+                <h3>Pago con tarjeta</h3>
+
+                <form asp-controller="Pagos" asp-action="Crear" method="post">
+
+                    <input type="hidden" name="CursoNombre" value="@Model.Nombre" />
+                    <input type="hidden" name="Monto" value="@Model.Precio" />
+                    <input type="hidden" name="MetodoPago" value="Tarjeta" />
+
+                    <input type="text" name="Tarjeta.NumeroTarjeta" placeholder="Número de tarjeta" required />
+                    <input type="text" name="Tarjeta.NombreTitular" placeholder="Titular" required />
+
+                    <div class="fila">
+                        <input type="number" name="Tarjeta.MesVencimiento" placeholder="MM" min="1" max="12" required />
+                        <input type="number" name="Tarjeta.AnioVencimiento" placeholder="AAAA" required />
+                        <input type="text" name="Tarjeta.Cvv" placeholder="CVV" required />
+                    </div>
                     
-                <div class="acciones">
-                    <button type="submit">Pagar</button>
-                    <button type="button" onclick="cerrarModalPago()">Cancelar</button>
-                </div>
-            </form>
+                    <div class="acciones">
+                        <button type="submit">Pagar</button>
+                        <button type="button" onclick="cerrarModalPago()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-
+}else{
+    <div class="alert alert-danger text-center mb-2 mt-3">@ViewBag.Error</div>
+}
