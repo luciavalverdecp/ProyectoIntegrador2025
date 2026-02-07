@@ -9,6 +9,6 @@ namespace NextLevel.LogicaAplicacion.InterfacesCU.Cursos
 {
     public interface IObtenerCursosFiltrados
     {
-        IEnumerable<CursoVistaPreviaDTO> Ejecutar(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente);
+        IEnumerable<CursoVistaPreviaDTO> Ejecutar(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente, string? email);
     }
 }

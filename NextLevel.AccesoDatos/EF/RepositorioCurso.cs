@@ -265,5 +265,10 @@ namespace NextLevel.AccesoDatos.EF
 
             return query.Include(c => c.Docente).ToList();
         }
+
+        public IEnumerable<Curso> FindWithStudent(Estudiante estudiante, IEnumerable<Curso> lista)
+        {
+            return lista.Where(c => !c.Estudiantes.Any(e => e.Equals(estudiante)));
+        }
     }
 }

@@ -57,7 +57,8 @@ namespace WebMVC.Controllers
         }
         public IActionResult ListadoCursos(string? filtro, string? opcionMenu, string? alfabetico, int? calificacion, string? docente)
         {
-            var cursos = _obtenerCursosFiltrados.Ejecutar(filtro, opcionMenu, alfabetico, calificacion, docente);
+            string email = HttpContext.Session.GetString("emailLogueado");
+            var cursos = _obtenerCursosFiltrados.Ejecutar(filtro, opcionMenu, alfabetico, calificacion, docente, email);
 
             return View(cursos);
         }
