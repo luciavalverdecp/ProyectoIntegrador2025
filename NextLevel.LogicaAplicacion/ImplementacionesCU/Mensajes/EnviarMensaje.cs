@@ -19,12 +19,14 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Mensajes
         private readonly IRepositorioParticiapanteConversacion repositorioParticiapanteConversacion;
         private readonly IRepositorioDocente repositorioDocente;
         private readonly IRepositorioCurso repositorioCurso;
+        private readonly IRepositorioEstudiante repositorioEstudiante;
         public EnviarMensaje(IRepositorioMensaje repositorioMensaje, 
             IRepositorioConversacion repositorioConversacion,
             IRepositorioUsuario repositorioUsuario,
             IRepositorioParticiapanteConversacion repositorioParticiapanteConversacion,
             IRepositorioDocente repositorioDocente,
-            IRepositorioCurso repositorioCurso)
+            IRepositorioCurso repositorioCurso,
+            IRepositorioEstudiante repositorioEstudiante)
         {
             this.repositorioMensaje = repositorioMensaje;
             this.repositorioConversacion = repositorioConversacion;
@@ -32,6 +34,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Mensajes
             this.repositorioParticiapanteConversacion = repositorioParticiapanteConversacion;
             this.repositorioDocente = repositorioDocente;
             this.repositorioCurso = repositorioCurso;
+            this.repositorioEstudiante = repositorioEstudiante;
         }
 
         public int Ejecutar(int idConversacion, UsuarioEmailDTO usuarioDTO, string Contenido, CursoDTO cursoDTO)
@@ -46,7 +49,15 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Mensajes
             if (Contenido == null || Contenido == "") return idConversacion;
             Conversacion conversacion = repositorioConversacion.FindById(idConversacion);
             if (conversacion == null) throw new Exception("No se pudo obtener la conversacion");
-            Usuario usuario = repositorioUsuario.FindByEmail(usuarioDTO.email);
+            bool esDocente = repositorioCurso.FindByNombre(cursoDTO.Nombre).Docente.Email == usuarioDTO.email;
+            Usuario usuario = null;
+            if (esDocente)
+            {
+                usuario = repositorioDocente.FindByEmail(usuarioDTO.email);
+            }else
+            {
+                usuario = repositorioEstudiante.FindByEmail(usuarioDTO.email);
+            }
             if (usuario == null) throw new Exception("No se puedo encontrar un usuario con ese email");
             ParticipanteConversacion pc = repositorioParticiapanteConversacion.GetPartConv(conversacion, usuario);
 

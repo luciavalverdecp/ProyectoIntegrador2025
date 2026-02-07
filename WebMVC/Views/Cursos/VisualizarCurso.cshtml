@@ -8,26 +8,26 @@
 }
 
 @section Styles {
-<link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css?v=4" />
+<link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css?v=5" />
 }
 
 @section ScriptsJs {
     <script>
-        const NOMBRE_CURSO = "@Model.Nombre";
+        const NOMBRE_CURSO = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Nombre));
         const FECHA_INICIO_CURSO = "@Model.FechaInico.ToString("yyyy-MM-dd")";
         const FECHA_FIN_CURSO    = "@Model.FechaFin.ToString("yyyy-MM-dd")";
         const CLASES_AGENDADAS = @Html.Raw(Json.Serialize(ViewBag.ClasesAgendadas));
         const ROL_USUARIO = "@Context.Session.GetString("rolLogueado")";
         const URL_CLASE = '@Url.Action("ClasesEnVivo", "Cursos")';
     </script>
-    <script src="~/js/Cursos/VisualizacionCurso.js?v=5"></script>
+    <script src="~/js/Cursos/VisualizacionCurso.js?v=6"></script>
 }
 
 @{
     var convId = TempData["ConversacionActiva"];
 }
 
-@if (ViewBag.Error != null && ViewBag.Error != "")
+@if (ViewBag.Error != null || ViewBag.Error != "")
 {
     <div class="curso-container" data-conversacion-id="@convId" id="divInicialVD">
 

@@ -14,6 +14,7 @@ using NextLevel.LogicaAplicacion.InterfacesCU.Mensajes;
 using NextLevel.LogicaAplicacion.InterfacesCU.ParticipantesConversacion;
 using NextLevel.Compartidos.DTOs.Conversaciones;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos;
+using NextLevel.LogicaNegocio.Entidades;
 
 namespace WebMVC.Controllers
 {
@@ -307,10 +308,16 @@ namespace WebMVC.Controllers
                     var docente = _obtenerDocente.Ejecutar(email);
                     if (curso.DocenteNombreDTO.NroDocente != docente.NroDocente.NroDeDocente)
                         return Unauthorized();
+                    HttpContext.Session.SetString("nombreLogueado", docente.NombreCompleto);
                 }
 
-                if (rol == "Estudiante" && !curso.Estudiantes.Any(a => a.Email == email))
-                    return Unauthorized();
+                if (rol == "Estudiante")
+                {
+                    var estudiante = _obtenerEstudiante.EjecutarEstudianteInfoDTO(email);
+                    if (!curso.Estudiantes.Any(a => a.Email == email))
+                        return Unauthorized();
+                    HttpContext.Session.SetString("nombreLogueado", estudiante.NombreCompleto);
+                }
 
                 ViewBag.RoomName = nombreCurso.Replace(" ", "_");
                 ViewBag.NombreUsuario = HttpContext.Session.GetString("nombreLogueado") ?? email;
