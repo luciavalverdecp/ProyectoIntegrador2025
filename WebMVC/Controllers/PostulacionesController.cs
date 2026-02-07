@@ -2,6 +2,7 @@
 using NextLevel.Compartidos.DTOs.Postulaciones;
 using NextLevel.LogicaAplicacion.InterfacesCU.Postulaciones;
 using NextLevel.LogicaAplicacion.InterfacesCU.Usuarios;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Postulacion;
 
 namespace WebMVC.Controllers
 {
@@ -34,6 +35,14 @@ namespace WebMVC.Controllers
             {
                 var postulacionDTO = _obtenerPostulacion.Ejecutar(id);
                 ViewBag.Postulacion = postulacionDTO;
+            }
+            catch (PostulacionNoEncontradaException ex)
+            {
+                ViewBag.Error = ex.Message;
+            }
+            catch (PostulacionException ex)
+            {
+                ViewBag.Error = ex.Message;
             }
             catch (Exception ex)
             {

@@ -4,10 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NextLevel.LogicaNegocio.InterfacesEntidades;
 
 namespace NextLevel.LogicaNegocio.Entidades
 {
-    public class Prueba
+    public class Prueba : IEntity
     {
         public int Id { get; set; }
         public string Nombre { get; set; }

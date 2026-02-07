@@ -61,6 +61,10 @@ namespace NextLevel.AccesoDatos.EF
                                                             && pc.UsuarioId == usuario.Id 
                                                             && pc.Conversacion.TipoConversacion == TipoConversacion.Privada)
                                                     .Include(pc => pc.Conversacion)
+                                                        .ThenInclude(c => c.Curso)
+                                                     .Include(pc => pc.Conversacion)
+                                                        .ThenInclude(c => c.Mensajes)
+                                                     .Include(pc => pc.Usuario)
                                                     .FirstOrDefault();
 
             }

@@ -3,6 +3,8 @@ using NextLevel.Compartidos.DTOs.Pagos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Pagos;
 using NextLevel.LogicaNegocio.Entidades;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
 using WebMVC.Models;
 
 namespace WebMVC.Controllers
@@ -48,6 +50,21 @@ namespace WebMVC.Controllers
                     var pagoId = realizarPago.ProcesarPagoSandbox(dto);
 
                     return Redirect("/Cursos/ListadoCursosEstudiante");
+                }
+                catch (EstudianteNoEncontradoException ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    return RedirectToAction("DetallesDeUnCurso", "Cursos", new { nombreCurso = vm.CursoNombre });
+                }
+                catch (CursoNoEncontradoException ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    return RedirectToAction("DetallesDeUnCurso", "Cursos", new { nombreCurso = vm.CursoNombre });
+                }
+                catch (EstudianteException ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    return RedirectToAction("DetallesDeUnCurso", "Cursos", new { nombreCurso = vm.CursoNombre });
                 }
                 catch (Exception ex)
                 {

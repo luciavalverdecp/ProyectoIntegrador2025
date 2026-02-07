@@ -37,12 +37,24 @@ namespace NextLevel.AccesoDatos.EF
         {
             try
             {
-                var cursos = _db.Cursos
-                             .Include(c => c.Docente)
-                             .Include(c => c.Estudiantes)
-                             .Include(c => c.Semanas)
-                             .Include(c => c.Temarios);
-                return cursos.ToList();
+                return _db.Postulaciones
+                        .Where(p =>
+                            p.Estado == "Aprobada" &&
+                            p.AltaCurso != null)
+                        .Include(p => p.AltaCurso)
+                            .ThenInclude(ac => ac.Curso)
+                                .ThenInclude(c => c.Docente)
+                        .Include(p => p.AltaCurso)
+                            .ThenInclude(ac => ac.Curso)
+                                .ThenInclude(c => c.Estudiantes)
+                        .Include(p => p.AltaCurso)
+                            .ThenInclude(ac => ac.Curso)
+                                .ThenInclude(c => c.Semanas)
+                        .Include(p => p.AltaCurso)
+                            .ThenInclude(ac => ac.Curso)
+                                .ThenInclude(c => c.Temarios)
+                        .Select(p => p.AltaCurso.Curso) 
+                        .ToList();
             }
             catch (Exception ex)
             {

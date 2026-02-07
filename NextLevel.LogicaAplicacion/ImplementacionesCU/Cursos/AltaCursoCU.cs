@@ -65,6 +65,8 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
 
             if (imagen == null)
                 throw new CursoException("Debe ingresar una imagen para el curso.");
+            if (_repositorioCurso.FindByNombre(cursoAltaDTO.Nombre) != null)
+                throw new CursoExistenteException("Ya existe un curso con ese nombre, intente con otro.");
 
             Docente docente = _repositorioDocente.FindByEmail(email);
 
@@ -95,6 +97,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
             nuevoCurso.Imagen = "";
             nuevoCurso.DocenteId = docente.Id;
             nuevoCurso.Foro = null;
+            nuevoCurso.Precio = nuevoCurso.Precio * 1.1;
 
             var temariosGuardados = nuevoCurso.Temarios;
             nuevoCurso.Temarios = new List<Temario>();

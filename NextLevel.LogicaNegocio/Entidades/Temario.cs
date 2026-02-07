@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NextLevel.LogicaNegocio.InterfacesEntidades;
 
 namespace NextLevel.LogicaNegocio.Entidades
 {
-    public class Temario
+    public class Temario:IEntity
     {
         public int Id { get; set; }
         public string Tema { get; set; }

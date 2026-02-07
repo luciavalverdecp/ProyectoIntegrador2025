@@ -29,7 +29,7 @@
 
 <form asp-action="EnviarMensaje" asp-controller="Mensajes" method="post">
     <div class="chat-input">
-        <input type="hidden" name="idConversacion" value="@ViewBag.CoversacionId" />
+        <input type="hidden" name="conversacionId" value="@ViewBag.CoversacionId" />
         <input type="hidden" name="nombreCurso" value="@ViewBag.NombreCurso" />
         <input type="text" id="Contenido" name="Contenido" placeholder="Escribe un mensaje...">
         <button type="submit">Enviar</button>

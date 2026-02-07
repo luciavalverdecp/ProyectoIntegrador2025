@@ -10,13 +10,15 @@
 @section ScriptsJs {
     <script src="https://meet.jit.si/external_api.js"></script>
     <script>
-        const ROOM_NAME = "@ViewBag.RoomName";
-        const USER_NAME = "@ViewBag.NombreUsuario";
-        const ES_DOCENTE = @ViewBag.EsDocente.ToString().ToLower();
+        const ROOM_NAME = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.RoomName));
+        const USER_NAME = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.NombreUsuario));
+        const ES_DOCENTE = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.EsDocente.ToString().ToLower()));
     </script>
     <script src="~/js/Cursos/ClasesEnVivo.js"></script>
     <script>
-        const VOLVER_URL = "@Url.Action("VisualizarCurso", "Cursos", new { nombreCurso = ViewBag.RoomName })";
+        const VOLVER_URL = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+        Url.Action("VisualizarCurso", "Cursos", new { nombreCurso = ViewBag.RoomName })
+        ));
     </script>
 }
 

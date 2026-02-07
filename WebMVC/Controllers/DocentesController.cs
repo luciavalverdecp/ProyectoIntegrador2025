@@ -6,6 +6,7 @@ using NextLevel.LogicaAplicacion.InterfacesCU.CambiosDeRol;
 using NextLevel.LogicaAplicacion.InterfacesCU.Docentes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
 using NextLevel.LogicaAplicacion.InterfacesCU.Usuarios;
+using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Docente;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Estudiante;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
@@ -33,17 +34,21 @@ namespace WebMVC.Controllers
                 try
                 {
                     var docente = obtenerDocente.Ejecutar(HttpContext.Session.GetString("emailLogueado"));
-
                     return View(docente);
+                }
+                catch (DocenteNoEncontradoException ex)
+                {
+                    ViewBag.Error = ex.Message;
                 }
                 catch (DocenteException ex)
                 {
-                    return Redirect("Usuarios/Login");
+                    ViewBag.Error = ex.Message;
                 }
                 catch (Exception ex)
                 {
-                    return Redirect("Usuarios/Login");
+                    ViewBag.Error = ex.Message;
                 }
+                return View(null);
             }
             return RedirectToAction("Login", "Usuarios");
         }
