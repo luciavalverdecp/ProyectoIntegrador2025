@@ -31,6 +31,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
             if (usuExistente == null && estudianteDTO.Password.Length >= 8)
             {
                 Estudiante estudiante = EstudianteMapper.FromEstudianteRegistroDTO(estudianteDTO);
+                estudiante.Validar();
                 VerificacionEmail enviarmail =  new VerificacionEmail();
                 estudiante.TokenVerificacion = token;
                 Task.Run(() => enviarmail.EnviarCorreoVerificacionAsync(estudiante.Email, estudiante.TokenVerificacion));
