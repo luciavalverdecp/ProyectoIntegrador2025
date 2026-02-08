@@ -16,8 +16,12 @@
     <script src="~/js/Pagos/CrearPago.js?v=3"></script>
 }
 
-@if (ViewBag.Error != null || ViewBag.Error != "")
+@if (TempData["Error"] != null)
 {
+    <div class="alert alert-danger text-center mb-2 mt-3">
+        @TempData["Error"]
+    </div>
+}
     <div class="curso-wrapper">
 
         <div class="curso-card">
@@ -113,6 +117,3 @@
             </div>
         </div>
     </div>
-}else{
-    <div class="alert alert-danger text-center mb-2 mt-3">@ViewBag.Error</div>
-}
