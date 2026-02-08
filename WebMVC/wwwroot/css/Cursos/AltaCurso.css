@@ -167,3 +167,95 @@ input, select, textarea {
         flex-direction: column;
     }
 }
+
+/* Evita desbordes globales */
+* {
+    box-sizing: border-box;
+}
+
+/* body flexible en mobile */
+body {
+    padding: 16px;
+    align-items: flex-start;
+}
+
+.card {
+    width: 100%;
+    max-width: 720px;
+    padding: 22px;
+    border-radius: 16px;
+}
+
+.btn-volver {
+    position: static;
+    margin-bottom: 10px;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.full {
+    grid-column: span 1;
+}
+
+.fechas-row {
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dificultad-buttons {
+    flex-direction: column;
+}
+
+.temario-box button {
+    width: 100%;
+}
+
+.submit-btn {
+    grid-column: span 1;
+    width: 100%;
+}
+
+@media (min-width: 600px) {
+
+    form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .full {
+        grid-column: span 2;
+    }
+
+    .submit-btn {
+        grid-column: span 2;
+    }
+
+    .dificultad-buttons {
+        flex-direction: row;
+    }
+
+    .fechas-row {
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 1024px) {
+
+    body {
+        padding: 30px;
+        align-items: center;
+    }
+
+    .card {
+        padding: 35px;
+    }
+
+    .btn-volver {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+    }
+}
