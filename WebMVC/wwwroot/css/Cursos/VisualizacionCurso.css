@@ -230,6 +230,21 @@ body {
         transform: scale(0.95);
     }
 
+/* CONTENEDOR DEL CALENDARIO */
+#calGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+/* cada día */
+.day-cell {
+    min-width: 0; /* CLAVE para que no se desborde */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
 .agregar-material-btn {
     background-color: #A7C7E7; /* Azul pastel */
     color: #3A3A3A;
@@ -714,4 +729,164 @@ div.day-cell button.btn-iniciar {
     .curso-bottom {
         grid-template-columns: 1fr;
     }
+}
+
+/* MOBILE FIRST */
+@media (max-width: 768px) {
+
+    .curso-container {
+        padding: 18px;
+        margin: 20px 10px;
+    }
+
+    /* HEADER en vertical */
+    .curso-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    /* IMAGEN arriba y responsive */
+    .curso-img {
+        width: 100%;
+        height: 200px;
+        border-radius: 16px;
+        object-fit: cover;
+    }
+
+    /* TITULO más chico */
+    .curso-title {
+        font-size: 1.5rem;
+    }
+
+    .row {
+        flex-direction: column;
+    }
+
+    .col-3,
+    .col-9,
+    .col-md-6 {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .tab-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .tab-btn {
+        width: calc(50% - 5px);
+        text-align: center;
+    }
+
+    #calGrid {
+        gap: 4px;
+    }
+
+    .day-cell {
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .day-number {
+        font-size: 12px;
+    }
+
+    .expand-content {
+        font-size: 11px;
+    }
+
+    .time-input {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    .btn-agendar,
+    .btn-iniciar {
+        width: 100%;
+        font-size: 12px;
+        padding: 6px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    .curso-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .curso-img {
+        width: 100%;
+        height: 240px;
+        border-radius: 18px;
+    }
+}
+
+/* =========================
+   CALENDARIO RESPONSIVE PRO
+   ========================= */
+
+/* Desktop mantiene 7 columnas */
+#calGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    #calGrid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* MOBILE → 4 días por fila */
+@media (max-width: 768px) {
+
+    #calGrid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+    }
+
+    .day-cell {
+        padding: 8px;
+        min-height: 80px;
+        font-size: 13px;
+    }
+
+    .day-number {
+        font-size: 14px;
+    }
+
+    .expand-content {
+        font-size: 12px;
+        gap: 6px;
+    }
+
+    /* CLAVE: cuando se expande ocupa más ancho */
+    .day-cell.expanded {
+        grid-column: span 2;
+        transform: scale(1.02);
+        z-index: 5;
+    }
+}
+
+/* MOBILE chico */
+@media (max-width: 480px) {
+
+    #calGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .day-cell.expanded {
+        grid-column: span 3;
+    }
+}
+
+.day-cell {
+    transition: all .2s ease;
+    overflow: hidden;
 }

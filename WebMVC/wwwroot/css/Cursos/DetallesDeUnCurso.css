@@ -113,7 +113,7 @@
     .btn-comprar:hover {
         background: #584fe0;
         transform: translateY(-1px);
-        color:white;
+        color: white;
     }
 
 /* TEMARIO */
@@ -159,21 +159,18 @@
     overflow: hidden;
 }
 
-    /* TÍTULO */
     .modal-content h3 {
         margin-bottom: 1.2rem;
         text-align: center;
         color: #2c2c54;
     }
 
-    /* FORM */
     .modal-content form {
         display: flex;
         flex-direction: column;
         gap: .9rem;
     }
 
-    /* INPUTS */
     .modal-content input {
         width: 100%;
         padding: .65rem .8rem;
@@ -189,7 +186,6 @@
             box-shadow: 0 0 0 2px rgba(108, 99, 255, .15);
         }
 
-    /* FILA MM / AAAA / CVV */
     .modal-content .fila {
         display: flex;
         gap: .6rem;
@@ -197,30 +193,28 @@
     }
 
         .modal-content .fila input {
-            min-width: 0; /* 🔑 CLAVE ABSOLUTA */
+            min-width: 0;
             box-sizing: border-box;
         }
 
             .modal-content .fila input:nth-child(1) {
-                flex: 0 0 70px; /* MM */
+                flex: 0 0 70px;
             }
 
             .modal-content .fila input:nth-child(2) {
-                flex: 1 1 auto; /* AAAA */
+                flex: 1 1 auto;
             }
 
             .modal-content .fila input:nth-child(3) {
-                flex: 0 0 80px; /* CVV */
+                flex: 0 0 80px;
             }
 
-    /* ACCIONES */
     .modal-content .acciones {
         display: flex;
         gap: .8rem;
         margin-top: .8rem;
     }
 
-    /* BOTONES */
     .modal-content button {
         flex: 1;
         padding: .6rem;
@@ -231,7 +225,6 @@
         transition: transform .2s ease, background .2s ease;
     }
 
-        /* PAGAR */
         .modal-content button[type="submit"] {
             background: #6c63ff;
             color: white;
@@ -242,7 +235,6 @@
                 transform: translateY(-1px);
             }
 
-        /* CANCELAR */
         .modal-content button[type="button"] {
             background: #e4e6ff;
             color: #2c2c54;
@@ -251,6 +243,76 @@
             .modal-content button[type="button"]:hover {
                 background: #d8dbff;
             }
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+
+    .curso-top {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .curso-imagen {
+        width: 100%;
+        max-width: 420px;
+    }
+
+    .curso-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .curso-bottom {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    .curso-card {
+        padding: 1.4rem;
+    }
+
+    .curso-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .curso-temario ul {
+        columns: 1;
+    }
+
+    .btn-comprar {
+        width: 100%;
+        text-align: center;
+        padding: .8rem;
+        font-size: 1rem;
+    }
+
+    .precio {
+        font-size: 1.4rem;
+    }
+}
+
+/* Mobile chico */
+@media (max-width: 480px) {
+
+    .curso-wrapper {
+        padding: 2rem .5rem;
+    }
+
+    .curso-card {
+        padding: 1.2rem;
+    }
+
+    .descripcion {
+        font-size: .95rem;
+    }
+}
 
 /* ANIMACIONES */
 @keyframes fadeIn {
