@@ -25,7 +25,7 @@ namespace NextLevel.LogicaNegocio.EnvioDeEmails
         {
             string subject = "Nueva clase agregada en tu curso";
 
-            string linkCurso = $"https://proyectointegrador2025-dnbdbdegfygpduec.eastus2-01.azurewebsites.net/Cursos/VisualizarCurso?nombreCurso={curso.Nombre}";
+            string linkCurso = $"https://nextlevel-gtcgfsgnczbgenga.eastus2-01.azurewebsites.net/Cursos/VisualizarCurso?nombreCurso={curso.Nombre}";
 
             
             var ultimaClase = curso.FechasClases
