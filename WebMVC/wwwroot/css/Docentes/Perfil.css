@@ -206,3 +206,146 @@ dt {
     margin-right: 10px;
 }
 
+/* =========================================
+   RESPONSIVE PERFIL DOCENTE
+   ========================================= */
+
+/* TABLET */
+@media (max-width: 1024px) {
+
+    .sidebar-wrapper {
+        width: 220px;
+        padding: 1.5rem 1rem;
+    }
+
+    .content-wrapper {
+        padding: 2rem 1.5rem;
+    }
+
+    .section-card {
+        padding: 28px;
+    }
+}
+
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    /* layout pasa a vertical */
+    .d-flex {
+        flex-direction: column;
+    }
+
+    /* sidebar deja de ser lateral */
+    .sidebar-wrapper {
+        width: 100%;
+        min-height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 3px solid var(--pastel-purple);
+        border-radius: 0 0 18px 18px;
+        padding: 1.2rem 1rem;
+    }
+
+    .sidebar-title {
+        margin-bottom: 1rem;
+        font-size: 1.4rem;
+    }
+
+    /* tabs horizontales */
+    .nav {
+        flex-direction: row !important;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .nav-item {
+        flex: 1;
+    }
+
+    .nav-link {
+        justify-content: center;
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+    /* contenido */
+    .content-wrapper {
+        padding: 1.5rem 1rem;
+    }
+
+    .section-card {
+        padding: 22px;
+        border-radius: 18px;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+    }
+
+    hr {
+        width: 90%;
+    }
+
+    /* datos personales formato mobile */
+    dl.row dt {
+        font-size: 0.9rem;
+    }
+
+    dl.row dd {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+    }
+
+    /* botones */
+    .btn-pastel,
+    .btn-danger {
+        width: 100%;
+    }
+
+    .d-flex.justify-content-center.gap-3.mt-4 {
+        flex-direction: column;
+        gap: 12px !important;
+    }
+
+    /* inputs */
+    .pastel-input {
+        font-size: 0.95rem;
+    }
+
+    /* info box */
+    .info-box {
+        font-size: 0.95rem;
+    }
+}
+
+
+/* MOBILE CHICO */
+@media (max-width: 480px) {
+
+    .sidebar-title {
+        font-size: 1.25rem;
+    }
+
+    .nav-link {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+
+    .section-card {
+        padding: 18px;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+    }
+
+    .btn-pastel {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+}

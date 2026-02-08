@@ -45,30 +45,33 @@ namespace WebMVC.Controllers
                             vm.Tarjeta.Cvv
                         )
                     );
-                    agregarCurso.Ejecutar(email, vm.CursoNombre);
-
+                    
                     var pagoId = realizarPago.ProcesarPagoSandbox(dto);
+                    agregarCurso.Ejecutar(email, vm.CursoNombre);
 
                     return Redirect("/Cursos/ListadoCursosEstudiante");
                 }
                 catch (EstudianteNoEncontradoException ex)
                 {
-                    ModelState.AddModelError("", ex.Message);
+                    TempData["Error"] = ex.Message;
                     return RedirectToAction("DetallesDeUnCurso", "Cursos", new { nombreCurso = vm.CursoNombre });
                 }
+
                 catch (CursoNoEncontradoException ex)
                 {
-                    ModelState.AddModelError("", ex.Message);
+                    TempData["Error"] = ex.Message;
                     return RedirectToAction("DetallesDeUnCurso", "Cursos", new { nombreCurso = vm.CursoNombre });
                 }
+
                 catch (EstudianteException ex)
                 {
-                    ModelState.AddModelError("", ex.Message);
+                    TempData["Error"] = ex.Message;
                     return RedirectToAction("DetallesDeUnCurso", "Cursos", new { nombreCurso = vm.CursoNombre });
                 }
+
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", ex.Message);
+                    TempData["Error"] = "Ocurrió un error al procesar el pago.";
                     return RedirectToAction("DetallesDeUnCurso", "Cursos", new { nombreCurso = vm.CursoNombre });
                 }
             }
