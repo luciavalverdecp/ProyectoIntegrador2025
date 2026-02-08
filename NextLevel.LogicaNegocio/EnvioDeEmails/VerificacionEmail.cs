@@ -21,8 +21,8 @@ namespace NextLevel.LogicaNegocio.SistemaAutenticacion
         public async Task EnviarCorreoVerificacionAsync(string emailDestino, string token)
         {
             string subject = "Verificá tu cuenta";
-            string verificationLink = $"proyectointegrador2025-dnbdbdegfygpduec.eastus2-01.azurewebsites.net/Usuarios/VerificarEmail?token={token}&email={Uri.EscapeDataString(emailDestino)}";
-            string cancelVerification = $"proyectointegrador2025-dnbdbdegfygpduec.eastus2-01.azurewebsites.net/Usuarios/CancelarVerificacion?token={token}";
+            string verificationLink = $"https://nextlevel-gtcgfsgnczbgenga.eastus2-01.azurewebsites.net/Usuarios/VerificarEmail?token={token}&email={Uri.EscapeDataString(emailDestino)}";
+            string cancelVerification = $"https://nextlevel-gtcgfsgnczbgenga.eastus2-01.azurewebsites.net/Usuarios/CancelarVerificacion?token={token}";
             string gifPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "NeoSaludando.gif");
 
             using (MailMessage mail = new MailMessage())

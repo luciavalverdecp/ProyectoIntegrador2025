@@ -25,7 +25,7 @@ namespace NextLevel.LogicaNegocio.EnvioDeEmails
         {
             string subject = "¡Pago realizado exitosamente!";
 
-            string linkCurso = $"https://proyectointegrador2025-dnbdbdegfygpduec.eastus2-01.azurewebsites.net/Cursos/VisualizarCurso?nombreCurso={cursoNombre}";
+            string linkCurso = $"https://nextlevel-gtcgfsgnczbgenga.eastus2-01.azurewebsites.net/Cursos/VisualizarCurso?nombreCurso={cursoNombre}";
 
             string gifPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "NeoSaludando.gif");
 
