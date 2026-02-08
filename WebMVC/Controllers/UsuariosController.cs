@@ -91,6 +91,7 @@ namespace WebMVC.Controllers
         {
             try
             {
+                if(string.IsNullOrWhiteSpace(estudianteRegistroDTO.Email)) throw new UsuarioEmailException("El email no puede estar vacío.");
                 _registroEstudiante.Ejecutar(estudianteRegistroDTO, Token.GenerarToken(estudianteRegistroDTO.Email));
                 TempData["MensajeRegistro"] = "Usuario creado exitosamente";
                 ViewBag.EmailPendiente = estudianteRegistroDTO.Email;
