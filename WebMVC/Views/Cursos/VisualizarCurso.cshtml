@@ -27,7 +27,7 @@
     var convId = TempData["ConversacionActiva"];
 }
 
-@if (ViewBag.Error != null && ViewBag.Error != "")
+@if (ViewBag.Error != null || ViewBag.Error != "")
 {
     <div class="curso-container" data-conversacion-id="@convId" id="divInicialVD">
 
