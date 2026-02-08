@@ -80,19 +80,19 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         private void validarPassword()
         {
-            if (string.IsNullOrEmpty(Password)) throw new UsuarioPasswordException("La contraseña no puede ser vacia.");
+            if (string.IsNullOrWhiteSpace(Password)) throw new UsuarioPasswordException("La contraseña no puede ser vacia.");
             if (!System.Text.RegularExpressions.Regex.IsMatch(Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$")) throw new UsuarioPasswordException("La contraseña debe tener al menos una minúscula, una mayúscula y un número.");
             if (Password.Length < 8) throw new UsuarioPasswordException("La contraseña debe tener al menos 8 caracteres.");
         }
 
         private void validarNombreCompleto()
         {
-            if (string.IsNullOrEmpty(NombreCompleto)) throw new UsuarioNombreCompletoException("El nombre completo no puede ser vacio.");
+            if (string.IsNullOrWhiteSpace(NombreCompleto)) throw new UsuarioNombreCompletoException("El nombre completo no puede ser vacio.");
             if (!NombreCompleto.Trim().Contains(" ")) throw new UsuarioNombreCompletoException("El nombre debe estar separado con un espacio del apellido.");
         }
         private void validarTelefono()
         {
-            if (string.IsNullOrEmpty(Telefono)) throw new UsuarioTelefonoException("El telefono no puede ser vacio.");
+            if (string.IsNullOrWhiteSpace(Telefono)) throw new UsuarioTelefonoException("El telefono no puede ser vacio.");
             if (!Telefono.StartsWith("09") || Telefono.Length != 9) throw new UsuarioTelefonoException("Formato de telefono invalido.");
         }
         #endregion

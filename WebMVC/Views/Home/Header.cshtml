@@ -6,9 +6,18 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow p-0">
         <div class="container-fluid headerNormal py-1">
-            <a class="navbar-brand" asp-area="" asp-controller="Cursos" asp-action="ListadoCursos">
-                <img src="~/img/logo.png" alt="Logo de NextLevel">
-            </a>
+            @if(Context.Session.GetString("rolLogueado") == "Docente")
+            {
+                <a class="navbar-brand" asp-area="" asp-controller="Cursos" asp-action="ListadoCursosDocente">
+                    <img src="~/img/logo.png" alt="Logo de NextLevel">
+                </a>
+            }
+            else
+            {
+                <a class="navbar-brand" asp-area="" asp-controller="Cursos" asp-action="ListadoCursos">
+                    <img src="~/img/logo.png" alt="Logo de NextLevel">
+                </a>
+            }
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -69,13 +78,15 @@
 
                         <li class="nav-item dropdown">
 
-                            <a class="nav-link dropdown-toggle d-flex align-items-center"
-                               href="#" id="perfilMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="nav-link dropdown-toggle d-flex align-items-center border-0 bg-transparent"
+                                    id="perfilMenu"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">
 
                                 <img src="~/img/perfil.png"
                                      alt="Perfil"
                                      style="width:32px; height:32px; border-radius:50%; object-fit:cover;">
-                            </a>
+                            </button>
 
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="perfilMenu" style="z-index: 10000000">
 
