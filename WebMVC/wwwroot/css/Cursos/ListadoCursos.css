@@ -182,9 +182,10 @@
     z-index: 999;
 }
 
-.chat-hidden {
-    display: none;
-}
+    #chat-ia-container.chat-hidden {
+        display: none !important;
+    }
+
 
 /* HEADER */
 .chat-header {
@@ -245,3 +246,4 @@
         border-radius: 8px;
         padding: 0 12px;
     }
+
