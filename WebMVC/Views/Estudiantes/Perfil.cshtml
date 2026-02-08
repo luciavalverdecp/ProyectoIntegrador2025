@@ -10,272 +10,331 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/Estudiantes/Perfil.css" />
+<link rel="stylesheet" href="~/css/Estudiantes/Perfil.css?v=2" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 }
 
 @section ScriptsJs {
-    <script src="~/js/Estudiantes/Perfil.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js?v=2"></script>
+<script src="~/js/Estudiantes/Perfil.js?v=2"></script>
 }
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+@if (ViewBag.Error != null || ViewBag.Error != "")
+{
+    <div class="d-flex">
 
-<div class="d-flex">
+        <!-- SIDEBAR -->
+        <div class="sidebar-wrapper">
+            <div class="sidebar-title">Mi Panel</div>
 
-    <!-- SIDEBAR -->
-    <div class="sidebar-wrapper">
-        <div class="sidebar-title">Mi Panel</div>
+            <ul class="nav flex-column nav-pills">
 
-        <ul class="nav flex-column nav-pills">
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(tabActivo == "datos" ? "active" : "")" data-bs-toggle="pill" href="#datos">
+                        <i class="bi bi-person-circle"></i> Datos personales
+                    </a>
+                </li>
 
-            <li class="nav-item mb-2">
-                <a class="nav-link @(tabActivo == "datos" ? "active" : "")" data-bs-toggle="pill" href="#datos">
-                    <i class="bi bi-person-circle"></i> Datos personales
-                </a>
-            </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(tabActivo == "contra" ? "active" : "")" data-bs-toggle="pill" href="#contra">
+                        <i class="bi bi-envelope-paper"></i> Recuperar contraseña
+                    </a>
+                </li>
 
-            <li class="nav-item mb-2">
-                <a class="nav-link @(tabActivo == "contra" ? "active" : "")" data-bs-toggle="pill" href="#contra">
-                    <i class="bi bi-envelope-paper"></i> Recuperar contraseña
-                </a>
-            </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(tabActivo == "cursos" ? "active" : "")" data-bs-toggle="pill" href="#cursos">
+                        <i class="bi bi-journal-check"></i> Cursos finalizados
+                    </a>
+                </li>
 
-            <li class="nav-item mb-2">
-                <a class="nav-link @(tabActivo == "cursos" ? "active" : "")" data-bs-toggle="pill" href="#cursos">
-                    <i class="bi bi-journal-check"></i> Cursos finalizados
-                </a>
-            </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(tabActivo == "certificados" ? "active" : "")" data-bs-toggle="pill" href="#certificados">
+                        <i class="bi bi-award-fill"></i> Certificados
+                    </a>
+                </li>
 
-            <li class="nav-item mb-2">
-                <a class="nav-link @(tabActivo == "certificados" ? "active" : "")" data-bs-toggle="pill" href="#certificados">
-                    <i class="bi bi-award-fill"></i> Certificados
-                </a>
-            </li>
-
-            <li class="nav-item mb-2">
-                <a class="nav-link @(tabActivo == "cambioRol" ? "active" : "")" data-bs-toggle="pill" href="#cambioRol">
-                    <i class="bi bi-person-badge-fill me-2"></i> Solicitar Cambio de Rol
-                </a>
-            </li>
-        </ul>
-    </div>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(tabActivo == "cambioRol" ? "active" : "")" data-bs-toggle="pill" href="#cambioRol">
+                        <i class="bi bi-person-badge-fill me-2"></i> Solicitar Cambio de Rol
+                    </a>
+                </li>
+            </ul>
+        </div>
 
 
 
-    <!-- CONTENIDO -->
-    <div class="content-wrapper">
-        <div class="tab-content">
+        <!-- CONTENIDO -->
+        <div class="content-wrapper">
+            <div class="tab-content">
 
-            <!-- DATOS PERSONALES -->
-            <div class="tab-pane fade @(tabActivo == "datos" ? "show active" : "")" id="datos">
-                <div class="section-card">
-                    <h2 class="section-title">Datos personales</h2>
-                    <hr />
+                <!-- DATOS PERSONALES -->
+                <div class="tab-pane fade @(tabActivo == "datos" ? "show active" : "")" id="datos">
+                    <div class="section-card">
+                        <h2 class="section-title">Datos personales</h2>
+                        <hr />
 
-                    <!-- MENSAJES -->
-                    <div class="mensajes-form">
-                        @if (TempData["ErrorDatosPersonales"] != null && !(bool)TempData["ErrorDatosPersonales"])
-                        {
-                            <div class="alert alert-success text-center mb-2 mt-3">
-                                @TempData["MensajeDatosPersonales"]
-                            </div>
-                        }
+                        <!-- MENSAJES -->
+                        <div class="mensajes-form">
+                            @if (TempData["ErrorDatosPersonales"] != null && !(bool)TempData["ErrorDatosPersonales"])
+                            {
+                                <div class="alert alert-success text-center mb-2 mt-3">
+                                    @TempData["MensajeDatosPersonales"]
+                                </div>
+                            }
 
-                        @if (TempData["ErrorDatosPersonales"] != null && (bool)TempData["ErrorDatosPersonales"])
-                        {
-                            <div class="alert alert-danger text-center mb-2 mt-3">
-                                @TempData["MensajeDatosPersonales"]
-                            </div>
-                            <script>
-                                // Mantener modo edición si hubo error del servidor
-                                document.addEventListener("DOMContentLoaded", () => {
+                            @if (TempData["ErrorDatosPersonales"] != null && (bool)TempData["ErrorDatosPersonales"])
+                            {
+                                <div class="alert alert-danger text-center mb-2 mt-3">
+                                    @TempData["MensajeDatosPersonales"]
+                                </div>
+                                <script>
+                                    // Mantener modo edición si hubo error del servidor
+                                    document.addEventListener("DOMContentLoaded", () => {
                                     document.getElementById("vistaDatos").style.display = "none";
                                     document.getElementById("formEditar").style.display = "block";
-                                });
-                            </script>
+                                    });
+                                </script>
+                            }
+                        </div>
+
+                        <!-- MODO LECTURA -->
+                        <div id="vistaDatos">
+                            <dl class="row mt-4">
+                                <dt class="col-sm-4">Email</dt>
+                                <dd class="col-sm-8">@Model.Email</dd>
+
+                                <dt class="col-sm-4">Nombre completo</dt>
+                                <dd class="col-sm-8">@Model.NombreCompleto</dd>
+
+                                <dt class="col-sm-4">Cédula</dt>
+                                <dd class="col-sm-8">@Model.Cedula</dd>
+
+                                <dt class="col-sm-4">Teléfono</dt>
+                                <dd class="col-sm-8">@Model.Telefono</dd>
+                            </dl>
+
+                            <div class="text-center mt-4">
+                                <button id="btnEditar" class="btn btn-pastel">Editar datos</button>
+                            </div>
+                        </div>
+
+                        <!-- MODO EDICIÓN -->
+                        <form id="formEditar" asp-controller="Estudiantes" asp-action="ActualizarDatos"
+                        method="post" style="display:none;">
+
+                            <div class="mt-4">
+
+                                <!-- EMAIL (NO EDITABLE) -->
+                                <div class="mb-3">
+                                    <label class="fw-semibold">Email</label>
+                                    <input class="form-control pastel-input" name="Email"
+                                    value="@Model.Email" readonly />
+                                </div>
+
+                                <!-- NOMBRE COMPLETO -->
+                                <div class="mb-3">
+                                    <label class="fw-semibold">Nombre completo</label>
+                                    <input class="form-control pastel-input" name="NombreCompleto"
+                                    value="@Model.NombreCompleto" required />
+                                </div>
+
+                                <!-- CÉDULA (NO EDITABLE) -->
+                                <div class="mb-3">
+                                    <label class="fw-semibold">Cédula</label>
+                                    <input class="form-control pastel-input" name="Cedula"
+                                    value="@Model.Cedula" readonly />
+                                </div>
+
+                                <!-- TELÉFONO -->
+                                <div class="mb-3">
+                                    <label class="fw-semibold">Teléfono</label>
+                                    <input class="form-control pastel-input" name="Telefono"
+                                    value="@Model.Telefono" required />
+                                </div>
+
+                            </div>
+
+                            <div class="d-flex justify-content-center gap-3 mt-4">
+                                <button type="submit" class="btn btn-pastel">Guardar</button>
+                                <button type="button" id="btnCancelar" class="btn btn-danger">Cancelar</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+
+
+
+
+                <!-- CONTRASEÑA -->
+                <div class="tab-pane fade @(tabActivo == "contra" ? "show active" : "")" id="contra">
+                    <div class="section-card">
+
+                        <h2 class="section-title">Restablecer contraseña</h2>
+                        <hr />
+
+                        <div class="info-box">
+                            Por razones de seguridad, no podés cambiar tu contraseña desde el panel.
+                            En su lugar, te enviaremos un correo con un enlace para restablecerla.
+                        </div>
+
+                        <form id="formRecuperar" asp-controller="Usuarios" asp-action="RecuperarCuenta" method="post">
+                            <input hidden name="email" value="@Context.Session.GetString("emailLogueado")" />
+                            <input hidden name="returnTo" value="Perfil" />
+                            <button id="btnRecuperar" type="submit" class="btn btn-pastel">
+                                <i class="bi bi-envelope-arrow-up"></i> Enviar email de recuperación
+                            </button>
+                        </form>
+
+
+                    </div>
+                </div>
+
+                <!-- CURSOS FINALIZADOS -->
+                @if (TempData["ErrorCalificar"] != null && !(bool)TempData["ErrorCalificar"])
+                {
+                    <div class="alert alert-success text-center mb-2 mt-3">@TempData["MensajeCalificar"]</div>
+                }
+                @if (TempData["ErrorCalificar"] != null && (bool)TempData["ErrorCalificar"])
+                {
+                    <div class="alert alert-danger text-center mb-2 mt-3">@TempData["MensajeCalificar"]</div>
+                }
+                <div class="tab-pane fade @(tabActivo == "cursos" ? "show active" : "")" id="cursos">
+                    <div class="section-card">
+                        <h2 class="section-title">Cursos finalizados</h2>
+                        <hr />
+
+                        @if (ViewBag.CursosFinalizados.Count == 0)
+                        {
+                            <p class="text-center mt-3">Todavía no finalizaste cursos.</p>
+                        }
+                        else
+                        {
+                            <ul class="list-group mt-3">
+                                @foreach (var c in ViewBag.CursosFinalizados)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-success">✓</span>
+                                        <span>@c.Nombre</span>
+
+                                        <button type="button"
+                                        class="btn-underline btn-calificar"
+                                        data-curso-nombre="@c.Nombre">
+                                            Calificar curso
+                                        </button>
+                                    </li>
+                                }
+                            </ul>
                         }
                     </div>
+                </div>
 
-                    <!-- MODO LECTURA -->
-                    <div id="vistaDatos">
-                        <dl class="row mt-4">
-                            <dt class="col-sm-4">Email</dt>
-                            <dd class="col-sm-8">@Model.Email</dd>
+                <!-- CERTIFICADOS -->
+                <div class="tab-pane fade @(tabActivo == "certificados" ? "show active" : "")" id="certificados">
+                    <div class="section-card">
+                        <h2 class="section-title">Certificados</h2>
+                        <hr />
+                        <p class="text-center">No tenés certificados todavía.</p>
+                    </div>
+                </div>
 
-                            <dt class="col-sm-4">Nombre completo</dt>
-                            <dd class="col-sm-8">@Model.NombreCompleto</dd>
+                <!-- CAMBIO DE ROL -->
+                <div class="tab-pane fade @(tabActivo == "cambioRol" ? "show active" : "")" id="cambioRol">
+                    <div class="section-card">
+                        <h2 class="section-title">
+                            <i class="bi bi-person-badge-fill me-2"></i> Solicitar cambio de rol
+                        </h2>
+                        <hr />
 
-                            <dt class="col-sm-4">Cédula</dt>
-                            <dd class="col-sm-8">@Model.Cedula</dd>
+                        <p class="info-box">
+                            Para solicitar cambiar tu rol dentro de la plataforma (por ejemplo, de
+                            estudiante a docente), necesitaremos validar tu identidad profesional.
+                            Adjuntá la documentación necesaria (PDF, imágenes, certificados, etc.).
+                        </p>
 
-                            <dt class="col-sm-4">Teléfono</dt>
-                            <dd class="col-sm-8">@Model.Telefono</dd>
-                        </dl>
+                        <form asp-action="SolicitarCambioRol" asp-controller="Estudiantes" method="post" enctype="multipart/form-data">
 
-                        <div class="text-center mt-4">
-                            <button id="btnEditar" class="btn btn-pastel">Editar datos</button>
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Documentación</label>
+                                <input type="file" name="Archivos" multiple class="form-control pastel-input" required />
+                                <small class="text-muted">
+                                    Podés seleccionar varios archivos (PDF, imágenes, constancias, etc.).
+                                </small>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-pastel w-100">
+                                    <i class="bi bi-upload"></i> Enviar solicitud
+                                </button>
+                            </div>
+
+                            <div class="mensajes-form">
+                                @if (TempData["ErrorCambioRol"] != null && !(bool)TempData["ErrorCambioRol"])
+                                {
+                                    <div class="alert alert-success text-center mb-2 mt-3">@TempData["MensajeCambioRol"]</div>
+                                }
+
+                                @if (TempData["ErrorCambioRol"] != null && (bool)TempData["ErrorCambioRol"])
+                                {
+                                    <div class="alert alert-danger text-center mb-2 mt-3">@TempData["MensajeCambioRol"]</div>
+                                }
+                            </div>
+
+                        </form>
+
                     </div>
 
-                    <!-- MODO EDICIÓN -->
-                    <form id="formEditar" asp-controller="Estudiantes" asp-action="ActualizarDatos"
-                          method="post" style="display:none;">
-
-                        <div class="mt-4">
-
-                            <!-- EMAIL (NO EDITABLE) -->
-                            <div class="mb-3">
-                                <label class="fw-semibold">Email</label>
-                                <input class="form-control pastel-input" name="Email"
-                                       value="@Model.Email" readonly />
-                            </div>
-
-                            <!-- NOMBRE COMPLETO -->
-                            <div class="mb-3">
-                                <label class="fw-semibold">Nombre completo</label>
-                                <input class="form-control pastel-input" name="NombreCompleto"
-                                       value="@Model.NombreCompleto" required />
-                            </div>
-
-                            <!-- CÉDULA (NO EDITABLE) -->
-                            <div class="mb-3">
-                                <label class="fw-semibold">Cédula</label>
-                                <input class="form-control pastel-input" name="Cedula"
-                                       value="@Model.Cedula" readonly />
-                            </div>
-
-                            <!-- TELÉFONO -->
-                            <div class="mb-3">
-                                <label class="fw-semibold">Teléfono</label>
-                                <input class="form-control pastel-input" name="Telefono"
-                                       value="@Model.Telefono" required />
-                            </div>
-
-                        </div>
-
-                        <div class="d-flex justify-content-center gap-3 mt-4">
-                            <button type="submit" class="btn btn-pastel">Guardar</button>
-                            <button type="button" id="btnCancelar" class="btn btn-danger">Cancelar</button>
-                        </div>
-
-                    </form>
-
                 </div>
+
             </div>
+        </div>
 
+        <div class="modal fade" id="modalCalificarCurso" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
 
-
-
-
-            <!-- CONTRASEÑA -->
-            <div class="tab-pane fade @(tabActivo == "contra" ? "show active" : "")" id="contra">
-                <div class="section-card">
-
-                    <h2 class="section-title">Restablecer contraseña</h2>
-                    <hr />
-
-                    <div class="info-box">
-                        Por razones de seguridad, no podés cambiar tu contraseña desde el panel.
-                        En su lugar, te enviaremos un correo con un enlace para restablecerla.
+                    <div class="modal-header">
+                        <h5 class="modal-title">Calificar curso</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <form id="formRecuperar" asp-controller="Usuarios" asp-action="RecuperarCuenta" method="post">
-                        <input hidden name="email" value="@Context.Session.GetString("emailLogueado")" />
-                        <input hidden name="returnTo" value="Perfil" />
-                        <button id="btnRecuperar" type="submit" class="btn btn-pastel">
-                            <i class="bi bi-envelope-arrow-up"></i> Enviar email de recuperación
-                        </button>
-                    </form>
+                    <form asp-controller="Cursos" asp-action="Calificar" method="post">
+                        <div class="modal-body text-center">
 
+                            <input type="hidden" name="NombreCurso" id="nombreCursoInput" />
+                            <input type="hidden" name="Puntaje" id="puntajeInput" />
 
-                </div>
-            </div>
+                            <p id="nombreCurso" class="fw-semibold mb-3"></p>
 
-            <!-- CURSOS FINALIZADOS -->
-            <div class="tab-pane fade @(tabActivo == "cursos" ? "show active" : "")" id="cursos">
-                <div class="section-card">
-                    <h2 class="section-title">Cursos finalizados</h2>
-                    <hr />
+                            <div class="rating">
+                                <i class="bi bi-star-fill estrella" data-value="1"></i>
+                                <i class="bi bi-star-fill estrella" data-value="2"></i>
+                                <i class="bi bi-star-fill estrella" data-value="3"></i>
+                                <i class="bi bi-star-fill estrella" data-value="4"></i>
+                                <i class="bi bi-star-fill estrella" data-value="5"></i>
+                            </div>
 
-                    @if (ViewBag.CursosFinalizados.Count == 0)
-                    {
-                        <p class="text-center mt-3">Todavía no finalizaste cursos.</p>
-                    }
-                    else
-                    {
-                        <ul class="list-group mt-3">
-                            @foreach (var c in ViewBag.CursosFinalizados)
-                            {
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span class="badge bg-success">✓</span>
-                                    @c.Nombre
-                                    <button class="btn-underline">Calificar Curso</button>
-                                </li>
-                            }
-                        </ul>
-                    }
-                </div>
-            </div>
-
-
-
-            <!-- CERTIFICADOS -->
-            <div class="tab-pane fade @(tabActivo == "certificados" ? "show active" : "")" id="certificados">
-                <div class="section-card">
-                    <h2 class="section-title">Certificados</h2>
-                    <hr />
-                    <p class="text-center">No tenés certificados todavía.</p>
-                </div>
-            </div>
-
-            <!-- CAMBIO DE ROL -->
-            <div class="tab-pane fade @(tabActivo == "cambioRol" ? "show active" : "")" id="cambioRol">
-                <div class="section-card">
-                    <h2 class="section-title">
-                        <i class="bi bi-person-badge-fill me-2"></i> Solicitar cambio de rol
-                    </h2>
-                    <hr />
-
-                    <p class="info-box">
-                        Para solicitar cambiar tu rol dentro de la plataforma (por ejemplo, de
-                        estudiante a docente), necesitaremos validar tu identidad profesional.
-                        Adjuntá la documentación necesaria (PDF, imágenes, certificados, etc.).
-                    </p>
-
-                    <form asp-action="SolicitarCambioRol" asp-controller="Estudiantes" method="post" enctype="multipart/form-data">
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Documentación</label>
-                            <input type="file" name="Archivos" multiple class="form-control pastel-input" required />
-                            <small class="text-muted">
-                                Podés seleccionar varios archivos (PDF, imágenes, constancias, etc.).
-                            </small>
                         </div>
 
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-pastel w-100">
-                                <i class="bi bi-upload"></i> Enviar solicitud
+                        <div class="modal-footer">
+                            <button type="submit"
+                            class="btn btn-pastel"
+                            id="btnEnviarCalificacion"
+                            disabled>
+                                Enviar
                             </button>
                         </div>
-
-                        <div class="mensajes-form">
-                            @if (TempData["ErrorCambioRol"] != null && !(bool)TempData["ErrorCambioRol"])
-                            {
-                                <div class="alert alert-success text-center mb-2 mt-3">@TempData["MensajeCambioRol"]</div>
-                            }
-
-                            @if (TempData["ErrorCambioRol"] != null && (bool)TempData["ErrorCambioRol"])
-                            {
-                                <div class="alert alert-danger text-center mb-2 mt-3">@TempData["MensajeCambioRol"]</div>
-                            }
-                        </div>
-
                     </form>
 
                 </div>
-
             </div>
-
         </div>
-    </div>
 
-</div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger text-center mb-2 mt-3">@ViewBag.Error</div>
+}

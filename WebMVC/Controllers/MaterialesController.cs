@@ -2,6 +2,9 @@
 using NextLevel.Compartidos.DTOs.Materiales;
 using NextLevel.Compartidos.DTOs.Semanas;
 using NextLevel.LogicaAplicacion.InterfacesCU.Materiales;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Material;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Semana;
 
 namespace WebMVC.Controllers
 {
@@ -23,6 +26,16 @@ namespace WebMVC.Controllers
                     await crudMaterial.Agregar(material, SemanaNumero, CursoNombre);
                     return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = CursoNombre });
                 }
+                catch (CursoNoEncontradoException ex)
+                {
+                    ViewBag.ErrorMessage = ex.Message;
+                    return View("VisualizarCurso");
+                }
+                catch (SemanaException ex)
+                {
+                    ViewBag.ErrorMessage = ex.Message;
+                    return View("VisualizarCurso");
+                }
                 catch (Exception ex)
                 {
                     ViewBag.ErrorMessage = ex.Message;
@@ -41,6 +54,15 @@ namespace WebMVC.Controllers
                 {
                     await crudMaterial.Eliminar(material, SemanaNumero, CursoNombre);
                     return RedirectToAction("VisualizarCurso", "Cursos", new { nombreCurso = CursoNombre });
+                }
+                catch (CursoNoEncontradoException ex)
+                {
+                    ViewBag.ErrorMessage = ex.Message;
+                    return View("VisualizarCurso");
+                }
+                catch (MaterialNoEncontradoException ex)
+                {
+                    ViewBag.ErrorMessage = ex.Message;
                 }
                 catch (Exception ex)
                 {

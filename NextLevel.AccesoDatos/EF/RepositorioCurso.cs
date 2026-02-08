@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
+using EfCore = Microsoft.EntityFrameworkCore.EF;
 
 namespace NextLevel.AccesoDatos.EF
 {
@@ -36,12 +37,24 @@ namespace NextLevel.AccesoDatos.EF
         {
             try
             {
-                var cursos = _db.Cursos
-                             .Include(c => c.Docente)
-                             .Include(c => c.Estudiantes)
-                             .Include(c => c.Semanas)
-                             .Include(c => c.Temarios);
-                return cursos.ToList();
+                return _db.Postulaciones
+                        .Where(p =>
+                            p.Estado == "Aprobada" &&
+                            p.AltaCurso != null)
+                        .Include(p => p.AltaCurso)
+                            .ThenInclude(ac => ac.Curso)
+                                .ThenInclude(c => c.Docente)
+                        .Include(p => p.AltaCurso)
+                            .ThenInclude(ac => ac.Curso)
+                                .ThenInclude(c => c.Estudiantes)
+                        .Include(p => p.AltaCurso)
+                            .ThenInclude(ac => ac.Curso)
+                                .ThenInclude(c => c.Semanas)
+                        .Include(p => p.AltaCurso)
+                            .ThenInclude(ac => ac.Curso)
+                                .ThenInclude(c => c.Temarios)
+                        .Select(p => p.AltaCurso.Curso) 
+                        .ToList();
             }
             catch (Exception ex)
             {
@@ -147,6 +160,7 @@ namespace NextLevel.AccesoDatos.EF
                 curso.Temarios = obj.Temarios;
                 curso.FechasClases = obj.FechasClases;
                 curso.Foro = obj.Foro;
+                curso.TotalCalificaciones = obj.TotalCalificaciones;
                 _db.Cursos.Update(curso);
                 _db.SaveChanges();
             }
@@ -185,6 +199,76 @@ namespace NextLevel.AccesoDatos.EF
         public IEnumerable<Curso> GetByDocente(Usuario usuario)
         {
             return _db.Cursos.Where(c => c.Docente.Email == usuario.Email).ToList();
+        }
+
+        public IEnumerable<Curso> Buscar(string? categoria, string? dificultad, int? duracionMax, string? NombreDocente, DateTime? FechaInicio, double? Calificacion, double? Precio)
+        {
+            IQueryable<Curso> query = _db.Cursos;
+
+
+            if (!string.IsNullOrWhiteSpace(categoria))
+            {
+                query = query.Where(c =>
+                c.Nombre.ToLower().Contains(categoria.ToLower()) || c.Descripcion.ToLower().Contains(categoria.ToLower()));
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(dificultad) &&
+                Enum.TryParse<Dificultad>(dificultad, true, out var dif))
+            {
+                query = query.Where(c => c.Dificultad == dif);
+            }
+
+
+
+            if (duracionMax.HasValue)
+            {
+                query = query.Where(c =>
+                c.Duracion <= duracionMax.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(NombreDocente))
+            {
+                query = query.Where(c =>
+                EfCore.Functions.Collate(
+                    c.Docente.NombreCompleto.ToLower(),
+                    "Latin1_General_CI_AI"
+                ).Contains(NombreDocente.ToLower()));
+            }
+
+
+            if (FechaInicio.HasValue)
+            {
+                var desde = FechaInicio.Value.Date;
+                var hasta = desde.AddDays(14);
+
+                query = query.Where(c =>
+                    c.FechaInicio >= desde &&
+                    c.FechaInicio <= hasta);
+            }
+
+
+            if (Calificacion.HasValue)
+            {
+                query = query.OrderByDescending(c => c.Calificacion);
+            }
+
+            if (Precio.HasValue)
+            {
+                var tolerancia = Precio.Value * 0.15;
+                var min = Precio.Value - tolerancia;
+                var max = Precio.Value + tolerancia;
+
+                query = query.Where(c =>
+                    c.Precio >= min && c.Precio <= max);
+            }
+
+            return query.Include(c => c.Docente).ToList();
+        }
+
+        public IEnumerable<Curso> FindWithStudent(Estudiante estudiante, IEnumerable<Curso> lista)
+        {
+            return lista.Where(c => !c.Estudiantes.Any(e => e.Equals(estudiante)));
         }
     }
 }

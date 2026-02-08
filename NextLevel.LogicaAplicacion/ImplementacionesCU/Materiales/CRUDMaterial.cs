@@ -4,6 +4,8 @@ using NextLevel.Compartidos.DTOs.Materiales;
 using NextLevel.Compartidos.DTOs.Semanas;
 using NextLevel.LogicaAplicacion.InterfacesCU.Materiales;
 using NextLevel.LogicaNegocio.Entidades;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Curso;
+using NextLevel.LogicaNegocio.ExcepcionesEntidades.Material;
 using NextLevel.LogicaNegocio.InterfacesRepositorios;
 
 namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Materiales
@@ -49,6 +51,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Materiales
                 ruta = blob.Uri.ToString();
             }
             Curso curso = repositorioCurso.FindByNombre(nombreCurso);
+            if (curso == null) throw new CursoNoEncontradoException("No fue posible encontrar el curso.");
             Semana semana = curso.Semanas[numeroSemana - 1];
             TipoMaterial tipo = obtenerTipoMaterial(material.Archivo);
             Material materialNuevo = new Material(material.Nombre, tipo, ruta, material.Texto);
@@ -61,7 +64,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Materiales
             Material materialObtenido = repositorioMaterial.FindByRuta(material.RutaArchivo);
 
             if (materialObtenido == null)
-                throw new Exception("No se encontró el material a eliminar.");
+                throw new MaterialNoEncontradoException("No se encontró el material a eliminar.");
 
             if (!string.IsNullOrEmpty(materialObtenido.RutaArchivo))
             {
@@ -73,6 +76,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Materiales
             }
 
             Curso curso = repositorioCurso.FindByNombre(nombreCurso);
+            if (curso == null) throw new CursoNoEncontradoException("No fue posible encontrar el curso.");
             Semana semana = curso.Semanas[numeroSemana - 1];
 
             semana.Materiales.Remove(materialObtenido);

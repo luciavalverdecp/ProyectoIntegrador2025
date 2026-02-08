@@ -28,6 +28,21 @@ namespace WebMVC.Controllers
         
         public IActionResult Login()
         {
+            bool rolYemail = HttpContext.Session.GetString("emailLogueado") != null && HttpContext.Session.GetString("rolLogueado") != null;
+            var rol = HttpContext.Session.GetString("rolLogueado");
+
+            if (rol == "Estudiante")
+            {
+                return RedirectToAction("ListadoCursos", "Cursos");
+            }
+            else if (rol == "Docente")
+            {
+                return RedirectToAction("ListadoCursosDocente", "Cursos");
+            }
+            else if(rol == "Administrador")
+            {
+                return RedirectToAction("PostulacionesAdministrador", "Postulaciones");
+            }
             return View("Login-Registro");
         }
 
@@ -40,8 +55,8 @@ namespace WebMVC.Controllers
                 ViewBag.ErrorLoginBool = false;
                 var usuario = _loginUsuario.Ejecutar(dto.Email, dto.Password);
                 HttpContext.Session.SetString("rolLogueado", usuario.Rol.ToString());
-                HttpContext.Session.SetString("emailLogueado", usuario.Email); //TODO hace falta
-                if (usuario.Rol.ToString() == "Estudiante")
+                HttpContext.Session.SetString("emailLogueado", usuario.Email); 
+                if (usuario.Rol == Rol.Estudiante)
                 {
                     return RedirectToAction("ListadoCursos", "Cursos");
                 }
@@ -50,9 +65,9 @@ namespace WebMVC.Controllers
                     HttpContext.Session.SetString("nroDocenteLogueado", dto.Email); //Email en este caso es el nroDocente
                     return RedirectToAction("ListadoCursosDocente", "Cursos");
                 }
-                else
+                else 
                 {
-                    return RedirectToAction("Privacy", "Home");//TODO redireccionar a la pagina principal de administradores
+                    return RedirectToAction("PostulacionesAdministrador", "Postulaciones");//TODO redireccionar a la pagina principal de administradores
                 }
             }
             catch (UsuarioEstaVerificadoException ex)

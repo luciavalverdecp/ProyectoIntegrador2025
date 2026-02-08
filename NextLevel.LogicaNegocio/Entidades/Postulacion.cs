@@ -4,31 +4,33 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NextLevel.LogicaNegocio.InterfacesEntidades;
 
 namespace NextLevel.LogicaNegocio.Entidades
 {
-    public class Postulacion
+    public class Postulacion : IEntity
     {
         public int Id { get; set; }
         public int AdministradorId { get; set; }
         public Administrador Administrador { get; set; }
         [AllowNull]
-        public CambioRol CambioRol { get; set; }
+        public CambioRol? CambioRol { get; set; }
         [AllowNull]
-        public AltaCurso AltaCurso { get; set; }
+        public AltaCurso? AltaCurso { get; set; }
+        public string Estado { get; set; }
 
         public Postulacion() { }
-        public Postulacion(int id, Administrador administrador, AltaCurso altaCurso)
+        public Postulacion(Administrador administrador, AltaCurso altaCurso)
         {
-            Id = id;
             Administrador = administrador;
             AltaCurso = altaCurso;
+            Estado = "Pendiente";
         }
-        public Postulacion(int id, Administrador administrador, CambioRol cambioRol)
+        public Postulacion(Administrador administrador, CambioRol cambioRol)
         {
-            Id = id;
             Administrador = administrador;
             CambioRol = cambioRol;
+            Estado = "Pendiente";
         }
     }
 }

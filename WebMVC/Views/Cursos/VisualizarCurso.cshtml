@@ -8,314 +8,325 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css?v=4" />
+<link rel="stylesheet" href="~/css/cursos/VisualizacionCurso.css?v=5" />
 }
 
 @section ScriptsJs {
     <script>
-        const NOMBRE_CURSO = "@Model.Nombre";
+        const NOMBRE_CURSO = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Nombre));
         const FECHA_INICIO_CURSO = "@Model.FechaInico.ToString("yyyy-MM-dd")";
         const FECHA_FIN_CURSO    = "@Model.FechaFin.ToString("yyyy-MM-dd")";
         const CLASES_AGENDADAS = @Html.Raw(Json.Serialize(ViewBag.ClasesAgendadas));
         const ROL_USUARIO = "@Context.Session.GetString("rolLogueado")";
         const URL_CLASE = '@Url.Action("ClasesEnVivo", "Cursos")';
     </script>
-    <script src="~/js/Cursos/VisualizacionCurso.js?v=5"></script>
+    <script src="~/js/Cursos/VisualizacionCurso.js?v=6"></script>
 }
 
 @{
     var convId = TempData["ConversacionActiva"];
 }
 
-<div class="curso-container" data-conversacion-id="@convId" id="divInicialVD">
+@if (ViewBag.Error != null || ViewBag.Error != "")
+{
+    <div class="curso-container" data-conversacion-id="@convId" id="divInicialVD">
 
-    <!-- HEADER -->
-    <div class="curso-header"> 
-        <img src="@Model.RutaArchivo" class="curso-img" /> 
-        <div> 
-            <h1 class="curso-title">@Model.Nombre</h1>
-            <p class="text-muted">@Model.DocenteNombreDTO?.NombreCompleto</p> 
-        </div> 
-    </div> 
-    <!-- INFO DEL CURSO --> 
-    <div class="mt-4 p-4 rounded" style="background: var(--pastel-bg)">
-        <h4 class="fw-semibold">Descripción</h4> 
-        <p>@Model.Descripcion</p> 
-        <div class="row"> 
-            <div class="col-md-6">
-                <strong>Dificultad:</strong> 
-                @Model.Dificultad
-
+        <!-- HEADER -->
+        <div class="curso-header">
+            <img src="@Model.RutaArchivo" class="curso-img" />
+            <div>
+                <h1 class="curso-title">@Model.Nombre</h1>
+                <p class="text-muted">@Model.DocenteNombreDTO?.NombreCompleto</p>
             </div>
+        </div>
+        <!-- INFO DEL CURSO -->
+        <div class="mt-4 p-4 rounded" style="background: var(--pastel-bg)">
+            <h4 class="fw-semibold">Descripción</h4>
+            <p>@Model.Descripcion</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Dificultad:</strong>
+                    @Model.Dificultad
 
-            <div class="col-md-6">
-                <strong>Duración:</strong> 
-                @Model.Duracion meses
-            </div> 
-            <div class="col-md-6 mt-2"> 
-                <strong>Fecha de inicio:</strong>
-                @Model.FechaInico.ToString("dd/MM/yyyy")
-            </div> 
-            <div class="col-md-6 mt-2">
-                <strong>Fecha fin:</strong> 
-                @Model.FechaFin.ToString("dd/MM/yyyy")
-            </div> 
-        </div> 
-    </div>
+                </div>
 
-    <!-- TABS -->
-    <div class="tab-buttons">
-        <button class="tab-btn" data-target="materiales">Materiales</button>
-        <button id="btnForo" class="tab-btn" data-target="foro">Foro</button>
-        <button class="tab-btn" data-target="contacto">Contacto</button>
-        <button class="tab-btn" data-target="clases">Clases</button>
-    </div>
+                <div class="col-md-6">
+                    <strong>Duración:</strong>
+                    @Model.Duracion meses
+                </div>
+                <div class="col-md-6 mt-2">
+                    <strong>Fecha de inicio:</strong>
+                    @Model.FechaInico.ToString("dd/MM/yyyy")
+                </div>
+                <div class="col-md-6 mt-2">
+                    <strong>Fecha fin:</strong>
+                    @Model.FechaFin.ToString("dd/MM/yyyy")
+                </div>
+            </div>
+        </div>
 
-    <!-- MATERIAL -->
-    <div id="materiales" class="tab-content">
-        <h4 class="fw-bold mb-3">📚 Materiales</h4>
+        <!-- TABS -->
+        <div class="tab-buttons">
+            <button class="tab-btn" data-target="materiales">Materiales</button>
+            <button id="btnForo" class="tab-btn" data-target="foro">Foro</button>
+            <button class="tab-btn" data-target="contacto">Contacto</button>
+            <button class="tab-btn" data-target="clases">Clases</button>
+        </div>
 
-        <div class="row mt-3">
+        <!-- MATERIAL -->
+        <div id="materiales" class="tab-content">
+            <h4 class="fw-bold mb-3">📚 Materiales</h4>
 
-            <!-- LISTA DE SEMANAS -->
-            <div class="col-3">
-                <div class="semanas-scroll">
-                    <ul class="list-group">
-                        @if (Model.Semanas != null)
+            <div class="row mt-3">
+
+                <!-- LISTA DE SEMANAS -->
+                <div class="col-3">
+                    <div class="semanas-scroll">
+                        <ul class="list-group">
+                            @if (Model.Semanas != null)
+                            {
+                                foreach (var semana in Model.Semanas)
+                                {
+                                    <li class="list-group-item semana-btn"
+                                        data-semana="@semana.Numero"
+                                        data-fInicio="@semana.FechaInicio.ToString("yyyy-MM-dd")">
+                                        Semana @semana.Numero
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- MATERIAL POR SEMANA -->
+                <div class="col-9">
+                    @if (Model.Semanas != null)
+                    {
+                        foreach (var semana in Model.Semanas)
                         {
-                            foreach (var semana in Model.Semanas)
-                            {
-                                <li class="list-group-item semana-btn"
-                                data-semana="@semana.Numero"
-                                data-fInicio="@semana.FechaInicio.ToString("yyyy-MM-dd")">
-                                    Semana @semana.Numero
-                                </li>
-                            }
+                            <div id="semana-@semana.Numero" class="semana-material" style="display:none;">
+                                <h5 class="fw-bold">Material Semana @semana.Numero</h5> @if (semana.Materiales != null && semana.Materiales.Any())
+                                {
+                                    <div class="material-list mt-3">
+                                        @foreach (var mat in semana.Materiales)
+                                        {
+                                            <div class="material-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <span class="material-name material-link "
+                                                          data-tipo="@((int)mat.TipoMaterial)"
+                                                          data-ruta="@mat.RutaArchivo"
+                                                          data-texto="@mat.Nombre">
+                                                        📄 @mat.Nombre
+                                                    </span>
+                                                </div>
+                                                @if (Context.Session.GetString("rolLogueado") == "Docente")
+                                                {
+                                                    <form method="post" asp-action="EliminarMaterial" asp-controller="Materiales" class="m-0 p-0">
+                                                        <input type="hidden" name="CursoNombre" value="@Model.Nombre" />
+                                                        <input type="hidden" name="SemanaNumero" value="@semana.Numero" />
+                                                        <input type="hidden" name="RutaArchivo" value="@mat.RutaArchivo" />
+                                                        <input type="hidden" name="Nombre" value="@mat.Nombre" />
+                                                        <input type="hidden" name="TipoMaterial" value="@((int)mat.TipoMaterial)" />
+
+                                                        <button type="submit" class="btn btn-link text-danger p-0 fs-4" title="Eliminar material" style="text-decoration:none;"> 🗑 </button>
+                                                    </form>
+                                                }
+                                            </div>
+                                        }
+                                    </div> <div class="material-texto mt-3" id="materialTexto-@semana.Numero" style="display:none;"></div>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">No hay materiales esta semana.</p>
+                                } @if (Context.Session.GetString("rolLogueado") == "Docente")
+                                {
+                                    <div class="mt-3"> <button class="agregar-material-btn" data-semana="@semana.Numero"> ➕ Agregar material </button> </div>
+                                }
+                            </div>
                         }
-                    </ul>
+                    }
                 </div>
             </div>
-
-            <!-- MATERIAL POR SEMANA -->
-            <div class="col-9"> @if (Model.Semanas != null)
-                {
-                    foreach (var semana in Model.Semanas)
-                    {
-                        <div id="semana-@semana.Numero" class="semana-material" style="display:none;"> <h5 class="fw-bold">Material Semana @semana.Numero</h5> @if (semana.Materiales != null && semana.Materiales.Any())
-                            {
-                                <div class="material-list mt-3"> 
-                                    @foreach (var mat in semana.Materiales)
-                                    {
-                                        <div class="material-item d-flex justify-content-between align-items-center"> 
-                                            <div> 
-                                                <span class="material-name material-link " 
-                                                data-tipo="@((int)mat.TipoMaterial)" 
-                                                data-ruta="@mat.RutaArchivo" 
-                                                data-texto="@mat.Nombre"> 
-                                                    📄 @mat.Nombre 
-                                                </span> 
-                                            </div> 
-                                            @if (Context.Session.GetString("rolLogueado") == "Docente")
-                                            {
-                                                <form method="post" asp-action="EliminarMaterial" asp-controller="Materiales" class="m-0 p-0">
-                                                    <input type="hidden" name="CursoNombre" value="@Model.Nombre" /> 
-                                                    <input type="hidden" name="SemanaNumero" value="@semana.Numero" /> 
-                                                    <input type="hidden" name="RutaArchivo" value="@mat.RutaArchivo" /> 
-                                                    <input type="hidden" name="Nombre" value="@mat.Nombre" /> 
-                                                    <input type="hidden" name="TipoMaterial" value="@((int)mat.TipoMaterial)" /> 
-
-                                                    <button type="submit" class="btn btn-link text-danger p-0 fs-4" title="Eliminar material" style="text-decoration:none;"> 🗑 </button> 
-                                                </form>
-                                            } </div>
-                                    } </div> <div class="material-texto mt-3" id="materialTexto-@semana.Numero" style="display:none;"></div>
-                            }
-                            else
-                            {
-                                <p class="text-muted">No hay materiales esta semana.</p>
-                            } @if (Context.Session.GetString("rolLogueado") == "Docente")
-                            {
-                                <div class="mt-3"> <button class="agregar-material-btn" data-semana="@semana.Numero"> ➕ Agregar material </button> </div>
-                            } </div>
-                    }
-                } </div>
         </div>
-    </div>
 
-    <!-- FORO -->
-    <div id="foro" class="tab-content">
-        <h4 class="fw-bold mb-3">💬 Foro</h4>
+        <!-- FORO -->
+        <div id="foro" class="tab-content">
+            <h4 class="fw-bold mb-3">💬 Foro</h4>
 
-        <div class="chat-box" id="foroMensajes">
-            @if (ViewBag.MensajesForo != null)
-            {
-                foreach (MensajeDTO msg in ViewBag.MensajesForo)
+            <div class="chat-box" id="foroMensajes">
+                @if (ViewBag.MensajesForo != null)
                 {
-                    <div class="msg-wrapper @(msg.Usuario.Email == Context.Session.GetString("emailLogueado") ? "mine" : "")">
+                    foreach (MensajeDTO msg in ViewBag.MensajesForo)
+                    {
+                        <div class="msg-wrapper @(msg.Usuario.Email == Context.Session.GetString("emailLogueado") ? "mine" : "")">
 
-                        <span class="msg-user">@msg.Usuario.NombreCompleto</span>
+                            <span class="msg-user">@msg.Usuario.NombreCompleto</span>
 
-                        <div class="msg">
-                            @msg.Contenido
+                            <div class="msg">
+                                @msg.Contenido
+                            </div>
+
                         </div>
-
-                    </div>
+                    }
                 }
-            }
+            </div>
+
+            <form asp-action="EnviarMensaje" asp-controller="Mensajes" method="post">
+                <div class="chat-input">
+                    <input type="hidden" name="conversacionId" value="@Model.Foro.Conversacion.Id" />
+                    <input type="hidden" name="nombreCurso" value="@Model.Nombre" />
+                    <input type="text" id="Contenido" name="Contenido" placeholder="Escribe un mensaje...">
+                    <button type="submit">Enviar</button>
+                </div>
+            </form>
+
         </div>
 
-        <form asp-action="EnviarMensaje" asp-controller="Mensajes" method="post">
-            <div class="chat-input">
-                <input type="hidden" name="idConversacion" value="@Model.Foro.Conversacion.Id" />
-                <input type="hidden" name="nombreCurso" value="@Model.Nombre" />
-                <input type="text" id="Contenido" name="Contenido" placeholder="Escribe un mensaje...">
-                <button type="submit">Enviar</button>
-            </div>
-        </form>
+        <!-- CONTACTO -->
+        <div id="contacto" class="tab-content">
 
-    </div>
+            <!-- SOLO DOCENTE -->
+            @if (Context.Session.GetString("rolLogueado") == "Docente")
+            {
+                <div id="bandeja-docente" class="contacto-container docente">
+                    <div class="lista-conversaciones">
+                        <h5>📥 Mensajes</h5>
 
-    <!-- CONTACTO -->
-    <div id="contacto" class="tab-content">
+                        @foreach (ParticipanteConversacionDTO pc in ViewBag.MensajesDocente)
+                        {
+                            <div class="conv-item"
+                                 data-conversacion-id="@pc.Conversacion.Id">
+                                <strong>@pc.Usuario.NombreCompleto</strong>
+                            </div>
+                        }
+                    </div>
 
-        <!-- SOLO DOCENTE -->
-        @if (Context.Session.GetString("rolLogueado") == "Docente")
-        {
-            <div id="bandeja-docente" class="contacto-container docente">
-                <div class="lista-conversaciones">
-                    <h5>📥 Mensajes</h5>
-
-                    @foreach (ParticipanteConversacionDTO pc in ViewBag.MensajesDocente)
-                    {
-                        <div class="conv-item"
-                             data-conversacion-id="@pc.Conversacion.Id">
-                            <strong>@pc.Usuario.NombreCompleto</strong>
+                    <div class="chat-panel" id="chatPanel">
+                        <div class="placeholder-chat">
+                            Seleccioná una conversación
                         </div>
-                    }
-                </div>
-
-                <div class="chat-panel" id="chatPanel">
-                    <div class="placeholder-chat">
-                        Seleccioná una conversación
                     </div>
                 </div>
-            </div>
-        }
+            }
 
-        <!-- SOLO ESTUDIANTE -->
-        @if (Context.Session.GetString("rolLogueado") == "Estudiante")
-        {
-            <div class="contacto-container estudiante"
-                 data-conversacion-id="@ViewBag.ConversacionEstudiante">
+            <!-- SOLO ESTUDIANTE -->
+            @if (Context.Session.GetString("rolLogueado") == "Estudiante")
+            {
+                <div class="contacto-container estudiante"
+                     data-conversacion-id="@ViewBag.ConversacionEstudiante">
 
-                <div id="chatPanel">
-                    <div class="placeholder-chat">
-                        Todavía no hay mensajes. Escribí para iniciar la conversación.
+                    <div id="chatPanel">
+                        <div class="placeholder-chat">
+                            Todavía no hay mensajes. Escribí para iniciar la conversación.
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
 
 
-    </div>
-
-
-    <!-- CALENDARIO -->
-    <div id="clases" class="tab-content">
-        @if (TempData["ErrorAgendarClase"] != null && !(bool)TempData["ErrorAgendarClase"])
-        {
-            <div class="alert alert-success text-center mb-2 mt-3">@TempData["MensajeAgendaClase"]</div>
-        }
-
-        @if (TempData["ErrorAgendarClase"] != null && (bool)TempData["ErrorAgendarClase"])
-        {
-            <div class="alert alert-danger text-center mb-2 mt-3">@TempData["MensajeAgendaClase"]</div>
-        }
-        <div class="calendar-header">
-            <button class="cal-btn" id="prevMes">◀</button>
-            <h4 id="mesActual"></h4>
-            <button class="cal-btn" id="nextMes">▶</button>
         </div>
 
-        <div class="calendar-grid" id="calGrid"></div>
 
-    </div>
+        <!-- CALENDARIO -->
+        <div id="clases" class="tab-content">
+            @if (TempData["ErrorAgendarClase"] != null && !(bool)TempData["ErrorAgendarClase"])
+            {
+                <div class="alert alert-success text-center mb-2 mt-3">@TempData["MensajeAgendaClase"]</div>
+            }
 
-</div>
-
-
-
-<!-- MODAL PARA AGREGAR MATERIAL -->
-<div class="modal fade" id="modalAgregarMaterial" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title">Agregar Material</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            @if (TempData["ErrorAgendarClase"] != null && (bool)TempData["ErrorAgendarClase"])
+            {
+                <div class="alert alert-danger text-center mb-2 mt-3">@TempData["MensajeAgendaClase"]</div>
+            }
+            <div class="calendar-header">
+                <button class="cal-btn" id="prevMes">◀</button>
+                <h4 id="mesActual"></h4>
+                <button class="cal-btn" id="nextMes">▶</button>
             </div>
 
-            <form id="formAgregarMaterial" asp-action="AgregarMaterial" asp-controller="Materiales" method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-
-                    <input type="hidden" id="SemanaNumero" name="SemanaNumero" />
-                    <input type="hidden" name="CursoNombre" value="@Model.Nombre" />
-
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Nombre del material</label>
-                        <input type="text" class="form-control" name="Nombre" required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Texto</label>
-                        <input type="text" class="form-control" name="Texto" required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Archivo</label>
-                        <input type="file" class="form-control" name="Archivo" required />
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Subir material</button>
-                </div>
-            </form>
+            <div class="calendar-grid" id="calGrid"></div>
 
         </div>
+
     </div>
-</div>
 
-<!-- MODAL PARA CONFIRMAR ELIMINACIÓN -->
-<div class="modal fade" id="modalEliminarMaterial" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
 
-            <div class="modal-header">
-                <h5 class="modal-title text-danger">Eliminar material</h5>
-                <button class="btn-close" data-bs-dismiss="modal"></button>
+
+    <!-- MODAL PARA AGREGAR MATERIAL -->
+    <div class="modal fade" id="modalAgregarMaterial" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Material</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <form id="formAgregarMaterial" asp-action="AgregarMaterial" asp-controller="Materiales" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+
+                        <input type="hidden" id="SemanaNumero" name="SemanaNumero" />
+                        <input type="hidden" name="CursoNombre" value="@Model.Nombre" />
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nombre del material</label>
+                            <input type="text" class="form-control" name="Nombre" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Texto</label>
+                            <input type="text" class="form-control" name="Texto" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Archivo</label>
+                            <input type="file" class="form-control" name="Archivo" required />
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Subir material</button>
+                    </div>
+                </form>
+
             </div>
-
-            <form method="post" asp-action="EliminarMaterial" asp-controller="Materiales">
-                <div class="modal-body">
-                    <p>¿Seguro que deseas eliminar <strong id="deleteMaterialName"></strong>?</p>
-
-                    <input type="hidden" name="CursoNombre" id="deleteCursoNombre" />
-                    <input type="hidden" name="SemanaNumero" id="deleteSemanaNumero" />
-
-                    <!-- Estos 3 van dentro del DTO MaterialBasicoDTO -->
-                    <input type="hidden" name="RutaArchivo" id="deleteMaterialRuta" />
-                    <input type="hidden" name="Nombre" id="deleteMaterialNombre" />
-                    <input type="hidden" name="TipoMaterial" id="deleteMaterialTipo" />
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button class="btn btn-danger" type="submit">Eliminar</button>
-                </div>
-            </form>
-
         </div>
     </div>
-</div>
+
+    <!-- MODAL PARA CONFIRMAR ELIMINACIÓN -->
+    <div class="modal fade" id="modalEliminarMaterial" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Eliminar material</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <form method="post" asp-action="EliminarMaterial" asp-controller="Materiales">
+                    <div class="modal-body">
+                        <p>¿Seguro que deseas eliminar <strong id="deleteMaterialName"></strong>?</p>
+
+                        <input type="hidden" name="CursoNombre" id="deleteCursoNombre" />
+                        <input type="hidden" name="SemanaNumero" id="deleteSemanaNumero" />
+
+                        <!-- Estos 3 van dentro del DTO MaterialBasicoDTO -->
+                        <input type="hidden" name="RutaArchivo" id="deleteMaterialRuta" />
+                        <input type="hidden" name="Nombre" id="deleteMaterialNombre" />
+                        <input type="hidden" name="TipoMaterial" id="deleteMaterialTipo" />
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-danger" type="submit">Eliminar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+}else{
+    <div class="alert alert-danger text-center mb-2 mt-3">@ViewBag.Error</div>
+}

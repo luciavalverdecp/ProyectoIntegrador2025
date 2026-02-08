@@ -66,6 +66,9 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Property<int?>("AltaCursoId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CambioRolId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ContentType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -84,6 +87,8 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AltaCursoId");
+
+                    b.HasIndex("CambioRolId");
 
                     b.ToTable("Archivo");
                 });
@@ -204,6 +209,10 @@ namespace NextLevel.AccesoDatos.Migrations
 
                     b.Property<double>("Precio")
                         .HasColumnType("float");
+
+                    b.Property<string>("TotalCalificaciones")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -363,11 +372,15 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.Property<int>("AdministradorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AltaCursoId")
+                    b.Property<int?>("AltaCursoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CambioRolId")
+                    b.Property<int?>("CambioRolId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -565,6 +578,10 @@ namespace NextLevel.AccesoDatos.Migrations
                     b.HasOne("NextLevel.LogicaNegocio.Entidades.AltaCurso", null)
                         .WithMany("Archivos")
                         .HasForeignKey("AltaCursoId");
+
+                    b.HasOne("NextLevel.LogicaNegocio.Entidades.CambioRol", null)
+                        .WithMany("Archivos")
+                        .HasForeignKey("CambioRolId");
                 });
 
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.Calificacion", b =>
@@ -709,15 +726,11 @@ namespace NextLevel.AccesoDatos.Migrations
 
                     b.HasOne("NextLevel.LogicaNegocio.Entidades.AltaCurso", "AltaCurso")
                         .WithMany()
-                        .HasForeignKey("AltaCursoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AltaCursoId");
 
                     b.HasOne("NextLevel.LogicaNegocio.Entidades.CambioRol", "CambioRol")
                         .WithMany()
-                        .HasForeignKey("CambioRolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CambioRolId");
 
                     b.Navigation("Administrador");
 
@@ -752,6 +765,11 @@ namespace NextLevel.AccesoDatos.Migrations
                 });
 
             modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.AltaCurso", b =>
+                {
+                    b.Navigation("Archivos");
+                });
+
+            modelBuilder.Entity("NextLevel.LogicaNegocio.Entidades.CambioRol", b =>
                 {
                     b.Navigation("Archivos");
                 });

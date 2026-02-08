@@ -26,6 +26,7 @@ namespace NextLevel.LogicaNegocio.Entidades
         [AllowNull]
         public DateTime FechaFin { get; set; }
         public double Calificacion { get; set; }
+        public List<double> TotalCalificaciones { get; set; }
         public string Descripcion { get; set; }
         public List<Temario> Temarios { get; set; }
         public List<Prueba> Pruebas { get; set; }
@@ -46,6 +47,7 @@ namespace NextLevel.LogicaNegocio.Entidades
             Descripcion = descripcion;
             Pruebas = new List<Prueba>();
             FechasClases = new List<DateTime>();
+            TotalCalificaciones = new List<double>();
         }
 
         public Curso(Docente docente, string imagen, string descripcion, IEnumerable<Temario> temarios)
@@ -60,6 +62,7 @@ namespace NextLevel.LogicaNegocio.Entidades
             Pruebas = new List<Prueba>();
             Temarios = temarios.ToList();
             FechasClases = new List<DateTime>();
+            TotalCalificaciones = new List<double>();
         }
 
         public Curso(string nombre, Docente docente, string imagen, DateTime fechaInicio, DateTime fachaFin, string descripcion, IEnumerable<Temario> temarios, double precio, Dificultad dificultad)
@@ -79,6 +82,7 @@ namespace NextLevel.LogicaNegocio.Entidades
             Dificultad = dificultad;
             Duracion = CalcularDuracion();
             FechasClases = new List<DateTime>();
+            TotalCalificaciones = new List<double>();
         }
 
         #region Equals - CompareTo
@@ -93,7 +97,7 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         #endregion
 
-            #region Metodos
+        #region Metodos
         public void ActualizarSemanas()
         {
             if (Semanas == null)
@@ -144,6 +148,18 @@ namespace NextLevel.LogicaNegocio.Entidades
                 meses++;
 
             return Math.Max(meses, 0);
+        }
+
+        public void CalcularCalificacion()
+        {
+            double total = 0;
+
+            foreach(double c in TotalCalificaciones)
+            {
+                total += c;
+            }
+
+            Calificacion = total / TotalCalificaciones.Count;
         }
         #endregion
     }

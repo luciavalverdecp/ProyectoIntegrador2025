@@ -52,7 +52,8 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Usuarios
             {
                 try
                 {
-                    usuario.Password = password;
+                    string hash = BCrypt.Net.BCrypt.HashPassword(password);
+                    usuario.Password = hash;
                     usuario.Validar();
                     usuario.RecuperarCuentaVencimiento = new DateTime();
                     _repositorioUsuario.UpdateContrasena(usuario);

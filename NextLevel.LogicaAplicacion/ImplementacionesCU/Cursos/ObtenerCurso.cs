@@ -22,8 +22,9 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
 
         public CursoDTO Ejecturar(string nombreCurso)
         {
+            if (nombreCurso == null) throw new CursoNombreException("No se obtuvo el nombre del curso, intente nuevamente");
             var cursoBuscado = repositorioCurso.FindByNombre(nombreCurso);
-            if (cursoBuscado == null) throw new CursoException("Error al obtener el curso, intente nuevamente");
+            if (cursoBuscado == null) throw new CursoNoEncontradoException("Error al obtener el curso, intente nuevamente");
             
             return CursoMapper.ToCursoDTO(cursoBuscado);
         }

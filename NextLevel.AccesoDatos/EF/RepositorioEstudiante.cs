@@ -88,7 +88,7 @@ namespace NextLevel.AccesoDatos.EF
                 return false;
 
             return cursoObtenido.Pruebas.All(p =>
-                p.Calificaciones.Any(c => c.EstudianteId == estudiante.Id));
+                p.Calificaciones.Any(c => c.EstudianteId == estudiante.Id)); //TODO verificar que todas las calificaciones sean superior a 60
         }
     }
 }

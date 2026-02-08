@@ -26,7 +26,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Cursos
                 claseAgregada.Fecha == new DateTime() ||
                 claseAgregada.Fecha < DateTime.Now) 
                     throw new CursoFechaException("Seleccione una fecha y horarios validos");
-            if (claseAgregada.CursoNombre == null) throw new CursoException("Error al obtener el curso, intente nuevamente");
+            if (claseAgregada.CursoNombre == null) throw new CursoNoEncontradoException("Error al obtener el curso, intente nuevamente");
             var Curso = repositorioCurso.FindByNombre(claseAgregada.CursoNombre);
             if (Curso.FechasClases.Contains(claseAgregada.Fecha)) throw new CursoFechaException("Ya tienes registrada una clase para ese dia y fecha.");
             Curso.FechasClases.Add(claseAgregada.Fecha);

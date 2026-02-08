@@ -3,6 +3,7 @@ using NextLevel.Compartidos.DTOs.CambioRoles;
 using NextLevel.Compartidos.DTOs.Cursos;
 using NextLevel.Compartidos.DTOs.Estudiantes;
 using NextLevel.LogicaAplicacion.InterfacesCU.CambiosDeRol;
+using NextLevel.LogicaAplicacion.InterfacesCU.Cursos;
 using NextLevel.LogicaAplicacion.InterfacesCU.Estudiantes;
 using NextLevel.LogicaNegocio.Entidades;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.AltaCurso;
@@ -18,17 +19,20 @@ namespace WebMVC.Controllers
         private readonly ICursosTerminados cursosTerminados;
         private readonly ICambioDeRol cambioDeRol;
         private readonly IModificarEstudiante modificarEstudiante;
+        private readonly IObtenerCurso obtenerCurso;
 
-        public EstudiantesController(IObtenerEstudiante obtenerEstudiante, 
-            ICursosTerminados terminoCurso, 
+        public EstudiantesController(IObtenerEstudiante obtenerEstudiante,
+            ICursosTerminados terminoCurso,
             ICambioDeRol cambioDeRol,
-            IModificarEstudiante modificarEstudiante
+            IModificarEstudiante modificarEstudiante,
+            IObtenerCurso obtenerCurso
             )
         {
             this.obtenerEstudiante = obtenerEstudiante;
             this.cursosTerminados = terminoCurso;
             this.cambioDeRol = cambioDeRol;
             this.modificarEstudiante = modificarEstudiante;
+            this.obtenerCurso = obtenerCurso;
         }
 
 
@@ -42,14 +46,19 @@ namespace WebMVC.Controllers
                     ViewBag.CursosFinalizados = cursosTerminados.Ejecutar(estudiante);
                     return View(estudiante);
                 }
+                catch (EstudianteNoEncontradoException ex)
+                {
+                    ViewBag.Error = ex.Message;
+                }
                 catch (EstudianteException ex)
                 {
-                    return Redirect("Usuarios/Login");
+                    ViewBag.Error = ex.Message;
                 }
                 catch (Exception ex)
                 {
-                    return Redirect("Usuarios/Login");
+                    ViewBag.Error = ex.Message;
                 }
+                return View(null);
             }
             return RedirectToAction("Login", "Usuarios");
         }

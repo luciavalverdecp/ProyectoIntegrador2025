@@ -1,0 +1,73 @@
+﻿@using NextLevel.Compartidos.DTOs.Postulaciones
+@model IEnumerable<PostulacionDTO>
+
+@section Header {
+    @await Html.PartialAsync("~/Views/Home/Header.cshtml")
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/Postulaciones/PostulacionesAdministrador.css" />
+}
+
+<div class="postulaciones-container mt-4">
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="postulaciones-empty">
+            <div class="empty-icon">📭</div>
+            <h5>No hay postulaciones para revisar</h5>
+            <p>Cuando se generen nuevas postulaciones aparecerán aquí.</p>
+        </div>
+    }
+    else
+    {
+        <div class="postulaciones-card">
+            <table class="postulaciones-table">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Usuario</th>
+                        <th>Estado</th>
+                        <th class="text-end">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        string tipoPostulacion;
+                        string usuario;
+
+                        if (p.CursoAltaDTO != null)
+                        {
+                            tipoPostulacion = "Alta de curso";
+                            usuario = p.CursoAltaDTO.AltaDTO.DocenteNombreDTO.NombreCompleto;
+                        }
+                        else
+                        {
+                            tipoPostulacion = "Cambio de rol";
+                            usuario = p.CambioRolDTO.Estudiante.Email;
+                        }
+
+                        <tr>
+                            <td class="tipo">@tipoPostulacion</td>
+                            <td class="usuario">@usuario</td>
+                            <td>
+                                <span class="estado @p.Estado.ToLower()">
+                                    @p.Estado
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Detalles"
+                                   asp-route-id="@p.Id " 
+                                   asp-action="post" 
+                                   class="btn-detalle">
+                                    Ver detalle
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+</div>

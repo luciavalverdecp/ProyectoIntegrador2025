@@ -10,7 +10,6 @@ namespace NextLevel.LogicaNegocio.Entidades
     public class Archivo : IEntity
     {
         public int Id { get; set; }
-
         public string NombreArchivo { get; set; }
         public string Ruta { get; set; }
         public long Peso { get; set; }

@@ -282,10 +282,14 @@ function renderMes() {
     for (let dia = 1; dia <= totalDias; dia++) {
 
         const fechaDia = new Date(anio, mes, dia);
+        fechaDia.setHours(0, 0, 0, 0);
+
         const hoy = new Date();
         hoy.setHours(0, 0, 0, 0);
 
-        const esPasado = fechaDia < hoy;
+        const esDiaPasado = fechaDia < hoy;
+        const esHoy = fechaDia.getTime() === hoy.getTime();
+        const esDiaFuturo = fechaDia > hoy;
 
         // fuera del rango del curso
         if (fechaDia < fechaInicioCurso || fechaDia > fechaFinCurso) continue;
@@ -300,9 +304,9 @@ function renderMes() {
 
         const claseDelDia = CLASES_AGENDADAS.find(c => c.fecha === fechaStr);
 
-        // ===================================================================
-        //                        BLOQUE ESTUDIANTE
-        // ===================================================================
+        // -------------------
+        // BLOQUE ESTUDIANTE
+        // -------------------
         if (ROL_USUARIO === "Estudiante") {
 
             if (!claseDelDia) {
@@ -312,28 +316,33 @@ function renderMes() {
                         <div class="clase-pasada">No hay clase</div>
                     </div>
                 `;
-            } else {
-
-                const horaClase = claseDelDia.hora;
-                const inicioClase = new Date(`${fechaStr}T${horaClase}:00`);
-
+            }
+            else if (esDiaPasado) {
                 cell.innerHTML = `
                     <div class="day-number">${dia}</div>
                     <div class="expand-content">
-                        <button class="btn-iniciar" disabled>Ingresar a la clase</button>
-                        <div class="hora-clase">${horaClase} hs</div>
+                        <div class="clase-pasada">Clase finalizada</div>
+                        <div class="hora-clase">${claseDelDia.hora} hs</div>
                     </div>
                 `;
-
-                const btnIngresar = cell.querySelector(".btn-iniciar");
-
-                function actualizarEstado() {
-                    btnIngresar.disabled = new Date() < inicioClase;
-                }
-
-                actualizarEstado();
-                setInterval(actualizarEstado, 30000);
-
+            }
+            else if (esHoy) {
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <button class="btn-iniciar">Iniciar clase</button>
+                        <div class="hora-clase">${claseDelDia.hora} hs</div>
+                    </div>
+                `;
+            }
+            else if (esDiaFuturo) {
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <div class="clase-agendada">Clase agendada</div>
+                        <div class="hora-clase">${claseDelDia.hora} hs</div>
+                    </div>
+                `;
             }
 
             cell.addEventListener("click", () => expandirCelda(cell));
@@ -341,20 +350,20 @@ function renderMes() {
             continue;
         }
 
-        // ===================================================================
-        //                        BLOQUE DOCENTE
-        // ===================================================================
-
-        // -------- NO HAY CLASE --------
+        // -------------------
+        // BLOQUE DOCENTE
+        // -------------------
         if (!claseDelDia) {
-            if (esPasado) {
+
+            if (esDiaPasado) {
                 cell.innerHTML = `
                     <div class="day-number">${dia}</div>
                     <div class="expand-content">
                         <div class="clase-pasada">No disponible</div>
                     </div>
                 `;
-            } else {
+            }
+            else {
                 cell.innerHTML = `
                     <div class="day-number">${dia}</div>
                     <div class="expand-content">
@@ -364,46 +373,56 @@ function renderMes() {
                 `;
             }
         }
-
-        // -------- HAY CLASE --------
         else {
 
-            const inicioClase = new Date(`${fechaStr}T${claseDelDia.hora}:00`);
-
-            cell.innerHTML = `
-                <div class="day-number">${dia}</div>
-                <div class="expand-content">
-                    <button class="btn-iniciar">Iniciar clase</button>
-                    <div class="hora-clase">${claseDelDia.hora} hs</div>
-                </div>
-            `;
-
-            const btnIniciar = cell.querySelector(".btn-iniciar");
-
-            function actualizarHabilitacion() {
-                const ahora = new Date();
-                const diff = inicioClase - ahora;
-                const puede = diff <= 15 * 60 * 1000 && diff > -60 * 60 * 1000;
-                btnIniciar.classList.toggle("btn-disabled", !puede);
+            if (esDiaPasado) {
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <div class="clase-pasada">Clase finalizada</div>
+                        <div class="hora-clase">${claseDelDia.hora} hs</div>
+                    </div>
+                `;
             }
-
-            actualizarHabilitacion();
-            setInterval(actualizarHabilitacion, 30000);
-
+            else if (esHoy) {
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <button class="btn-iniciar">Iniciar clase</button>
+                        <div class="hora-clase">${claseDelDia.hora} hs</div>
+                    </div>
+                `;
+            }
+            else if (esDiaFuturo) {
+                cell.innerHTML = `
+                    <div class="day-number">${dia}</div>
+                    <div class="expand-content">
+                        <div class="clase-agendada">Clase agendada</div>
+                        <div class="hora-clase">${claseDelDia.hora} hs</div>
+                    </div>
+                `;
+            }
         }
 
+        // click expandir celdas
         cell.addEventListener("click", (e) => {
             if (e.target.closest(".btn-iniciar") || e.target.closest(".btn-agendar")) return;
             expandirCelda(cell);
         });
 
+        // Agendar clase (docente)
         const btnAgendar = cell.querySelector(".btn-agendar");
         if (btnAgendar) {
             btnAgendar.addEventListener("click", (e) => {
                 e.stopPropagation();
-
                 const hora = cell.querySelector(".time-input")?.value;
                 if (!hora) return;
+
+                const minutos = parseInt(hora.split(":")[1]);
+                if (![0, 15, 30, 45].includes(minutos)) {
+                    alert("La hora debe ser en intervalos de 15 minutos (00, 15, 30, 45)");
+                    return;
+                }
 
                 const form = document.createElement("form");
                 form.method = "POST";
@@ -428,6 +447,7 @@ function renderMes() {
 
     actualizarFlechas();
 }
+
 
 
 
@@ -503,7 +523,7 @@ document.getElementById("calGrid").addEventListener("click", (e) => {
     const fecha = cell.dataset.fecha;
 
     window.location.href =
-        `/Cursos/ClasesEnVivo?nombreCurso=${NOMBRE_CURSO}`;
+        `/Cursos/ClasesEnVivo?nombreCurso=${encodeURIComponent(NOMBRE_CURSO)}`;
 });
 
 window.addEventListener("load", () => {

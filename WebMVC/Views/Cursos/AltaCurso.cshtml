@@ -140,7 +140,10 @@
 			</div>
 
 			<!-- BOTÓN -->
-			<button class="submit-btn" type="submit">Enviar Solicitud</button>
+			<button class="submit-btn"
+					type="submit"@(TempData["ErrorAlta"] != null && !(bool)TempData["ErrorAlta"] ? "disabled" : "")>
+				Enviar Solicitud
+			</button>
 
 		</form>
 

@@ -23,6 +23,12 @@ using NextLevel.LogicaAplicacion.InterfacesCU.ParticipantesConversacion;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.ParticipantesConversacion;
 using NextLevel.LogicaAplicacion.InterfacesCU.Conversaciones;
 using NextLevel.LogicaAplicacion.ImplementacionesCU.Conversaciones;
+using NextLevel.LogicaAplicacion.InterfacesCU.Postulaciones;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.Postulaciones;
+using NextLevel.LogicaAplicacion.ImplementacionesCU.IA;
+using NextLevel.LogicaAplicacion.InterfacesCU.IA;
+using NextLevel.LogicaAplicacion.InterfacesServicios;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebMVC
 {
@@ -109,6 +115,24 @@ namespace WebMVC
             builder.Services.AddScoped<IAgregarCurso, AgregarCurso>();
             builder.Services.AddScoped<IObtenerPartiConversaciones, ObtenerPartiConversaciones>();
             builder.Services.AddScoped<IObtenerConversacion, ObtenerConversacion>();
+            builder.Services.AddScoped<IAgregarCalificacion, AgregarCalificacion>();
+            builder.Services.AddScoped<IObtenerPostulacionesAdmin, ObtenerPostulacionesAdmin>();
+            builder.Services.AddScoped<IObtenerPostulacion, ObtenerPostulacion>();
+            builder.Services.AddScoped<IResolverPostulacion, ResolverPostulacion>();
+
+
+            builder.Services.AddHttpClient<OpenAIClient>();
+            builder.Services.AddScoped<IOpenAIService, OpenAIService>();
+            builder.Services.AddScoped<IConsultarConIA, ConsultarConIA>();
+
+            //Hace que no se generen bucles infinitos
+            builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler =
+                    System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+            });
+
 
             var app = builder.Build();
 

@@ -20,6 +20,11 @@ namespace NextLevel.LogicaNegocio.Entidades
         public Docente(string email, string password, string nombreCompleto, string telefono, int nroDocente) : base(email, password, nombreCompleto, telefono)
         {
             NroDocente = new NroDocente(nroDocente);
+            Cursos = new List<Curso>();
+            EstaVerificado = true;
+            TokenVerificacion = "";
+            TokenVencimiento = new DateTime(0001, 01, 01);
+            Rol = Rol.Docente;
             this.Validar();
         }
         #region Validaciones
@@ -33,6 +38,13 @@ namespace NextLevel.LogicaNegocio.Entidades
         {
             if (NroDocente == null) throw new DocenteNroDocenteException("El numero de docente no puede ser nulo");
             if (int.IsNegative(NroDocente.NroDeDocente)) throw new DocenteNroDocenteException("El numero de docente no puede ser negativo");
+        }
+        #endregion
+
+        #region Metodos
+        public static int GenerarNroDocente()
+        {
+            return Random.Shared.Next(100000, 1_000_000);
         }
         #endregion
 

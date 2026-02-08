@@ -1,0 +1,98 @@
+﻿/* CONTENEDOR */
+.postulaciones-container {
+    max-width: 100%;
+}
+
+/* CARD PRINCIPAL */
+.postulaciones-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    padding: 24px;
+}
+
+/* TABLA */
+.postulaciones-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+}
+
+    .postulaciones-table thead th {
+        font-size: 0.85rem;
+        color: #9aa0b4;
+        font-weight: 500;
+        border: none;
+    }
+
+    .postulaciones-table tbody tr {
+        background: #f7f8ff;
+        border-radius: 14px;
+    }
+
+        .postulaciones-table tbody tr td {
+            padding: 14px 16px;
+            border: none;
+            vertical-align: middle;
+        }
+
+            .postulaciones-table tbody tr td:first-child {
+                border-radius: 14px 0 0 14px;
+            }
+
+            .postulaciones-table tbody tr td:last-child {
+                border-radius: 0 14px 14px 0;
+            }
+
+/* TEXTO */
+.tipo {
+    font-weight: 500;
+}
+
+.usuario {
+    color: #6c728a;
+}
+
+/* ESTADOS */
+.estado {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+    .estado.pendiente {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .estado.aprobada {
+        background: #e6f4ea;
+        color: #1e7e34;
+    }
+
+    .estado.rechazada {
+        background: #fdecea;
+        color: #b02a37;
+    }
+
+/* BOTÓN */
+.btn-detalle {
+    background: #c7b9ff;
+    color: #ffffff;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+    .btn-detalle:hover {
+        background: #b3a3ff;
+        color: #ffffff;
+    }
+
+/* ESTADO VACÍO */
+.postulaciones-empty {
+    background: #f7f8ff;
+    border-radius: 20px;
