@@ -234,7 +234,7 @@ namespace WebMVC.Controllers
                 }
             }
 
-            return View("RecuperarContraseña");
+            return View();
         }
 
 
