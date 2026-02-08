@@ -32,7 +32,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Estudiantes
         public EstudianteInfoDTO EjecutarEstudianteInfoDTO(string email)
         {
             var estudiante = _repoitorioEstudiante.FindByEmail(email);
-            if(estudiante != null) throw new EstudianteNoEncontradoException("Error al obtener al usuario estudiante.");
+            if(estudiante == null) throw new EstudianteNoEncontradoException("Error al obtener al usuario estudiante.");
             EstudianteInfoDTO dto = EstudianteMapper.ToEstudianteInfoDTO(estudiante);
             return dto;
         }

@@ -44,7 +44,7 @@ namespace WebMVC.Controllers
                     cursoDTO
                 );
                 var conversacion = _obtenerConversacion.Ejecutar(idNuevaConversacion);
-                TempData["ConversacionActiva"] = conversacionId;
+                TempData["ConversacionActiva"] = idNuevaConversacion;
                 TempData["TabActivo"] = "contacto";
 
                 var nombreCursoEncoded = Uri.EscapeDataString(nombreCursoLimpio);
