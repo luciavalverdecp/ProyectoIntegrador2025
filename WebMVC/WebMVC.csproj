@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Views\Materiales\**" />
+    <Compile Remove="wwwroot\js\Materiales\**" />
     <Content Remove="Views\Materiales\**" />
+    <Content Remove="wwwroot\js\Materiales\**" />
     <EmbeddedResource Remove="Views\Materiales\**" />
+    <EmbeddedResource Remove="wwwroot\js\Materiales\**" />
     <None Remove="Views\Materiales\**" />
+    <None Remove="wwwroot\js\Materiales\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\js\Materiales\" />
     <Folder Include="wwwroot\js\Pagos\" />
   </ItemGroup>
 
