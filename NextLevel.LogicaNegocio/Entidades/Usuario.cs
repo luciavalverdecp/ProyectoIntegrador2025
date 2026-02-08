@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NextLevel.LogicaNegocio.ExcepcionesEntidades.Usuario;
 using NextLevel.LogicaNegocio.InterfacesEntidades;
@@ -68,6 +69,7 @@ namespace NextLevel.LogicaNegocio.Entidades
         }
         private void validarEmail()
         {
+            Email = Email.Trim();
             if (string.IsNullOrWhiteSpace(Email))
                 throw new UsuarioEmailException("El email no puede estar vacío.");
 
@@ -80,6 +82,7 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         private void validarPassword()
         {
+            Password = Password.Trim();
             if (string.IsNullOrEmpty(Password)) throw new UsuarioPasswordException("La contraseña no puede ser vacia.");
             if (!System.Text.RegularExpressions.Regex.IsMatch(Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$")) throw new UsuarioPasswordException("La contraseña debe tener al menos una minúscula, una mayúscula y un número.");
             if (Password.Length < 8) throw new UsuarioPasswordException("La contraseña debe tener al menos 8 caracteres.");
@@ -87,11 +90,18 @@ namespace NextLevel.LogicaNegocio.Entidades
 
         private void validarNombreCompleto()
         {
-            if (string.IsNullOrEmpty(NombreCompleto)) throw new UsuarioNombreCompletoException("El nombre completo no puede ser vacio.");
-            if (!NombreCompleto.Trim().Contains(" ")) throw new UsuarioNombreCompletoException("El nombre debe estar separado con un espacio del apellido.");
+            NombreCompleto = NombreCompleto.Trim();
+            if (string.IsNullOrWhiteSpace(NombreCompleto))
+                throw new UsuarioNombreCompletoException("El nombre completo no puede ser vacío.");
+            if (!NombreCompleto.Contains(" "))
+                throw new UsuarioNombreCompletoException("El nombre debe estar separado con un espacio del apellido.");
+            // Solo letras y espacios
+            if (!Regex.IsMatch(NombreCompleto, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"))
+                throw new UsuarioNombreCompletoException("El nombre solo puede contener letras.");
         }
         private void validarTelefono()
         {
+            Telefono = Telefono.Trim();
             if (string.IsNullOrEmpty(Telefono)) throw new UsuarioTelefonoException("El telefono no puede ser vacio.");
             if (!Telefono.StartsWith("09") || Telefono.Length != 9) throw new UsuarioTelefonoException("Formato de telefono invalido.");
         }
