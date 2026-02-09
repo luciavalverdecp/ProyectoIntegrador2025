@@ -15,8 +15,8 @@ En este apartado se incluirán los enlaces correspondientes a las evidencias aud
 - [Ver evidencia Incremento 4](https://www.youtube.com/watch?v=f0Q6EnC8zJI)
 - [Ver evidencia Incremento 5](https://www.youtube.com/watch?v=AsbgqFpICNQ)
 - [Ver evidencia Incremento 6](https://www.youtube.com/watch?v=W3bnNk2G3u8)
-- [Ver evidencia Incremento 7]()
-- [Ver evidencia Incremento 8]()
+- [Ver evidencia Incremento 7](https://www.youtube.com/watch?v=Z4qPXaFLIeQ)
+- [Ver evidencia Incremento 8](https://www.youtube.com/watch?v=5THyc0HBR3A)
 
 ## 📐 Diagramas de Clases (ASTAH)
 Los diagramas de clases del sistema fueron diseñados utilizando **ASTAH**, contemplando la separación por capas de la solución.
