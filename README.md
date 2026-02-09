@@ -21,7 +21,7 @@ En este apartado se incluirán los enlaces correspondientes a las evidencias aud
 Los diagramas de clases del sistema fueron diseñados utilizando **ASTAH**, contemplando la separación por capas de la solución.
 Debido al tamaño y nivel de detalle de los diagramas, no se incluyen completos en este documento. En su lugar, se provee el archivo original para su análisis detallado.
 
-📎 El archivo ASTAH puede descargarse desde este repositorio y su ubicación se encuentra especificada dentro del proyecto.
+📎El archivo ASTAH puede descargarse desde este repositorio y su ubicación se encuentra especificada dentro del proyecto.
 
 ## 👩‍💻 Autores
 - **Lucia Valverde**  
