@@ -50,7 +50,7 @@ namespace NextLevel.LogicaAplicacion.ImplementacionesCU.Usuarios
             }
             else
             {
-                throw new UsuarioException("Usuario invalido.");
+                throw new UsuarioException("Usuario y/o contrasena invalida.");
             }
         }
     }

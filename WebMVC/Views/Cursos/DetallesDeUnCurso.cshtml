@@ -67,10 +67,6 @@
                 <div class="curso-compra">
                     <p class="precio">$ @Model.Precio UYU</p>
 
-                    <p class="cuotas">
-                        Hasta 12 cuotas sin interés
-                    </p>
-
                     <button type="button" class="btn-comprar" onclick="abrirModalPago(this)" data-logueado="@(Context.Session.GetString("rolLogueado") != null)">
                         Comprar
                     </button>
