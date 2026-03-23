@@ -27,7 +27,7 @@ Debido al tamaño y nivel de detalle de los diagramas, no se incluyen completos 
 
 Debido a la extensión y complejidad del proyecto, algunos elementos como las pruebas de integración, pruebas unitarias y el manual de usuario no se incluyen en el documento entregado.
 Sin embargo, estos materiales se encuentran disponibles y pueden ser consultados a través del siguiente enlace:
-https://docs.google.com/spreadsheets/d/15QaC04t8VJIbdCU1kCFdu-9y5xdkTNjvsrAMcPjs29w/edit?usp=drive_link
+- [Ver documentación completa](https://docs.google.com/spreadsheets/d/15QaC04t8VJIbdCU1kCFdu-9y5xdkTNjvsrAMcPjs29w/edit?usp=drive_link)
 
 ## 👩‍💻 Autores
 - **Lucia Valverde**  
